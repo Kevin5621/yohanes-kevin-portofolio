@@ -1,0 +1,16 @@
+@layer utilities {
+  .shadow-neumorph {
+    box-shadow: 8px 8px 16px #d1d1d1,
+               -8px -8px 16px #ffffff;
+  }
+
+  .shadow-neumorph-hover {
+    box-shadow: 12px 12px 24px #d1d1d1,
+               -12px -12px 24px #ffffff;
+  }
+
+  .shadow-neumorph-inset {
+    box-shadow: inset 6px 6px 12px #d1d1d1,
+                inset -6px -6px 12px #ffffff;
+  }
+}
