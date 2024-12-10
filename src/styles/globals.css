@@ -1,9 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @layer utilities {
-  /* Light Mode Neumorphic Shadows */
   .shadow-neumorph {
     box-shadow: 8px 8px 16px #d1d1d1,
                -8px -8px 16px #ffffff;
@@ -19,19 +18,18 @@
                 inset -6px -6px 12px #ffffff;
   }
 
-  /* Dark Mode Neumorphic Shadows */
-  .dark .shadow-neumorph-dark {
-    box-shadow: 8px 8px 16px #111827,
-               -8px -8px 16px #1F2937;
+  .shadow-neumorph-dark {
+    box-shadow: 8px 8px 16px #151515,
+               -8px -8px 16px #353535;
   }
 
-  .dark .shadow-neumorph-hover-dark {
-    box-shadow: 12px 12px 24px #111827,
-               -12px -12px 24px #1F2937;
+  .shadow-neumorph-dark-hover {
+    box-shadow: 12px 12px 24px #151515,
+               -12px -12px 24px #353535;
   }
 
-  .dark .shadow-neumorph-inset-dark {
-    box-shadow: inset 6px 6px 12px #111827,
-                inset -6px -6px 12px #1F2937;
+  .shadow-neumorph-dark-inset {
+    box-shadow: inset 6px 6px 12px #151515,
+                inset -6px -6px 12px #353535;
   }
 }
