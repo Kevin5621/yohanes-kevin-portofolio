@@ -12,7 +12,7 @@ const Hero = () => {
             Smart Contract Developer
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">
-            I craft elegant solutions to complex problems, specializing in React, Node.js, and BlockChain Technology.
+            I craft elegant solutions to complex problems, specializing in React, Dart, and BlockChain Technology.
             Let's build something amazing together.
           </p>
           <div className="flex justify-center space-x-6">
