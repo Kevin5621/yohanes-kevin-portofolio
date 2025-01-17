@@ -1,9 +1,9 @@
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
-import Projects from './components/Projects';
 import Contact from './components/Contact';
 import './styles/globals.css';
 import { ThemeProvider } from './styles/themeContexts';
+import { Projects } from './components/Projects';
 
 function App() {
   return (

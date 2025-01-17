@@ -1,0 +1,56 @@
+.overlay-enter {
+    opacity: 0;
+  }
+  
+  .overlay-enter-active {
+    opacity: 1;
+    transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .overlay-exit {
+    opacity: 1;
+  }
+  
+  .overlay-exit-active {
+    opacity: 0;
+    transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Add card expansion animation */
+  .card-expanded {
+    animation: expand 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  @keyframes expand {
+    from {
+      transform: translate(var(--initial-x), var(--initial-y)) scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+  }
+  
+  /* Add smooth scrollbar for expanded card */
+  .overflow-auto {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+  }
+  
+  .overflow-auto::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .overflow-auto::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .overflow-auto::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 4px;
+  }
+  
+  .overflow-auto::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(156, 163, 175, 0.7);
+  }
