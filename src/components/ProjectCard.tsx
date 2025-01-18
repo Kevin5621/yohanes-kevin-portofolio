@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { ChevronLeftIcon, ChevronRightIcon, GithubIcon, ZoomInIcon } from 'lucide-react';
+import { ChevronLeftIcon, ChevronRightIcon, GithubIcon } from 'lucide-react';
 import { ImageViewer } from './ImageViewer';
 
 interface ProjectImage {
@@ -38,11 +38,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     e?.stopPropagation();
     setCurrentImageIndex((prev) => (prev - 1 + image.length) % image.length);
   }, [image.length]);
-
-  const handleImageClick = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsFullscreen(true);
-  }, []);
 
   return (
     <>
@@ -83,30 +78,20 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
           {image && image.length > 0 && (
             <div className="relative mt-4 mb-6">
-              <div className="rounded-lg shadow-neumorph dark:shadow-neumorph-dark">
+              <div className="rounded-lg bg-gray-100 dark:bg-dark shadow-neumorph-inset 
+                            dark:shadow-neumorph-dark-inset p-2 h-[300px]">
                 <div 
-                  className="relative overflow-hidden"
-                  style={{ paddingBottom: '56.25%' }}
+                  className="relative h-full rounded-lg overflow-hidden group"
+                  onClick={() => setIsFullscreen(true)}
                 >
                   <img
                     src={image[currentImageIndex].image}
                     alt={image[currentImageIndex].title}
-                    className="absolute inset-0 w-full h-full object-cover cursor-zoom-in"
-                    onClick={handleImageClick}
+                    className="w-full h-full object-contain cursor-pointer"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60">
-                    <div className="absolute bottom-0 left-0 right-0 p-3 flex justify-between items-center">
-                      <p className="text-white text-sm">
-                        {image[currentImageIndex].title}
-                      </p>
-                      <button
-                        onClick={handleImageClick}
-                        className="p-1 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
-                      >
-                        <ZoomInIcon size={16} className="text-white" />
-                      </button>
-                    </div>
-                  </div>
+                  <p className="absolute bottom-2 left-2 text-sm text-gray-600 dark:text-gray-300 bg-white/80 dark:bg-black/80 px-2 py-1 rounded">
+                    {image[currentImageIndex].title} ({currentImageIndex + 1}/{image.length})
+                  </p>
                 </div>
               </div>
 
@@ -114,23 +99,27 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 <>
                   <button
                     onClick={handlePrev}
-                    className="absolute left-2 top-1/2 transform -translate-y-1/2 p-2 rounded-full 
-                             shadow-neumorph dark:shadow-neumorph-dark hover:shadow-neumorph-hover 
-                             dark:hover:shadow-neumorph-dark-hover bg-gray-100 dark:bg-dark 
-                             text-gray-600 dark:text-gray-300 transition-all duration-200 
-                             hover:scale-110"
+                    className="absolute left-0 top-1/2 transform -translate-y-1/2 w-10 h-10
+                             flex items-center justify-center opacity-80 hover:opacity-100
+                             transition-opacity duration-200"
                   >
-                    <ChevronLeftIcon size={24} />
+                    <div className="rounded-full p-2 bg-gray-100 dark:bg-dark shadow-neumorph 
+                                dark:shadow-neumorph-dark hover:shadow-neumorph-hover 
+                                dark:hover:shadow-neumorph-dark-hover">
+                      <ChevronLeftIcon size={20} className="text-gray-600 dark:text-gray-300" />
+                    </div>
                   </button>
                   <button
                     onClick={handleNext}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 rounded-full 
-                             shadow-neumorph dark:shadow-neumorph-dark hover:shadow-neumorph-hover 
-                             dark:hover:shadow-neumorph-dark-hover bg-gray-100 dark:bg-dark 
-                             text-gray-600 dark:text-gray-300 transition-all duration-200 
-                             hover:scale-110"
+                    className="absolute right-0 top-1/2 transform -translate-y-1/2 w-10 h-10
+                             flex items-center justify-center opacity-80 hover:opacity-100
+                             transition-opacity duration-200"
                   >
-                    <ChevronRightIcon size={24} />
+                    <div className="rounded-full p-2 bg-gray-100 dark:bg-dark shadow-neumorph 
+                                dark:shadow-neumorph-dark hover:shadow-neumorph-hover 
+                                dark:hover:shadow-neumorph-dark-hover">
+                      <ChevronRightIcon size={20} className="text-gray-600 dark:text-gray-300" />
+                    </div>
                   </button>
                 </>
               )}
