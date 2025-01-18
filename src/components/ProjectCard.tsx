@@ -1,7 +1,5 @@
-// ProjectCard.tsx
-import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { CSSTransition } from 'react-transition-group';
-import { ChevronLeftIcon, ChevronRightIcon, GithubIcon, XIcon, ZoomInIcon } from 'lucide-react';
+import React, { useState, useCallback } from 'react';
+import { ChevronLeftIcon, ChevronRightIcon, GithubIcon, ZoomInIcon } from 'lucide-react';
 import { ImageViewer } from './ImageViewer';
 
 interface ProjectImage {
@@ -19,8 +17,6 @@ interface Project {
 
 interface ProjectCardProps extends Project {
   index: number;
-  isAnyCardExpanded: boolean;
-  onExpand: (index: number) => void;
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -29,40 +25,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   image,
   technologies,
   githubUrl,
-  index,
-  isAnyCardExpanded,
-  onExpand,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [initialPosition, setInitialPosition] = useState({ x: 0, y: 0 });
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (cardRef.current && !isExpanded) {
-      const rect = cardRef.current.getBoundingClientRect();
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-      setInitialPosition({
-        x: rect.left - centerX + rect.width / 2,
-        y: rect.top - centerY + rect.height / 2,
-      });
-    }
-  }, [isExpanded]);
-
-  const handleExpand = useCallback(() => {
-    if (!isExpanded) {
-      onExpand(index);
-      setIsExpanded(true);
-    }
-  }, [index, isExpanded, onExpand]);
-
-  const handleCollapse = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsExpanded(false);
-    onExpand(-1);
-  }, [onExpand]);
 
   const handleNext = useCallback((e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -91,58 +56,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         />
       )}
 
-      <CSSTransition
-        in={isExpanded}
-        timeout={300}
-        classNames="overlay"
-        unmountOnExit
-      >
-        <div 
-          className="fixed inset-0 bg-black/50 z-40" 
-          onClick={handleCollapse}
-        />
-      </CSSTransition>
-
-      <div
-        ref={cardRef}
-        onClick={handleExpand}
-        style={
-          isExpanded
-            ? {
-                transform: 'translate(-50%, -50%)',
-                transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
-              }
-            : {
-                '--initial-x': `${initialPosition.x}px`,
-                '--initial-y': `${initialPosition.y}px`,
-              } as React.CSSProperties
-        }
-        className={`
-          group rounded-2xl transition-all duration-300 ease-out origin-center
-          ${
-            isExpanded
-              ? 'fixed top-1/2 left-1/2 w-[90vw] max-w-4xl z-50 bg-gray-100 dark:bg-dark p-6 shadow-2xl card-expanded'
-              : `relative shadow-neumorph dark:shadow-neumorph-dark hover:shadow-neumorph-hover 
-                 dark:hover:shadow-neumorph-dark-hover bg-gray-100 dark:bg-dark p-6 
-                 transition-transform duration-300 ${
-                   isAnyCardExpanded ? 'scale-95 opacity-50' : 'hover:scale-[1.02]'
-                 }`
-          }
-        `}
-      >
+      <div className="card rounded-2xl bg-gray-100 dark:bg-dark p-6 relative shadow-neumorph 
+                    dark:shadow-neumorph-dark hover:shadow-neumorph-hover 
+                    dark:hover:shadow-neumorph-dark-hover transition-transform duration-300 
+                    hover:scale-[1.02]">
         <div className="relative">
-          {isExpanded && (
-            <button
-              onClick={handleCollapse}
-              className="absolute -top-2 -right-2 p-2 rounded-full shadow-neumorph dark:shadow-neumorph-dark 
-                       hover:shadow-neumorph-hover dark:hover:shadow-neumorph-dark-hover text-gray-600 
-                       dark:text-gray-300 bg-gray-100 dark:bg-dark transition-transform duration-200 
-                       hover:scale-110 z-10"
-            >
-              <XIcon size={20} />
-            </button>
-          )}
-          
           <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">
             {title}
           </h3>
@@ -154,8 +72,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             {technologies.map((tech) => (
               <span
                 key={tech}
-                className="px-3 py-1 text-sm rounded-full shadow-neumorph-inset dark:shadow-neumorph-dark-inset 
-                         text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-dark"
+                className="px-3 py-1 text-sm rounded-full shadow-neumorph-inset 
+                         dark:shadow-neumorph-dark-inset text-gray-600 dark:text-gray-300 
+                         bg-gray-100 dark:bg-dark"
               >
                 {tech}
               </span>
@@ -198,7 +117,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     className="absolute left-2 top-1/2 transform -translate-y-1/2 p-2 rounded-full 
                              shadow-neumorph dark:shadow-neumorph-dark hover:shadow-neumorph-hover 
                              dark:hover:shadow-neumorph-dark-hover bg-gray-100 dark:bg-dark 
-                             text-gray-600 dark:text-gray-300 transition-all duration-200 hover:scale-110"
+                             text-gray-600 dark:text-gray-300 transition-all duration-200 
+                             hover:scale-110"
                   >
                     <ChevronLeftIcon size={24} />
                   </button>
@@ -207,7 +127,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 rounded-full 
                              shadow-neumorph dark:shadow-neumorph-dark hover:shadow-neumorph-hover 
                              dark:hover:shadow-neumorph-dark-hover bg-gray-100 dark:bg-dark 
-                             text-gray-600 dark:text-gray-300 transition-all duration-200 hover:scale-110"
+                             text-gray-600 dark:text-gray-300 transition-all duration-200 
+                             hover:scale-110"
                   >
                     <ChevronRightIcon size={24} />
                   </button>
@@ -221,7 +142,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg shadow-neumorph 
                        dark:shadow-neumorph-dark hover:shadow-neumorph-hover 
                        dark:hover:shadow-neumorph-dark-hover active:shadow-neumorph-inset 
@@ -229,7 +149,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                        text-gray-600 dark:text-gray-300 hover:scale-105"
             >
               <GithubIcon size={16} />
-              {isExpanded ? 'View on GitHub' : 'Code'}
+              View on GitHub
             </a>
           </div>
         </div>
