@@ -33,3 +33,68 @@
                 inset -6px -6px 12px #353535;
   }
 }
+
+* {
+  transition-property: color, background-color, border-color, box-shadow, transform;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
+}
+
+/* Theme toggle slider styles */
+.theme-transition-line {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100vh;
+  transform: translateX(-100%);
+  transition: transform 500ms ease-in-out;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* Different line colors for different theme transitions */
+.theme-transition-line.light {
+  background: #1a1a1a;
+  box-shadow: 0 0 20px 10px rgba(26, 26, 26, 0.5);
+}
+
+.theme-transition-line.dark {
+  background: #ffffff;
+  box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Theme wrapper for transition */
+.theme-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: clip-path 500ms ease-in-out;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+.theme-wrapper.dark {
+  background-color: theme('colors.current');
+}
+
+.theme-wrapper.light {
+  background-color: theme('colors.gray.100');
+}
+
+/* Remove default transitions during theme change */
+* {
+  transition-property: none;
+}
+
+/* Ensure proper stacking context */
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+.theme-wrapper #root {
+  position: static;
+}
