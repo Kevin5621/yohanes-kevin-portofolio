@@ -55,24 +55,24 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         />
       )}
 
-      <div className={`card rounded-2xl bg-gray-100 dark:bg-dark p-6 relative 
+      <div className="card rounded-2xl bg-gray-100 dark:bg-dark p-6 relative 
                     shadow-neumorph dark:shadow-neumorph-dark 
                     hover:shadow-neumorph-hover dark:hover:shadow-neumorph-dark-hover 
-                    transition-all duration-300 hover:scale-[1.02]`}>
-        <div className="relative">
-          <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">
+                    transition-all duration-300 hover:scale-[1.02] h-fit">
+        <div className="flex flex-col gap-4">
+          <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
             {title}
           </h3>
 
-          <div className="relative">
-            <p className="text-gray-600 dark:text-gray-300 mb-4">
-              {description}
-            </p>
-            
-            {features && (
-              <div className={`transition-all duration-300 overflow-hidden mb-4
-                            ${isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+          <p className="text-gray-600 dark:text-gray-300">
+            {description}
+          </p>
+          
+          {features && (
+            <>
+              <div className={`transition-all duration-300 overflow-hidden
+                           ${isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div className="grid grid-cols-1 gap-4">
                   {features.sections.map((section, idx) => (
                     <div key={idx} className="space-y-2">
                       <h4 className="font-medium text-gray-700 dark:text-gray-200">
@@ -87,13 +87,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   ))}
                 </div>
               </div>
-            )}
 
-            {features && (
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
                 className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 
-                         dark:hover:text-gray-200 flex items-center gap-1 transition-colors mb-4"
+                         dark:hover:text-gray-200 flex items-center gap-1 transition-colors"
               >
                 {isExpanded ? (
                   <>Show less <ChevronUpIcon size={16} /></>
@@ -101,10 +99,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   <>Read more <ChevronDownIcon size={16} /></>
                 )}
               </button>
-            )}
-          </div>
+            </>
+          )}
           
-          <div className="flex flex-wrap gap-2 mb-4">
+          <div className="flex flex-wrap gap-2">
             {technologies.map((tech) => (
               <span
                 key={tech}
@@ -118,7 +116,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
 
           {image && image.length > 0 && (
-            <div className="relative mt-4 mb-6">
+            <div className="relative">
               <div className="rounded-lg bg-gray-100 dark:bg-dark shadow-neumorph-inset 
                           dark:shadow-neumorph-dark-inset p-2 h-[300px]">
                 <div 
