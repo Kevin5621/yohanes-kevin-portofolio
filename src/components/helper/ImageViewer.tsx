@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChevronLeftIcon, ChevronRightIcon, XIcon } from 'lucide-react';
-import { Screenshot } from './types';
+import { Screenshot } from '../model/types';
 
 interface ImageViewerProps {
   images: Screenshot[];

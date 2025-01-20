@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { MenuIcon, XIcon, GithubIcon, LinkedinIcon } from 'lucide-react';
 import ThemeToggle from '../styles/theme';
-import { ImageViewer } from './ImageViewer';
+import { ImageViewer } from './helper/ImageViewer';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);

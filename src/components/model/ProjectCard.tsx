@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon, GithubIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
-import { ImageViewer } from './ImageViewer';
+import { ImageViewer } from '../helper/ImageViewer';
 import { ProjectFeatures } from './types';
 
 interface ProjectImage {
