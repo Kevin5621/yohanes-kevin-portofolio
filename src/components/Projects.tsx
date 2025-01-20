@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ProjectCard } from './model/ProjectCard';
 import { Project } from './model/types';
+import { Typewriter } from './hook/Animated_typeWritter';
 
 const projects: Project[] = [
   {
@@ -236,24 +237,76 @@ const projects: Project[] = [
 ];
 
 export const Projects: React.FC = () => {
+  const [sectionVisible, setSectionVisible] = useState(false);
+  const [titleVisible, setTitleVisible] = useState(false);
+  const [visibleProjects, setVisibleProjects] = useState<number[]>([]);
+
+  useEffect(() => {
+    // Start section emergence animation
+    const sectionTimer = setTimeout(() => {
+      setSectionVisible(true);
+    }, 500);
+
+    // Start title typewriter animation after section is visible
+    const titleTimer = setTimeout(() => {
+      setTitleVisible(true);
+    }, 1000);
+
+    // Start showing projects one by one after title animation completes
+    const baseDelay = 2000; // Wait for title typewriter to complete
+    const projectInterval = 1000;// Delay between each project
+    const projectTimers: ReturnType<typeof setTimeout>[] = [];
+
+    projects.forEach((_, index) => {
+      const timer = setTimeout(() => {
+        setVisibleProjects(prev => [...prev, index]);
+      }, baseDelay + (index * projectInterval));
+      projectTimers.push(timer);
+    });
+
+    return () => {
+      clearTimeout(sectionTimer);
+      clearTimeout(titleTimer);
+      projectTimers.forEach(timer => clearTimeout(timer));
+    };
+  }, []);
+
   // Split projects into left and right columns
   const leftColumnProjects = projects.filter((_, index) => index % 2 === 0);
   const rightColumnProjects = projects.filter((_, index) => index % 2 === 1);
 
   return (
-    <section id="projects" className="py-20 px-6 bg-gray-100 dark:bg-dark transition-colors duration-200">
+    <section 
+      id="projects" 
+      className={`py-20 px-6 bg-gray-100 dark:bg-dark transition-all duration-1000
+        ${sectionVisible ? 'opacity-100' : 'opacity-0'}`}
+    >
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-12 text-center">
-          Featured Projects
-        </h2>
+        <div className="mb-12 text-center">
+          {titleVisible && (
+            <Typewriter 
+              text="Featured Projects"
+              delay={0}
+              className="text-4xl font-bold text-gray-800 dark:text-gray-100"
+            />
+          )}
+        </div>
         
         {/* Desktop Layout */}
         <div className="hidden md:grid md:grid-cols-2 gap-8">
           {/* Left Column */}
           <div className="space-y-8">
             {leftColumnProjects.map((project, index) => (
-              <div key={project.title}>
-                <ProjectCard {...project} index={index * 2} />
+              <div 
+                key={project.title}
+                className="transition-all duration-500"
+              >
+                <ProjectCard 
+                  {...project} 
+                  index={index * 2} 
+                  isVisible={visibleProjects.includes(index * 2)}
+                  typewriterDelay={0}
+                />
               </div>
             ))}
           </div>
@@ -261,8 +314,16 @@ export const Projects: React.FC = () => {
           {/* Right Column */}
           <div className="space-y-8">
             {rightColumnProjects.map((project, index) => (
-              <div key={project.title}>
-                <ProjectCard {...project} index={index * 2 + 1} />
+              <div 
+                key={project.title}
+                className="transition-all duration-500"
+              >
+                <ProjectCard 
+                  {...project} 
+                  index={index * 2 + 1} 
+                  isVisible={visibleProjects.includes(index * 2 + 1)}
+                  typewriterDelay={0}
+                />
               </div>
             ))}
           </div>
@@ -271,8 +332,16 @@ export const Projects: React.FC = () => {
         {/* Mobile Layout */}
         <div className="md:hidden space-y-8">
           {projects.map((project, index) => (
-            <div key={project.title}>
-              <ProjectCard {...project} index={index} />
+            <div 
+              key={project.title}
+              className="transition-all duration-500"
+            >
+              <ProjectCard 
+                {...project} 
+                index={index} 
+                isVisible={visibleProjects.includes(index)}
+                typewriterDelay={0}
+              />
             </div>
           ))}
         </div>
