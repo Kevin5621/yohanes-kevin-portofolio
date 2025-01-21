@@ -29,10 +29,10 @@ const Hero = () => {
   }, []);
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-dark px-4 sm:px-6 transition-colors duration-200">
-      <div className="w-full max-w-4xl mx-auto text-center">
+    <section id="home" className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-dark transition-colors duration-200">
+      <div className="w-full max-w-4xl mx-auto text-center pt-16 sm:pt-15 px-4 sm:px-6 flex items-center min-h-screen">
         <div 
-          className={`w-full min-h-[520px] sm:min-h-[460px] p-6 sm:p-8 rounded-2xl transform transition-all duration-1000 ease-out
+          className={`w-full min-h-[520px] sm:min-h-[460px] p-6 sm:p-8 rounded-2xl transform transition-all duration-1000 ease-out my-auto
             ${isPressed ? 'scale-[0.98] shadow-neumorph-inset dark:shadow-neumorph-dark-inset' : 
               cardVisible ? 'scale-100 opacity-100 shadow-neumorph dark:shadow-neumorph-dark' : 'scale-95 opacity-0 shadow-none'}
             cursor-pointer relative bg-gray-100 dark:bg-dark`}
