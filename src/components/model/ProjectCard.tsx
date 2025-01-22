@@ -42,11 +42,17 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const [cardVisible, setCardVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [showTechnologies, setShowTechnologies] = useState(false);
+  const [currentTechIndex, setCurrentTechIndex] = useState(-1);
   const [showImage, setShowImage] = useState(false);
   const [showContent, setShowContent] = useState(false);
+  const [showNavButtons, setShowNavButtons] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState('0px');
   const [, setIsAnimating] = useState(false);
+  const [showTitle, setShowTitle] = useState(false);
+  const [showDescription, setShowDescription] = useState(false);
+  const [showGithub, setShowGithub] = useState(false);
+  const [showReadMore, setShowReadMore] = useState(false);
 
   const truncateDescription = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text;
@@ -73,20 +79,50 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         setCardVisible(true);
       }, 100);
 
-      // Delayed animations for content sections
+      // Sequential animations
       setTimeout(() => {
-        setShowContent(true);
-      }, typewriterDelay + 1000);
-      
+        setShowTitle(true);
+      }, typewriterDelay);
+
+      setTimeout(() => {
+        setShowDescription(true);
+      }, typewriterDelay + title.length * 50 + 500);
+
+      setTimeout(() => {
+        setShowReadMore(true);
+        animateTechnologies();
+      }, typewriterDelay + title.length * 50 + description.length * 30 + 1000);
+
       setTimeout(() => {
         setShowTechnologies(true);
-      }, typewriterDelay + 1500);
+      }, typewriterDelay + title.length * 50 + description.length * 30 + 1500);
 
       setTimeout(() => {
         setShowImage(true);
-      }, typewriterDelay + 2000);
+      }, typewriterDelay + title.length * 50 + description.length * 30 + technologies.length * 500 + 2000);
+
+      const imageDelay = typewriterDelay + title.length * 50 + description.length * 30 + technologies.length * 500 + 2500;
+      setTimeout(() => {
+        setShowGithub(true);
+        setShowNavButtons(true);
+        setShowContent(true);
+      },imageDelay,);
     }
-  }, [isVisible, typewriterDelay]);
+  });
+
+  const animateTechnologies = useCallback(() => {
+    if (technologies.length > 0) {
+      let index = 0;
+      const interval = setInterval(() => {
+        if (index < technologies.length) {
+          setCurrentTechIndex(index);
+          index++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 500);
+    }
+  }, [technologies]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -124,7 +160,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           onPrev={handlePrev}
         />
       )}
-
+      
       <div className={`opacity-0 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100' : ''}`}>
         <div 
           className={`card rounded-2xl bg-gray-100 dark:bg-dark p-4 relative overflow-hidden
@@ -134,7 +170,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           onMouseLeave={() => setIsHovered(false)}
         >
           <div className="flex flex-col h-full space-y-2">
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 h-7">
+            <h3 className={`text-xl font-semibold text-gray-800 dark:text-gray-100 h-7 transition-opacity duration-500 ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
               {isVisible && (
                 <Typewriter 
                   text={title}
@@ -145,10 +181,15 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             </h3>
 
             {/* Description */}
-            <div className={`transition-all duration-500 ease-in-out ${showContent ? 'opacity-100' : 'opacity-0'}`}>
-              <p className="text-gray-600 dark:text-gray-300">
-                {isExpanded ? description : truncateDescription(description, 300)}
-              </p>
+            <div className={`transition-all duration-500 ${showDescription ? 'opacity-100' : 'opacity-0'}`}>
+              {isVisible && (
+                <Typewriter
+                  text={isExpanded ? description : truncateDescription(description, 300)}
+                  delay={typewriterDelay + title.length * 50 + 500}
+                  speed={30}
+                  className="text-gray-600 dark:text-gray-300"
+                />
+              )}
             </div>
 
             {/* Features */}
@@ -198,46 +239,50 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
             {/* Read More Button */}
             {(description.length > 150 || features) && (
-              <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className={`text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 
-                           dark:hover:text-gray-200 flex items-center gap-1 
-                           transition-all duration-500 ease-in-out transform
-                           ${showContent ? 'opacity-100' : 'opacity-0'}`}
-              >
-                <span className="flex items-center gap-1 transition-transform duration-500">
-                  {isExpanded ? (
-                    <>Show less <ChevronUpIcon className="transform transition-transform duration-500" size={16} /></>
-                  ) : (
-                    <>Read more <ChevronDownIcon className="transform transition-transform duration-500" size={16} /></>
+              <div className={`transition-all duration-500 ${showReadMore ? 'opacity-100' : 'opacity-0'}`}>
+                <button
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 
+                           dark:hover:text-gray-200 flex items-center gap-1"
+                >
+                  {isVisible && (
+                    <Typewriter
+                      text={isExpanded ? "Show less" : "Read more"}
+                      delay={typewriterDelay + title.length * 50 + description.length * 30 + 1000}
+                      className="flex items-center gap-1"
+                    />
                   )}
-                </span>
-              </button>
+                  {isExpanded ? (
+                    <ChevronUpIcon className="transform transition-transform duration-500" size={16} />
+                  ) : (
+                    <ChevronDownIcon className="transform transition-transform duration-500" size={16} />
+                  )}
+                </button>
+              </div>
             )}
 
             {/* Bottom Section: Technologies, Image, GitHub */}
-            <div>
+            <div className={`transition-all duration-500 ${showTechnologies ? 'opacity-100' : 'opacity-0'}`}>
               {isVisible && (
                 <div className="flex flex-wrap gap-1.5">
                   {technologies.map((tech, idx) => (
-                    <span
+                    <div
                       key={tech}
-                      className={`px-3 py-1 text-sm rounded-full 
-                               text-gray-600 dark:text-gray-300 
-                               bg-gray-100 dark:bg-dark
-                               transition-all duration-500
-                               ${showTechnologies ? 'shadow-neumorph-inset dark:shadow-neumorph-dark-inset' : ''}
-                               ${showContent ? 'opacity-100' : 'opacity-0'}`}
-                      style={{ transitionDelay: `${idx * 100}ms` }}
+                      className={`px-3 py-1 text-sm rounded-full text-gray-600 dark:text-gray-300 
+                                bg-gray-100 dark:bg-dark transition-all duration-500
+                                ${idx <= currentTechIndex ? 'shadow-neumorph-inset dark:shadow-neumorph-dark-inset' : ''}`}
                     >
-                      {tech}
-                    </span>
+                      <Typewriter
+                        text={tech}
+                        delay={typewriterDelay + title.length * 50 + description.length * 30 + 1500 + idx * 500}
+                        className="inline"
+                      />
+                    </div>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* Image */}
             <div className="h-[250px]">
               {image && image.length > 0 && isVisible && (
                 <div className="relative h-full mt-2">
@@ -266,25 +311,21 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     <>
                       <button
                         onClick={handlePrev}
-                        className="absolute left-0 top-1/2 transform -translate-y-1/2 w-10 h-10
-                                 flex items-center justify-center opacity-80 hover:opacity-100
-                                 transition-opacity duration-200"
+                        className={`absolute left-0 top-1/2 transform -translate-y-1/2 w-10 h-10
+                                 flex items-center justify-center transition-all duration-500
+                                 ${showNavButtons ? 'opacity-80 hover:opacity-100' : 'opacity-0'}`}
                       >
-                        <div className="rounded-full p-2 bg-gray-100 dark:bg-dark shadow-neumorph 
-                                    dark:shadow-neumorph-dark hover:shadow-neumorph-hover 
-                                    dark:hover:shadow-neumorph-dark-hover">
+                        <div>
                           <ChevronLeftIcon size={20} className="text-gray-600 dark:text-gray-300" />
                         </div>
                       </button>
                       <button
                         onClick={handleNext}
-                        className="absolute right-0 top-1/2 transform -translate-y-1/2 w-10 h-10
-                                 flex items-center justify-center opacity-80 hover:opacity-100
-                                 transition-opacity duration-200"
+                        className={`absolute right-0 top-1/2 transform -translate-y-1/2 w-10 h-10
+                                 flex items-center justify-center transition-all duration-500
+                                 ${showNavButtons ? 'opacity-80 hover:opacity-100' : 'opacity-0'}`}
                       >
-                        <div className="rounded-full p-2 bg-gray-100 dark:bg-dark shadow-neumorph 
-                                    dark:shadow-neumorph-dark hover:shadow-neumorph-hover 
-                                    dark:hover:shadow-neumorph-dark-hover">
+                        <div>
                           <ChevronRightIcon size={20} className="text-gray-600 dark:text-gray-300" />
                         </div>
                       </button>
@@ -294,24 +335,26 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               )}
             </div>
 
+            <div className={`transition-all duration-500 mt-2 ${showGithub ? 'opacity-100 transform scale-100' : 'opacity-0 transform scale-95'}`}>
               {/* GitHub Link */}
-            <div>
               {isVisible && (
-                <div className={`transition-all duration-500 mt-2 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
-                  <a
-                    href={githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg shadow-neumorph 
-                             dark:shadow-neumorph-dark hover:shadow-neumorph-hover 
-                             dark:hover:shadow-neumorph-dark-hover active:shadow-neumorph-inset 
-                             dark:active:shadow-neumorph-dark-inset transition-all duration-200 
-                             text-gray-600 dark:text-gray-300 hover:scale-105"
-                  >
-                    <GithubIcon size={16} />
-                    View on GitHub
-                  </a>
-                </div>
+                <a
+                  href={githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg shadow-neumorph 
+                           dark:shadow-neumorph-dark hover:shadow-neumorph-hover 
+                           dark:hover:shadow-neumorph-dark-hover active:shadow-neumorph-inset 
+                           dark:active:shadow-neumorph-dark-inset transition-all duration-200 
+                           text-gray-600 dark:text-gray-300 hover:scale-105"
+                >
+                  <GithubIcon size={16} />
+                  <Typewriter
+                    text="View on GitHub"
+                    delay={typewriterDelay + title.length * 50 + description.length * 30 + technologies.length * 500 + 2500}
+                    className="inline"
+                  />
+                </a>
               )}
             </div>
           </div>
