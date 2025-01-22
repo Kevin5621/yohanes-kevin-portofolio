@@ -21,7 +21,7 @@ const Hero = () => {
           if (entry.isIntersecting) {
             // Faster scroll progress calculation with higher multiplier
             const scrolled = Math.min(
-              Math.max((1 - entry.intersectionRatio) * 1.5, 0),
+              Math.max((1 - entry.intersectionRatio) * 1.2, 0),
               1
             );
             setScrollProgress(scrolled);
