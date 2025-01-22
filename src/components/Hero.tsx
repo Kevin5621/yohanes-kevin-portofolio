@@ -19,7 +19,6 @@ const Hero = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Faster scroll progress calculation with higher multiplier
             const scrolled = Math.min(
               Math.max((1 - entry.intersectionRatio) * 1.2, 0),
               1
@@ -55,9 +54,9 @@ const Hero = () => {
       ? 1 - scrollProgress * 0.02
       : 0.95;
 
-    // Enhanced shadow intensity calculation with faster falloff
+    // shadow intensity calculation with faster falloff
     const baseIntensity = 1;
-    const scrollEffect = scrollProgress * 1.2; // Increased multiplier for faster shadow reduction
+    const scrollEffect = scrollProgress * 1.2;
     const shadowIntensity = Math.max(baseIntensity - scrollEffect, 0);
     
     // Light theme shadows
@@ -95,9 +94,35 @@ const Hero = () => {
       transform: `scale(${scale})`,
       boxShadow: shadow,
       transitionProperty: 'transform, box-shadow, opacity',
-      transitionDuration: '400ms', // Reduced transition duration for faster changes
+      transitionDuration: '1000ms',
       transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
     };
+  };
+
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    if (section) {
+        const targetPosition = section.getBoundingClientRect().top + window.pageYOffset;
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        const duration = 1000;
+        let startTime: number | null = null;
+
+        const animation = (currentTime: number) => {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const scrollProgress = Math.min(timeElapsed / duration, 1);
+            const ease = easeInOutQuad(scrollProgress);
+            window.scrollTo(0, startPosition + distance * ease);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+        };
+
+        const easeInOutQuad = (t: number) => {
+            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        };
+
+        requestAnimationFrame(animation);
+    }
   };
 
   return (
@@ -154,6 +179,7 @@ const Hero = () => {
                     text="View Projects" 
                     delay={1000}
                     buttonVisible={buttonsVisible}
+                    onClick={() => scrollToSection('projects')}
                   />
                 </div>
                 <div className="w-48 sm:w-auto">
@@ -161,6 +187,7 @@ const Hero = () => {
                     text="Contact Me" 
                     delay={1000}
                     buttonVisible={buttonsVisible}
+                    onClick={() => scrollToSection('contact')}
                   />
                 </div>
               </div>

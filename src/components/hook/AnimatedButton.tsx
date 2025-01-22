@@ -1,8 +1,15 @@
-import { AnimatedButtonProps } from "../Hero";
-import { Typewriter } from "./Animated_typeWritter";
 import { useState, useEffect } from "react";
 
-export const AnimatedButton = ({ text, delay, buttonVisible }: AnimatedButtonProps) => {
+export interface AnimatedButtonProps {
+  text: string;
+  delay: number;
+  buttonVisible: boolean;
+  onClick: () => void; 
+}
+
+import { Typewriter } from "./Animated_typeWritter";
+
+export const AnimatedButton = ({ text, delay, buttonVisible, onClick }: AnimatedButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -66,8 +73,8 @@ export const AnimatedButton = ({ text, delay, buttonVisible }: AnimatedButtonPro
 
   return (
     <div
-    className={`w-[180px] h-[50px] rounded-lg transform transition-all duration-1000 ease-out overflow-hidden
-      ${buttonVisible ? 'scale-100 shadow-neumorph dark:shadow-neumorph-dark' : 'scale-95 shadow-none'}`}
+      className={`w-[180px] h-[50px] rounded-lg transform transition-all duration-1000 ease-out overflow-hidden
+        ${buttonVisible ? 'scale-100 shadow-neumorph dark:shadow-neumorph-dark' : 'scale-95 shadow-none'}`}
       style={getButtonStyles()}
       onMouseDown={() => setIsPressed(true)}
       onMouseUp={() => setIsPressed(false)}
@@ -75,10 +82,12 @@ export const AnimatedButton = ({ text, delay, buttonVisible }: AnimatedButtonPro
       onTouchStart={() => setIsPressed(true)}
       onTouchEnd={() => setIsPressed(false)}
     >
-      <button className="w-full h-full bg-gray-100 dark:bg-dark text-gray-700 dark:text-gray-200 
-                       hover:shadow-neumorph-hover dark:hover:shadow-neumorph-dark-hover 
-                       active:shadow-neumorph-inset dark:active:shadow-neumorph-dark-inset 
-                       transition-shadow rounded-lg"
+      <button 
+        className="w-full h-full bg-gray-100 dark:bg-dark text-gray-700 dark:text-gray-200 
+                   hover:shadow-neumorph-hover dark:hover:shadow-neumorph-dark-hover 
+                   active:shadow-neumorph-inset dark:active:shadow-neumorph-dark-inset 
+                   transition-shadow rounded-lg"
+        onClick={onClick}
       >
         {buttonVisible && (
           <Typewriter
