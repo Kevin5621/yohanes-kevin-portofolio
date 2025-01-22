@@ -46,6 +46,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const [showContent, setShowContent] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState('0px');
+  const [, setIsAnimating] = useState(false);
 
   const truncateDescription = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text;
@@ -54,8 +55,15 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
   useEffect(() => {
     if (contentRef.current) {
+      setIsAnimating(true);
       const height = isExpanded ? `${contentRef.current.scrollHeight}px` : '0px';
       setContentHeight(height);
+
+      const timer = setTimeout(() => {
+        setIsAnimating(false);
+      }, 500);
+
+      return () => clearTimeout(timer);
     }
   }, [isExpanded, features]);
 
@@ -119,10 +127,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
       <div className={`opacity-0 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100' : ''}`}>
         <div 
-          className={`card rounded-2xl bg-gray-100 dark:bg-dark p-4 relative 
-            transition-all duration-700 ease-in-out
-            ${isExpanded ? 'min-h-[700px]' : 'h-[520px]'}
-                    ${!cardVisible ? 'shadow-none' : ''}`}
+          className={`card rounded-2xl bg-gray-100 dark:bg-dark p-4 relative overflow-hidden
+            transition-all duration-700 ease-in-out`}
           style={cardStyle}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -139,35 +145,31 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             </h3>
 
             {/* Description */}
-            <div className="transition-all duration-700 ease-in-out">
-              {isVisible && (
-                <div className={`transition-opacity duration-500 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    {isExpanded ? description : truncateDescription(description, 300)}
-                  </p>
-                </div>
-              )}
+            <div className={`transition-all duration-500 ease-in-out ${showContent ? 'opacity-100' : 'opacity-0'}`}>
+              <p className="text-gray-600 dark:text-gray-300">
+                {isExpanded ? description : truncateDescription(description, 300)}
+              </p>
             </div>
 
             {/* Features */}
-            {features && (
-              <div
-                ref={contentRef}
-                style={{
-                  maxHeight: contentHeight,
-                  transition: 'max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                  overflow: 'hidden'
-                }}
-                className="transition-all duration-500 ease-in-out"
-              >
+            <div
+              ref={contentRef}
+              style={{
+                maxHeight: contentHeight,
+                transition: 'max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                overflow: 'hidden'
+              }}
+              className={`transition-all duration-500 ease-in-out ${isExpanded ? 'opacity-100' : 'opacity-0'}`}
+            >
+              {features && (
                 <div className="grid grid-cols-1 gap-2 py-2">
-                  {isVisible && features.sections.map((section, idx) => (
+                  {features.sections.map((section, idx) => (
                     <div 
                       key={idx} 
                       className="space-y-1"
                       style={{
-                        opacity: isExpanded ? 1 : 0,
                         transform: `translateY(${isExpanded ? '0' : '10px'})`,
+                        opacity: isExpanded ? 1 : 0,
                         transition: `all 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${idx * 0.1}s`
                       }}
                     >
@@ -179,8 +181,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                           <li 
                             key={itemIdx}
                             style={{
-                              opacity: isExpanded ? 1 : 0,
                               transform: `translateY(${isExpanded ? '0' : '5px'})`,
+                              opacity: isExpanded ? 1 : 0,
                               transition: `all 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${(idx * 0.1 + itemIdx * 0.05)}s`
                             }}
                           >
@@ -191,23 +193,25 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
+              )}
+            </div>
 
             {/* Read More Button */}
-            {(description.length > 150 || features) && isVisible && (
+            {(description.length > 150 || features) && (
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
                 className={`text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 
-                         dark:hover:text-gray-200 flex items-center gap-1
-                         transition-all duration-300 ease-in-out transform
-                         ${showContent ? 'opacity-100' : 'opacity-0'}`}
+                           dark:hover:text-gray-200 flex items-center gap-1 
+                           transition-all duration-500 ease-in-out transform
+                           ${showContent ? 'opacity-100' : 'opacity-0'}`}
               >
-                {isExpanded ? (
-                  <>Show less <ChevronUpIcon className="transition-transform duration-300" size={16} /></>
-                ) : (
-                  <>Read more <ChevronDownIcon className="transition-transform duration-300" size={16} /></>
-                )}
+                <span className="flex items-center gap-1 transition-transform duration-500">
+                  {isExpanded ? (
+                    <>Show less <ChevronUpIcon className="transform transition-transform duration-500" size={16} /></>
+                  ) : (
+                    <>Read more <ChevronDownIcon className="transform transition-transform duration-500" size={16} /></>
+                  )}
+                </span>
               </button>
             )}
 
@@ -233,8 +237,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               )}
             </div>
 
-              {/* Image */}
-              <div className="h-[250px]">
+            {/* Image */}
+            <div className="h-[250px]">
               {image && image.length > 0 && isVisible && (
                 <div className="relative h-full mt-2">
                   <div className={`rounded-lg bg-gray-100 dark:bg-dark p-2 h-full
