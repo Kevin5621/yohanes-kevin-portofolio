@@ -33,7 +33,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   githubUrl,
   features,
   isVisible,
-  typewriterDelay
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -43,6 +42,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const [isHovered, setIsHovered] = useState(false);
   const [showTechnologies, setShowTechnologies] = useState(false);
   const [currentTechIndex, setCurrentTechIndex] = useState(-1);
+  const hasAnimatedTech = useRef(false);
   const [showImage, setShowImage] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [showNavButtons, setShowNavButtons] = useState(false);
@@ -53,7 +53,27 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const [showDescription, setShowDescription] = useState(false);
   const [showGithub, setShowGithub] = useState(false);
   const [showReadMore, setShowReadMore] = useState(false);
+  const [titleFinished, setTitleFinished] = useState(false);
+  const [descriptionFinished, setDescriptionFinished] = useState(false);
+  const [readMoreFinished, setReadMoreFinished] = useState(false);
+  const [technologiesFinished, setTechnologiesFinished] = useState(false);
 
+  const animateTechnologies = useCallback(() => {
+    if (technologies.length > 0 && !hasAnimatedTech.current) {
+      let index = 0;
+      const interval = setInterval(() => {
+        if (index < technologies.length) {
+          setCurrentTechIndex(index);
+          index++;
+        } else {
+          clearInterval(interval);
+          hasAnimatedTech.current = true;
+        }
+      }, 100);
+
+      return () => clearInterval(interval);
+    }
+  }, [technologies.length]);
   const truncateDescription = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength).trim() + ' ...';
@@ -75,54 +95,41 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
   useEffect(() => {
     if (isVisible) {
-      setTimeout(() => {
+      const animationSequence = async () => {
+        // Initial card visibility
         setCardVisible(true);
-      }, 100);
 
-      // Sequential animations
-      setTimeout(() => {
+        // Title animation
         setShowTitle(true);
-      }, typewriterDelay);
+        await new Promise(resolve => setTimeout(resolve, title.length * 30));
+        setTitleFinished(true);
 
-      setTimeout(() => {
+        // Description animation (faster speed)
         setShowDescription(true);
-      }, typewriterDelay + title.length * 50 + 500);
+        await new Promise(resolve => setTimeout(resolve, description.length * 10));
+        setDescriptionFinished(true);
 
-      setTimeout(() => {
+        // Read more animation
         setShowReadMore(true);
-        animateTechnologies();
-      }, typewriterDelay + title.length * 50 + description.length * 30 + 1000);
+        await new Promise(resolve => setTimeout(resolve, 500));
+        setReadMoreFinished(true);
 
-      setTimeout(() => {
+        // Technologies animation
         setShowTechnologies(true);
-      }, typewriterDelay + title.length * 50 + description.length * 30 + 1500);
+        animateTechnologies();
+        await new Promise(resolve => setTimeout(resolve, technologies.length * 100));
+        setTechnologiesFinished(true);
 
-      setTimeout(() => {
+        // Final elements
         setShowImage(true);
-      }, typewriterDelay + title.length * 50 + description.length * 30 + technologies.length * 500 + 2000);
-
-      const imageDelay = typewriterDelay + title.length * 50 + description.length * 30 + technologies.length * 500 + 2500;
-      setTimeout(() => {
         setShowGithub(true);
         setShowNavButtons(true);
         setShowContent(true);
-      },imageDelay,);
-    }
-  });
+      };
 
-  const animateTechnologies = useCallback(() => {
-    if (technologies.length > 0) {
-      let index = 0;
-      const interval = setInterval(() => {
-        if (index < technologies.length) {
-          setCurrentTechIndex(index);
-          index++;
-        } else {
-          clearInterval(interval);
-        }
-      }, 500);
+      animationSequence();
     }
-  }, [technologies]);
+  }, [isVisible, title.length, description.length, technologies.length, animateTechnologies]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -187,20 +194,23 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 {isVisible && (
                   <Typewriter 
                     text={title}
-                    delay={typewriterDelay}
+                    delay={0}
+                    speed={30}
                     className="inline"
+                    onComplete={() => setTitleFinished(true)}
                   />
                 )}
               </h3>
 
               {/* Description */}
               <div className={`transition-all duration-500 ${showDescription ? 'opacity-100' : 'opacity-0'}`}>
-                {isVisible && (
+                {isVisible && titleFinished && (
                   <Typewriter
                     text={isExpanded ? description : truncateDescription(description, 300)}
-                    delay={typewriterDelay + title.length * 50 + 500}
-                    speed={30}
+                    delay={0}
+                    speed={10}
                     className="text-gray-600 dark:text-gray-300"
+                    onComplete={() => setDescriptionFinished(true)}
                   />
                 )}
               </div>
@@ -215,11 +225,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 
                              dark:hover:text-gray-200 flex items-center gap-1"
                   >
-                    {isVisible && (
+                    {isVisible && descriptionFinished && (
                       <Typewriter
                         text={isExpanded ? "Show less" : "Read more"}
-                        delay={typewriterDelay + title.length * 50 + description.length * 30 + 1000}
+                        delay={0}
+                        speed={30}
                         className="flex items-center gap-1"
+                        onComplete={() => setReadMoreFinished(true)}
                       />
                     )}
                     {isExpanded ? (
@@ -280,7 +292,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             {/* Technologies Section - Fixed Height */}
             <div className="h-[60px] flex items-center">
               <div className={`w-full transition-all duration-500 ${showTechnologies ? 'opacity-100' : 'opacity-0'}`}>
-                {isVisible && (
+                {isVisible && readMoreFinished && (
                   <div className="flex flex-wrap gap-1.5">
                     {technologies.map((tech, idx) => (
                       <div
@@ -288,11 +300,20 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                         className={`px-3 py-1 text-sm rounded-full text-gray-600 dark:text-gray-300 
                                   bg-gray-100 dark:bg-dark transition-all duration-500
                                   ${idx <= currentTechIndex ? 'shadow-neumorph-inset dark:shadow-neumorph-dark-inset' : ''}`}
+                        style={{
+                          transitionDelay: `${idx * 100}ms`
+                        }}
                       >
                         <Typewriter
                           text={tech}
-                          delay={typewriterDelay + title.length * 50 + description.length * 30 + 1500 + idx * 500}
+                          delay={idx * 100}
+                          speed={30}
                           className="inline"
+                          onComplete={() => {
+                            if (idx === technologies.length - 1) {
+                              setTechnologiesFinished(true);
+                            }
+                          }}
                         />
                       </div>
                     ))}
@@ -305,7 +326,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             <div className="mt-auto">
               {/* Image Section - Fixed Height */}
               <div className="h-[200px] mb-4">
-                {image && image.length > 0 && isVisible && (
+                {image && image.length > 0 && isVisible && technologiesFinished && (
                   <div className="relative h-full">
                     <div className={`rounded-lg bg-gray-100 dark:bg-dark p-2 h-full
                                   transition-all duration-500
@@ -355,7 +376,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               {/* GitHub Button - Fixed Height */}
               <div className="h-[40px] flex items-center">
                 <div className={`transition-all duration-500 ${showGithub ? 'opacity-100 transform scale-100' : 'opacity-0 transform scale-95'}`}>
-                  {isVisible && (
+                  {isVisible && technologiesFinished && (
                     <a
                       href={githubUrl}
                       target="_blank"
@@ -369,7 +390,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                       <GithubIcon size={16} />
                       <Typewriter
                         text="View on GitHub"
-                        delay={typewriterDelay + title.length * 50 + description.length * 30 + technologies.length * 500 + 2500}
+                        delay={0}
+                        speed={30}
                         className="inline"
                       />
                     </a>

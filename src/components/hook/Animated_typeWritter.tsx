@@ -5,6 +5,7 @@ interface TypewriterProps {
   delay?: number;
   speed?: number;
   className?: string;
+  onComplete?:() => void
 }
 
 export const Typewriter: React.FC<TypewriterProps> = ({
