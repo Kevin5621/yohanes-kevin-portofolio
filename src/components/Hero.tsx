@@ -19,11 +19,14 @@ const Hero = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            // Faster scroll progress calculation with higher multiplier
             const scrolled = Math.min(
               Math.max((1 - entry.intersectionRatio) * 1.5, 0),
               1
             );
             setScrollProgress(scrolled);
+          } else {
+            setScrollProgress(1);
           }
         });
       },
@@ -45,7 +48,6 @@ const Hero = () => {
     };
   }, []);
 
-  // Calculate dynamic styles based on scroll progress and pressed state
   const getCardStyles = () => {
     const scale = isPressed
       ? 0.98
@@ -53,28 +55,35 @@ const Hero = () => {
       ? 1 - scrollProgress * 0.02
       : 0.95;
 
-    const shadowIntensity = Math.max(1 - scrollProgress * 1.2, 0);
+    // Enhanced shadow intensity calculation with faster falloff
+    const baseIntensity = 1;
+    const scrollEffect = scrollProgress * 1.2; // Increased multiplier for faster shadow reduction
+    const shadowIntensity = Math.max(baseIntensity - scrollEffect, 0);
     
-    // Light theme shadows with increased intensity
+    // Light theme shadows
     const lightOuterShadow = `
-      ${12 * shadowIntensity}px ${12 * shadowIntensity}px ${24 * shadowIntensity}px #d1d1d1,
-      ${-12 * shadowIntensity}px ${-12 * shadowIntensity}px ${24 * shadowIntensity}px #ffffff
+      ${32 * shadowIntensity}px ${32 * shadowIntensity}px ${64 * shadowIntensity}px #d1d1d1,
+      ${-32 * shadowIntensity}px ${-32 * shadowIntensity}px ${64 * shadowIntensity}px #ffffff,
+      0 0 ${30 * shadowIntensity}px rgba(209, 209, 209, 0.7)
     `;
     
     const lightInsetShadow = `
-      inset 8px 8px 16px #d1d1d1,
-      inset -8px -8px 16px #ffffff
+      inset 24px 24px 48px #d1d1d1,
+      inset -24px -24px 48px #ffffff,
+      inset 0 0 30px rgba(209, 209, 209, 0.7)
     `;
 
-    // Dark theme shadows with increased intensity
+    // Dark theme shadows
     const darkOuterShadow = `
-      ${12 * shadowIntensity}px ${12 * shadowIntensity}px ${24 * shadowIntensity}px #151515,
-      ${-12 * shadowIntensity}px ${-12 * shadowIntensity}px ${24 * shadowIntensity}px #353535
+      ${32 * shadowIntensity}px ${32 * shadowIntensity}px ${64 * shadowIntensity}px #151515,
+      ${-32 * shadowIntensity}px ${-32 * shadowIntensity}px ${64 * shadowIntensity}px #353535,
+      0 0 ${30 * shadowIntensity}px rgba(21, 21, 21, 0.7)
     `;
     
     const darkInsetShadow = `
-      inset 8px 8px 16px #151515,
-      inset -8px -8px 16px #353535
+      inset 24px 24px 48px #151515,
+      inset -24px -24px 48px #353535,
+      inset 0 0 30px rgba(21, 21, 21, 0.7)
     `;
 
     const isDark = window.document.documentElement.classList.contains('dark');
@@ -84,11 +93,9 @@ const Hero = () => {
 
     return {
       transform: `scale(${scale})`,
-      boxShadow: `var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)`,
-      '--tw-shadow': shadow,
-      '--tw-shadow-colored': shadow,
+      boxShadow: shadow,
       transitionProperty: 'transform, box-shadow, opacity',
-      transitionDuration: '1000ms',
+      transitionDuration: '400ms', // Reduced transition duration for faster changes
       transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
     };
   };
@@ -103,7 +110,7 @@ const Hero = () => {
         <div 
           className={`
             w-full min-h-[520px] sm:min-h-[460px] p-6 sm:p-8 rounded-2xl 
-            transition-all duration-1000 ease-out my-auto
+            transition-all duration-400 ease-out my-auto
             ${cardVisible ? 'opacity-100' : 'opacity-0'}
             cursor-pointer relative bg-gray-100 dark:bg-dark
           `}
