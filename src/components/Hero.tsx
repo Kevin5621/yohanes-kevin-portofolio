@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Typewriter } from "./hook/Animated_typeWritter";
 import { AnimatedButton } from "./hook/AnimatedButton";
+import { cardClick } from "./hook/getCard";
 
 const Hero = () => {
   const [isPressed, setIsPressed] = useState(false);
@@ -47,57 +48,7 @@ const Hero = () => {
     };
   }, []);
 
-  const getCardStyles = () => {
-    const scale = isPressed
-      ? 0.98
-      : cardVisible
-      ? 1 - scrollProgress * 0.02
-      : 0.95;
-
-    // shadow intensity calculation with faster falloff
-    const baseIntensity = 1;
-    const scrollEffect = scrollProgress * 1.2;
-    const shadowIntensity = Math.max(baseIntensity - scrollEffect, 0);
-    
-    // Light theme shadows
-    const lightOuterShadow = `
-      ${32 * shadowIntensity}px ${32 * shadowIntensity}px ${64 * shadowIntensity}px #d1d1d1,
-      ${-32 * shadowIntensity}px ${-32 * shadowIntensity}px ${64 * shadowIntensity}px #ffffff,
-      0 0 ${30 * shadowIntensity}px rgba(209, 209, 209, 0.7)
-    `;
-    
-    const lightInsetShadow = `
-      inset 24px 24px 48px #d1d1d1,
-      inset -24px -24px 48px #ffffff,
-      inset 0 0 30px rgba(209, 209, 209, 0.7)
-    `;
-
-    // Dark theme shadows
-    const darkOuterShadow = `
-      ${32 * shadowIntensity}px ${32 * shadowIntensity}px ${64 * shadowIntensity}px #151515,
-      ${-32 * shadowIntensity}px ${-32 * shadowIntensity}px ${64 * shadowIntensity}px #353535,
-      0 0 ${30 * shadowIntensity}px rgba(21, 21, 21, 0.7)
-    `;
-    
-    const darkInsetShadow = `
-      inset 24px 24px 48px #151515,
-      inset -24px -24px 48px #353535,
-      inset 0 0 30px rgba(21, 21, 21, 0.7)
-    `;
-
-    const isDark = window.document.documentElement.classList.contains('dark');
-    const shadow = isPressed 
-      ? (isDark ? darkInsetShadow : lightInsetShadow)
-      : (isDark ? darkOuterShadow : lightOuterShadow);
-
-    return {
-      transform: `scale(${scale})`,
-      boxShadow: shadow,
-      transitionProperty: 'transform, box-shadow, opacity',
-      transitionDuration: '1000ms',
-      transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
-    };
-  };
+  const getCardStyles = cardClick(isPressed, cardVisible, scrollProgress);
 
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
