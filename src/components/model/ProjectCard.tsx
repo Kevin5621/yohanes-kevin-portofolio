@@ -126,14 +126,24 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const progress = scrollPosition / (documentHeight - windowHeight);
-      setScrollProgress(progress);
+      const element = document.querySelector('.card');
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        const elementCenter = rect.top + rect.height / 2;
+        const viewportCenter = windowHeight / 2;
+        const distance = Math.abs(elementCenter - viewportCenter);
+        const maxDistance = windowHeight / 2 + rect.height / 2;
+        
+        const progress = Math.min(distance / maxDistance, 1);
+        setScrollProgress(progress);
+      }
     };
-
+  
     window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
