@@ -1,18 +1,75 @@
+import { useRef, useState, useEffect } from 'react';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
-import Contact from './components/Contact';
 import './styles/globals.css';
 import { ThemeProvider } from './styles/themeContexts';
-import { Projects } from './components/Projects';
+import Projects from './components/Projects';
+import Contact from './components/Contact';
 
 function App() {
+  const [projectsVisible, setProjectsVisible] = useState(false);
+  const [, setContactVisible] = useState(false);
+  const projectsRef = useRef(null);
+  const contactRef = useRef(null);
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.01 
+    };
+
+    const projectsObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setProjectsVisible(true);
+
+        } else {
+          setProjectsVisible(false);
+        }
+      });
+    }, options);
+
+    const contactObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setContactVisible(true);
+          // contactObserver.disconnect();
+        } else {
+          setContactVisible(false);
+        }
+      });
+    }, options);
+
+    if (projectsRef.current) {
+      projectsObserver.observe(projectsRef.current);
+    }
+
+    if (contactRef.current) {
+      contactObserver.observe(contactRef.current);
+    }
+
+    return () => {
+      projectsObserver.disconnect();
+      contactObserver.disconnect();
+    };
+  }, []);
+
   return (
     <ThemeProvider>
       <div className="min-h-screen bg-gray-100 dark:bg-dark transition-colors duration-200">
         <Navigation />
         <Hero />
-        <Projects />
-        <Contact />
+        
+        {/* Projects Section */}
+        <div ref={projectsRef} className="min-h-screen">
+          <Projects isVisible={projectsVisible} />
+        </div>
+
+        {/* Contact Section */}
+        <div ref={contactRef} className="min-h-screen">
+          <Contact />
+        </div>
       </div>
     </ThemeProvider>
   );
