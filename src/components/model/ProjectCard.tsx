@@ -98,38 +98,75 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       const animationSequence = async () => {
         // Initial card visibility
         setCardVisible(true);
-
+  
+        // Staggered animation delays
+        const baseDelay = 100;
+  
         // Title animation
-        setShowTitle(true);
+          setShowTitle(true);
         await new Promise(resolve => setTimeout(resolve, title.length * 30));
         setTitleFinished(true);
-
+  
         // Description animation (faster speed)
-        setShowDescription(true);
+          setShowDescription(true);
         await new Promise(resolve => setTimeout(resolve, description.length * 10));
         setDescriptionFinished(true);
-
+  
         // Read more animation
-        setShowReadMore(true);
+          setShowReadMore(true);
         await new Promise(resolve => setTimeout(resolve, 500));
         setReadMoreFinished(true);
-
-        // Technologies animation
-        setShowTechnologies(true);
-        animateTechnologies();
-        await new Promise(resolve => setTimeout(resolve, technologies.length * 100));
+  
+        // Technologies animation with more noticeable progression
+        await new Promise(resolve => {
+          setShowTechnologies(true);
+          animateTechnologies();
+          setTimeout(resolve, technologies.length * 150 + baseDelay * 2);
+        });
         setTechnologiesFinished(true);
-
-        // Final elements
-        setShowImage(true);
-        setShowGithub(true);
-        setShowNavButtons(true);
-        setShowContent(true);
+  
+        // Image and final elements with staggered delays
+        await new Promise(resolve => {
+          // Stagger the appearance of different elements
+          const imageDelay = setTimeout(() => {
+            setShowImage(true);
+          }, baseDelay);
+  
+          const githubDelay = setTimeout(() => {
+            setShowGithub(true);
+          }, baseDelay * 2);
+  
+          const navButtonsDelay = setTimeout(() => {
+            setShowNavButtons(true);
+          }, baseDelay * 3);
+  
+          const contentDelay = setTimeout(() => {
+            setShowContent(true);
+            resolve(null);
+          }, baseDelay * 4);
+  
+          return () => {
+            clearTimeout(imageDelay);
+            clearTimeout(githubDelay);
+            clearTimeout(navButtonsDelay);
+            clearTimeout(contentDelay);
+          };
+        });
       };
-
-      animationSequence();
+  
+      const initialDelay = setTimeout(animationSequence, 200);
+  
+      return () => {
+        clearTimeout(initialDelay);
+      };
     }
-  }, [isVisible, title.length, description.length, technologies.length, animateTechnologies]);
+  }, [
+    isVisible, 
+    title.length, 
+    description.length, 
+    technologies.length, 
+    animateTechnologies
+  ]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -195,7 +232,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   <Typewriter 
                     text={title}
                     delay={0}
-                    speed={30}
+                    speed={100}
                     className="inline"
                     onComplete={() => setTitleFinished(true)}
                   />
@@ -327,26 +364,55 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               {/* Image Section - Fixed Height */}
               <div className="h-[300px] mb-4">
                 {image && image.length > 0 && isVisible && technologiesFinished && (
-                  <div className="relative h-full">
-                    <div className={`rounded-lg bg-gray-100 dark:bg-dark p-2 h-full
-                                  transition-all duration-500
-                                  ${showImage ? 'shadow-neumorph-inset dark:shadow-neumorph-dark-inset' : ''}`}>
+                  <div 
+                    className={`rounded-lg bg-gray-100 dark:bg-dark p-2 h-full 
+                      transition-all duration-1000 ease-in-out relative overflow-hidden
+                      ${showImage 
+                        ? 'shadow-neumorph-inset dark:shadow-neumorph-dark-inset' 
+                        : 'shadow-none'}`}
+                  >
+                    <div 
+                      className={`absolute inset-0 z-10 transition-all duration-1000 ease-in-out
+                        ${showImage 
+                          ? 'bg-white/10 dark:bg-black/10 opacity-100' 
+                          : 'bg-transparent opacity-0'}`}
+                    />
+                    
+                    <div 
+                      className={`relative h-full rounded-lg overflow-hidden cursor-pointer
+                        transition-all duration-1000 ease-in-out
+                        ${showContent ? 'opacity-100' : 'opacity-0'}`}
+                      onClick={() => setIsFullscreen(true)}
+                    >
+                      {/* Layer for morphing effect */}
                       <div 
-                        className={`relative h-full rounded-lg overflow-hidden cursor-pointer
-                                  transition-opacity duration-500
-                                  ${showContent ? 'opacity-100' : 'opacity-0'}`}
-                        onClick={() => setIsFullscreen(true)}
+                        className={`absolute inset-0 z-20 bg-gray-200 dark:bg-gray-800 
+                          transition-all duration-1000 ease-in-out
+                          ${showImage 
+                            ? 'opacity-0 scale-110 rotate-[2deg]' 
+                            : 'opacity-100 scale-100 rotate-0'}`}
+                      />
+
+                      <img
+                        src={image[currentImageIndex].image}
+                        alt={image[currentImageIndex].title}
+                        className={`w-full h-full object-contain absolute inset-0 z-30
+                          transition-all duration-1000 ease-in-out
+                          ${showImage 
+                            ? 'opacity-100 scale-100 blur-none' 
+                            : 'opacity-0 scale-95 blur-sm'}`}
+                      />
+
+                      <p 
+                        className={`absolute bottom-2 left-2 text-sm text-gray-600 dark:text-gray-300 
+                          bg-white/80 dark:bg-black/80 px-2 py-1 rounded z-40
+                          transition-all duration-1000 ease-in-out
+                          ${showContent 
+                            ? 'opacity-100 translate-y-0' 
+                            : 'opacity-0 translate-y-2'}`}
                       >
-                        <img
-                          src={image[currentImageIndex].image}
-                          alt={image[currentImageIndex].title}
-                          className="w-full h-full object-contain"
-                        />
-                        <p className="absolute bottom-2 left-2 text-sm text-gray-600 dark:text-gray-300 
-                                    bg-white/80 dark:bg-black/80 px-2 py-1 rounded">
-                          {image[currentImageIndex].title} ({currentImageIndex + 1}/{image.length})
-                        </p>
-                      </div>
+                        {image[currentImageIndex].title} ({currentImageIndex + 1}/{image.length})
+                      </p>
                     </div>
 
                     {image.length > 1 && (
