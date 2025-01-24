@@ -4,6 +4,7 @@ import { ImageViewer } from '../helper/ImageViewer';
 import { ProjectFeatures } from './types';
 import { Typewriter } from '../hook/Animated_typeWritter';
 import { cardHover } from '../hook/getCard';
+import { AnimatedButton } from '../hook/AnimatedButton';
 
 interface ProjectImage {
   image: string;
@@ -132,10 +133,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             setShowImage(true);
           }, baseDelay);
   
-          const githubDelay = setTimeout(() => {
-            setShowGithub(true);
-          }, baseDelay * 2);
-  
           const navButtonsDelay = setTimeout(() => {
             setShowNavButtons(true);
           }, baseDelay * 3);
@@ -147,9 +144,19 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   
           return () => {
             clearTimeout(imageDelay);
-            clearTimeout(githubDelay);
-            clearTimeout(navButtonsDelay);
             clearTimeout(contentDelay);
+            clearTimeout(navButtonsDelay);
+          };
+        });
+
+        await new Promise(resolve => {
+          const githubDelay = setTimeout(() => {
+            setShowGithub(true);
+            resolve(null);
+          }, baseDelay * 6);
+
+          return () => {
+            clearTimeout(githubDelay);
           };
         });
       };
@@ -443,24 +450,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               <div className="h-[40px] flex items-center">
                 <div className={`transition-all duration-500 ${showGithub ? 'opacity-100 transform scale-100' : 'opacity-0 transform scale-95'}`}>
                   {isVisible && technologiesFinished && (
-                    <a
-                      href={githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg shadow-neumorph 
-                               dark:shadow-neumorph-dark hover:shadow-neumorph-hover 
-                               dark:hover:shadow-neumorph-dark-hover active:shadow-neumorph-inset 
-                               dark:active:shadow-neumorph-dark-inset transition-all duration-200 
-                               text-gray-600 dark:text-gray-300 hover:scale-105"
-                    >
-                      <GithubIcon size={16} />
-                      <Typewriter
-                        text="View on GitHub"
-                        delay={0}
-                        speed={30}
-                        className="inline"
-                      />
-                    </a>
+                    <AnimatedButton
+                    text="View on GitHub"
+                    delay={1000}
+                    buttonVisible={showGithub}
+                    onClick={() => window.open(githubUrl, '_blank', 'noopener,noreferrer')}
+                    icon={<GithubIcon size={16} />}
+                  />
                   )}
                 </div>
               </div>

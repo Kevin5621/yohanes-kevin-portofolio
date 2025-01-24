@@ -1,15 +1,22 @@
 import { useState, useEffect } from "react";
+import { Typewriter } from "./Animated_typeWritter";
+import { GithubIcon } from 'lucide-react';
 
 export interface AnimatedButtonProps {
   text: string;
   delay: number;
   buttonVisible: boolean;
-  onClick: () => void; 
+  onClick: () => void;
+  icon?: React.ReactNode | null;
 }
 
-import { Typewriter } from "./Animated_typeWritter";
-
-export const AnimatedButton = ({ text, delay, buttonVisible, onClick }: AnimatedButtonProps) => {
+export const AnimatedButton = ({ 
+  text, 
+  delay, 
+  buttonVisible, 
+  onClick, 
+  icon = <GithubIcon size={16} /> 
+}: AnimatedButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -86,15 +93,18 @@ export const AnimatedButton = ({ text, delay, buttonVisible, onClick }: Animated
         className="w-full h-full bg-gray-100 dark:bg-dark text-gray-700 dark:text-gray-200 
                    hover:shadow-neumorph-hover dark:hover:shadow-neumorph-dark-hover 
                    active:shadow-neumorph-inset dark:active:shadow-neumorph-dark-inset 
-                   transition-shadow rounded-lg"
+                   transition-shadow rounded-lg flex items-center justify-center gap-2"
         onClick={onClick}
       >
         {buttonVisible && (
-          <Typewriter
-            text={text}
-            delay={delay}
-            className="block text-lg text-gray-600 dark:text-gray-300" 
-          />
+          <>
+            {icon}
+            <Typewriter
+              text={text}
+              delay={delay}
+              className="block text-lg text-gray-600 dark:text-gray-300" 
+            />
+          </>
         )}
       </button>
     </div>

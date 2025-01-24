@@ -131,6 +131,7 @@ const Hero = () => {
                     delay={1000}
                     buttonVisible={buttonsVisible}
                     onClick={() => scrollToSection('projects')}
+                    icon={null} 
                   />
                 </div>
                 <div className="w-48 sm:w-auto">
@@ -139,6 +140,7 @@ const Hero = () => {
                     delay={1000}
                     buttonVisible={buttonsVisible}
                     onClick={() => scrollToSection('contact')}
+                    icon={null} 
                   />
                 </div>
               </div>
