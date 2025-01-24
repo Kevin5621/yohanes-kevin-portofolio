@@ -325,7 +325,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             {/* Bottom Section with Fixed Heights */}
             <div className="mt-auto">
               {/* Image Section - Fixed Height */}
-              <div className="h-[200px] mb-4">
+              <div className="h-[300px] mb-4">
                 {image && image.length > 0 && isVisible && technologiesFinished && (
                   <div className="relative h-full">
                     <div className={`rounded-lg bg-gray-100 dark:bg-dark p-2 h-full

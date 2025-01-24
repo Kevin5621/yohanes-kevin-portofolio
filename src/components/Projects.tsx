@@ -34,16 +34,16 @@ const projects: Project[] = [
       ]
     },
     image: [
-      { title: 'Login', image: 'src/components/assets/screenshot/login.jpg' },
-      { title: 'Dashboard Student', image: 'src/components/assets/screenshot/homeMahasiswa.jpg' },
-      { title: 'Guidance', image: 'src/components/assets/screenshot/bimbingan.jpg' },
-      { title: 'Logbook Page', image: 'src/components/assets/screenshot/logbook.jpg' },
-      { title: 'Add Guidance', image: 'src/components/assets/screenshot/addBimbingan.jpg' },
-      { title: 'Profile', image: 'src/components/assets/screenshot/profile.jpg' },
-      { title: 'Dashboard Lecturer', image: 'src/components/assets/screenshot/homeDosen.jpg' },
-      { title: 'Detail Student', image: 'src/components/assets/screenshot/detailStudent.jpg' },
-      { title: 'Guidance Action', image: 'src/components/assets/screenshot/actionBimbingan.jpg' },
-      { title: 'Score Page', image: 'src/components/assets/screenshot/detailNilai.jpg' }
+      { title: 'Login', image: 'src/components/assets/screenshot/sitama/login.jpg' },
+      { title: 'Dashboard Student', image: 'src/components/assets/screenshot/sitama/homeMahasiswa.jpg' },
+      { title: 'Guidance', image: 'src/components/assets/screenshot/sitama/bimbingan.jpg' },
+      { title: 'Logbook Page', image: 'src/components/assets/screenshot/sitama/logbook.jpg' },
+      { title: 'Add Guidance', image: 'src/components/assets/screenshot/sitama/addBimbingan.jpg' },
+      { title: 'Profile', image: 'src/components/assets/screenshot/sitama/profile.jpg' },
+      { title: 'Dashboard Lecturer', image: 'src/components/assets/screenshot/sitama/homeDosen.jpg' },
+      { title: 'Detail Student', image: 'src/components/assets/screenshot/sitama/detailStudent.jpg' },
+      { title: 'Guidance Action', image: 'src/components/assets/screenshot/sitama/actionBimbingan.jpg' },
+      { title: 'Score Page', image: 'src/components/assets/screenshot/sitama/detailNilai.jpg' }
     ]
   },
   {
@@ -76,16 +76,16 @@ const projects: Project[] = [
       ]
     },
     image: [
-      { title: 'Login', image: 'src/components/assets/screenshot/login.jpg' },
-      { title: 'Dashboard Student', image: 'src/components/assets/screenshot/homeMahasiswa.jpg' },
-      { title: 'Guidance', image: 'src/components/assets/screenshot/bimbingan.jpg' },
-      { title: 'Logbook Page', image: 'src/components/assets/screenshot/logbook.jpg' },
-      { title: 'Add Guidance', image: 'src/components/assets/screenshot/addBimbingan.jpg' },
-      { title: 'Profile', image: 'src/components/assets/screenshot/profile.jpg' },
-      { title: 'Dashboard Lecturer', image: 'src/components/assets/screenshot/homeDosen.jpg' },
-      { title: 'Detail Student', image: 'src/components/assets/screenshot/detailStudent.jpg' },
-      { title: 'Guidance Action', image: 'src/components/assets/screenshot/actionBimbingan.jpg' },
-      { title: 'Score Page', image: 'src/components/assets/screenshot/detailNilai.jpg' }
+      { title: 'Login', image: 'src/components/assets/screenshot/example/test.png' },
+      { title: 'Dashboard Student', image: 'src/components/assets/screenshot/sitama/sitama/homeMahasiswa.jpg' },
+      { title: 'Guidance', image: 'src/components/assets/screenshot/sitama/bimbingan.jpg' },
+      { title: 'Logbook Page', image: 'src/components/assets/screenshot/sitama/logbook.jpg' },
+      { title: 'Add Guidance', image: 'src/components/assets/screenshot/sitama/addBimbingan.jpg' },
+      { title: 'Profile', image: 'src/components/assets/screenshot/sitama/profile.jpg' },
+      { title: 'Dashboard Lecturer', image: 'src/components/assets/screenshot/sitama/homeDosen.jpg' },
+      { title: 'Detail Student', image: 'src/components/assets/screenshot/sitama/detailStudent.jpg' },
+      { title: 'Guidance Action', image: 'src/components/assets/screenshot/sitama/actionBimbingan.jpg' },
+      { title: 'Score Page', image: 'src/components/assets/screenshot/sitama/detailNilai.jpg' }
     ]
   },
 ];
