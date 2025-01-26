@@ -19,6 +19,19 @@ export const AnimatedButton = ({
 }: AnimatedButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [contentVisible, setContentVisible] = useState(false);
+
+  useEffect(() => {
+    if (buttonVisible) {
+      const timer = setTimeout(() => {
+        setContentVisible(true);
+      }, 500);
+
+      return () => clearTimeout(timer);
+    } else {
+      setContentVisible(false);
+    }
+  }, [buttonVisible]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -97,14 +110,15 @@ export const AnimatedButton = ({
         onClick={onClick}
       >
         {buttonVisible && (
-          <>
+          <div className={`flex items-center gap-2 transition-opacity duration-500
+            ${contentVisible ? 'opacity-100' : 'opacity-0'}`}>
             {icon}
             <Typewriter
               text={text}
               delay={delay}
               className="block text-lg text-gray-600 dark:text-gray-300" 
             />
-          </>
+          </div>
         )}
       </button>
     </div>

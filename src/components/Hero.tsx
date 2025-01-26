@@ -117,7 +117,7 @@ const Hero = () => {
 
               <div className="mb-10 w-full max-w-2xl mx-auto">
                 <Typewriter 
-                  text="I craft elegant solutions to complex problems, specializing in React, Dart, and BlockChain Technology. Let's build something amazing together."
+                  text="I make elegant solutions to complex problems, specializing in React, Dart, and BlockChain Technology. Let's build something amazing together."
                   delay={2900}
                   speed={13}
                   className="block text-sm sm:text-lg text-gray-600 dark:text-gray-300"
