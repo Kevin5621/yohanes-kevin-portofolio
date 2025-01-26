@@ -61,20 +61,32 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
   const animateTechnologies = useCallback(() => {
     if (technologies.length > 0 && !hasAnimatedTech.current) {
-      let index = 0;
-      const interval = setInterval(() => {
+      const processSequentialTech = (index: number) => {
         if (index < technologies.length) {
           setCurrentTechIndex(index);
-          index++;
-        } else {
-          clearInterval(interval);
-          hasAnimatedTech.current = true;
+  
+          // Tunggu efek shadow selesai
+          setTimeout(() => {
+            const techTextLength = technologies[index].length;
+            const typewriterDelay = techTextLength * 50;
+  
+            setTimeout(() => {
+              processSequentialTech(index + 1);
+            }, typewriterDelay);
+  
+            if (index === technologies.length - 1) {
+              setTimeout(() => {
+                setTechnologiesFinished(true);
+                hasAnimatedTech.current = true;
+              }, typewriterDelay);
+            }
+          }, 300);
         }
-      }, 100);
-
-      return () => clearInterval(interval);
+      };
+  
+      processSequentialTech(0);
     }
-  }, [technologies.length]);
+  }, [technologies]);
   const truncateDescription = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength).trim() + ' ...';
@@ -342,23 +354,20 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                       <div
                         key={tech}
                         className={`px-3 py-1 text-sm rounded-full text-gray-600 dark:text-gray-300 
-                                  bg-gray-100 dark:bg-dark transition-all duration-500
-                                  ${idx <= currentTechIndex ? 'shadow-neumorph-inset dark:shadow-neumorph-dark-inset' : ''}`}
+                                    bg-gray-100 dark:bg-dark transition-all duration-500
+                                    ${idx <= currentTechIndex ? 'shadow-neumorph-inset dark:shadow-neumorph-dark-inset' : ''}`}
                         style={{
-                          transitionDelay: `${idx * 100}ms`
+                          transitionDelay: `${idx * 0}ms`
                         }}
                       >
-                        <Typewriter
-                          text={tech}
-                          delay={idx * 100}
-                          speed={30}
-                          className="inline"
-                          onComplete={() => {
-                            if (idx === technologies.length - 1) {
-                              setTechnologiesFinished(true);
-                            }
-                          }}
-                        />
+                        {idx <= currentTechIndex && (
+                          <Typewriter
+                            text={tech}
+                            delay={300}
+                            speed={45}
+                            className="inline"
+                          />
+                        )}
                       </div>
                     ))}
                   </div>
