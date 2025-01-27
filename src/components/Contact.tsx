@@ -53,6 +53,86 @@ interface FormData {
   message: string;
 }
 
+interface AnimatedInputProps {
+  id: string;
+  type?: string;
+  label: string;
+  value: string;
+  delay: number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  required?: boolean;
+  isTextArea?: boolean;
+  rows?: number;
+}
+
+const AnimatedInput: React.FC<AnimatedInputProps> = ({
+  id,
+  type = "text",
+  label,
+  value,
+  delay,
+  onChange,
+  required = false,
+  isTextArea = false,
+  rows = 5
+}) => {
+  const [isAnimated, setIsAnimated] = useState(false);
+  const LABEL_DURATION = 500;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsAnimated(true);
+    }, delay + LABEL_DURATION);
+
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  const inputClasses = `
+    w-full px-4 py-3 rounded-lg 
+    transition-all duration-1000 ease-in-out 
+    transform-gpu
+    ${isAnimated
+      ? "translate-y-[1px] shadow-neumorph-inset dark:shadow-neumorph-dark-inset bg-gray-100 dark:bg-dark opacity-100"
+      : "translate-y-0 shadow-none bg-transparent opacity-0"
+    } 
+    text-gray-700 dark:text-gray-200 
+    focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600
+    hover:shadow-neumorph-inset-hover dark:hover:shadow-neumorph-dark-inset-hover
+  `;
+
+  return (
+    <div>
+      <label htmlFor={id} className="block text-gray-700 dark:text-gray-200 mb-2">
+        <Typewriter 
+          text={label}
+          speed={50}
+          delay={delay}
+          className="block text-gray-700 dark:text-gray-200"
+        />
+      </label>
+      {isTextArea ? (
+        <textarea
+          id={id}
+          rows={rows}
+          className={inputClasses}
+          value={value}
+          onChange={onChange}
+          required={required}
+        />
+      ) : (
+        <input
+          type={type}
+          id={id}
+          className={inputClasses}
+          value={value}
+          onChange={onChange}
+          required={required}
+        />
+      )}
+    </div>
+  );
+};
+
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -73,6 +153,9 @@ const Contact: React.FC = () => {
     e.preventDefault();
     console.log(formData);
   };
+  // Timing constants untuk form
+  const FORM_START_DELAY = 1000;
+  const INPUT_SEQUENCE_DELAY = 800;
 
   return (
     <section id="contact" className="py-20 px-6 bg-gray-100 dark:bg-dark transition-colors duration-200">
@@ -178,63 +261,34 @@ const Contact: React.FC = () => {
 
           {/* Form section remains the same */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Rest of the form remains the same as previous artifact */}
-            <div>
-              <label htmlFor="name" className="block text-gray-700 dark:text-gray-200 mb-2">
-                <Typewriter 
-                  text="Name" 
-                  speed={50} 
-                  delay={700}
-                  className="block text-gray-700 dark:text-gray-200"
-                />
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="w-full px-4 py-3 rounded-lg shadow-neumorph-inset dark:shadow-neumorph-dark-inset bg-gray-100 dark:bg-dark text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                required
-              />
-            </div>
+            <AnimatedInput
+              id="name"
+              label="Name"
+              value={formData.name}
+              delay={FORM_START_DELAY}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              required
+            />
 
-            <div>
-              <label htmlFor="email" className="block text-gray-700 dark:text-gray-200 mb-2">
-                <Typewriter 
-                  text="Email" 
-                  speed={50} 
-                  delay={500}
-                  className="block text-gray-700 dark:text-gray-200"
-                />
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="w-full px-4 py-3 rounded-lg shadow-neumorph-inset dark:shadow-neumorph-dark-inset bg-gray-100 dark:bg-dark text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
-              />
-            </div>
+            <AnimatedInput
+              id="email"
+              type="email"
+              label="Email"
+              value={formData.email}
+              delay={FORM_START_DELAY + INPUT_SEQUENCE_DELAY}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              required
+            />
 
-            <div>
-              <label htmlFor="message" className="block text-gray-700 dark:text-gray-200 mb-2">
-                <Typewriter 
-                  text="Message" 
-                  speed={50} 
-                  delay={800}
-                  className="block text-gray-700 dark:text-gray-200"
-                />
-              </label>
-              <textarea
-                id="message"
-                rows={5}
-                className="w-full px-4 py-3 rounded-lg shadow-neumorph-inset dark:shadow-neumorph-dark-inset bg-gray-100 dark:bg-dark text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                required
-              ></textarea>
-            </div>
+            <AnimatedInput
+              id="message"
+              label="Message"
+              value={formData.message}
+              delay={FORM_START_DELAY + (INPUT_SEQUENCE_DELAY * 2)}
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              required
+              isTextArea
+            />
 
             <button
               type="submit"
@@ -243,7 +297,7 @@ const Contact: React.FC = () => {
               <Typewriter 
                 text="Send Message" 
                 speed={50} 
-                delay={2200}
+                delay={FORM_START_DELAY + (INPUT_SEQUENCE_DELAY * 3)}
                 className="w-full text-center"
               />
             </button>
