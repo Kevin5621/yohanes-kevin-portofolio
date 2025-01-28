@@ -3,7 +3,6 @@ import { ChevronLeftIcon, ChevronRightIcon, GithubIcon, ChevronDownIcon, Chevron
 import { ImageViewer } from '../helper/ImageViewer';
 import { ProjectFeatures } from './types';
 import { Typewriter } from '../hook/Animated_typeWritter';
-import { cardHover } from '../hook/getCard';
 import { AnimatedButton } from '../hook/AnimatedButton';
 
 interface ProjectImage {
@@ -52,12 +51,14 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const [, setIsAnimating] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
   const [showDescription, setShowDescription] = useState(false);
-  const [showGithub, setShowGithub] = useState(false);
+  const [buttonsVisible, setButtonsVisible] = useState(false);
   const [showReadMore, setShowReadMore] = useState(false);
   const [titleFinished, setTitleFinished] = useState(false);
   const [descriptionFinished, setDescriptionFinished] = useState(false);
   const [readMoreFinished, setReadMoreFinished] = useState(false);
   const [technologiesFinished, setTechnologiesFinished] = useState(false);
+
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const animateTechnologies = useCallback(() => {
     if (technologies.length > 0 && !hasAnimatedTech.current) {
@@ -65,7 +66,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         if (index < technologies.length) {
           setCurrentTechIndex(index);
   
-          // Tunggu efek shadow selesai
           setTimeout(() => {
             const techTextLength = technologies[index].length;
             const typewriterDelay = techTextLength * 50;
@@ -87,10 +87,29 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       processSequentialTech(0);
     }
   }, [technologies]);
+
   const truncateDescription = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength).trim() + ' ...';
   };
+
+  // Updated scroll handling to match Hero component
+  useEffect(() => {
+    const handleScroll = () => {
+      if (cardRef.current) {
+        const scrolled = Math.min(
+          Math.max(window.scrollY / (window.innerHeight * 0.3), 0),
+          1
+        );
+        setScrollProgress(scrolled);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     if (contentRef.current) {
@@ -116,17 +135,17 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         const baseDelay = 100;
   
         // Title animation
-          setShowTitle(true);
+        setShowTitle(true);
         await new Promise(resolve => setTimeout(resolve, title.length * 30));
         setTitleFinished(true);
   
         // Description animation (faster speed)
-          setShowDescription(true);
+        setShowDescription(true);
         await new Promise(resolve => setTimeout(resolve, description.length * 10));
         setDescriptionFinished(true);
   
         // Read more animation
-          setShowReadMore(true);
+        setShowReadMore(true);
         await new Promise(resolve => setTimeout(resolve, 500));
         setReadMoreFinished(true);
   
@@ -162,13 +181,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         });
 
         await new Promise(resolve => {
-          const githubDelay = setTimeout(() => {
-            setShowGithub(true);
+          const buttonTimer = setTimeout(() => {
+            setButtonsVisible(true);
             resolve(null);
           }, baseDelay * 6);
 
           return () => {
-            clearTimeout(githubDelay);
+            clearTimeout(buttonTimer);
           };
         });
       };
@@ -220,7 +239,34 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     setCurrentImageIndex((prev) => (prev - 1 + image.length) % image.length);
   }, [image.length]);
 
-  const cardStyle = cardHover(cardVisible, scrollProgress, isHovered)();
+  const getCardStyle = () => {
+    const baseIntensity = 1;
+    const scrollEffect = scrollProgress * 1.2;
+    const shadowIntensity = Math.max(baseIntensity - scrollEffect, 0);
+
+    // Light theme shadows
+    const lightOuterShadow = `
+      ${16 * shadowIntensity}px ${16 * shadowIntensity}px ${32 * shadowIntensity}px #d1d1d1,
+      ${-16 * shadowIntensity}px ${-16 * shadowIntensity}px ${32 * shadowIntensity}px #ffffff
+    `;
+
+    // Dark theme shadows
+    const darkOuterShadow = `
+      ${16 * shadowIntensity}px ${16 * shadowIntensity}px ${32 * shadowIntensity}px #151515,
+      ${-16 * shadowIntensity}px ${-16 * shadowIntensity}px ${32 * shadowIntensity}px #353535
+    `;
+
+    const isDark = window.document.documentElement.classList.contains('dark');
+    const shadow = isDark ? darkOuterShadow : lightOuterShadow;
+
+    return {
+      transform: `
+        scale(${cardVisible ? (isHovered ? 1.02 : 1) : 0.95})
+        translateY(${isHovered ? -8 : 0}px)
+      `,
+      boxShadow: cardVisible ? shadow : 'none',
+    };
+  };
 
   return (
     <>
@@ -234,11 +280,14 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         />
       )}
       
-      <div className={`opacity-0 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100' : ''}`}>
+      <div 
+        ref={cardRef}
+        className={`opacity-0 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100' : ''}`}
+      >
         <div 
-          className={`card rounded-2xl bg-gray-100 dark:bg-dark p-4 relative overflow-hidden h-full
-            transition-all duration-700 ease-in-out`}
-          style={cardStyle}
+          className="card rounded-2xl bg-gray-100 dark:bg-dark p-4 relative overflow-hidden h-full
+            transition-all duration-700 ease-in-out"
+          style={getCardStyle()}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -457,14 +506,15 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
               {/* GitHub Button - Fixed Height */}
               <div className="h-[40px] flex items-center">
-                <div className={`transition-all duration-500 ${showGithub ? 'opacity-100 transform scale-100' : 'opacity-0 transform scale-95'}`}>
+                <div className="w-48 sm:w-auto">
                   {isVisible && technologiesFinished && (
                     <AnimatedButton
                     text="View on GitHub"
                     delay={1000}
-                    buttonVisible={showGithub}
+                    buttonVisible={buttonsVisible}
                     onClick={() => window.open(githubUrl, '_blank', 'noopener,noreferrer')}
                     icon={<GithubIcon size={16} />}
+                    parentRef={cardRef}
                   />
                   )}
                 </div>

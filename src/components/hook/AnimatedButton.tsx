@@ -8,6 +8,7 @@ export interface AnimatedButtonProps {
   buttonVisible: boolean;
   onClick: () => void;
   icon?: React.ReactNode | null;
+  parentRef?: React.RefObject<HTMLElement>;
 }
 
 export const AnimatedButton = ({ 
@@ -15,7 +16,8 @@ export const AnimatedButton = ({
   delay, 
   buttonVisible, 
   onClick, 
-  icon = <GithubIcon size={16} /> 
+  icon = <GithubIcon size={16} />,
+  parentRef 
 }: AnimatedButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -35,16 +37,38 @@ export const AnimatedButton = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrolled = Math.min(
-        Math.max(window.scrollY / (window.innerHeight * 0.3), 0),
-        1
-      );
-      setScrollProgress(scrolled);
+      if (parentRef?.current) {
+        const rect = parentRef.current.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        // Calculate how far the parent element is from the viewport center
+        const elementCenter = rect.top + rect.height / 2;
+        const viewportCenter = windowHeight / 2;
+        const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
+        
+        // Calculate progress based on viewport height
+        const maxDistance = windowHeight * 0.3; // Similar to Hero's calculation
+        const progress = Math.min(Math.max(distanceFromCenter / maxDistance, 0), 1);
+        
+        // Reset progress when element is close to viewport center
+        if (distanceFromCenter < 100) { // Threshold for resetting
+          setScrollProgress(0);
+        } else {
+          setScrollProgress(progress);
+        }
+      } else {
+        // Fallback to window-based calculation if no parent ref
+        const scrolled = Math.min(
+          Math.max(window.scrollY / (window.innerHeight * 0.3), 0),
+          1
+        );
+        setScrollProgress(scrolled);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [parentRef]);
 
   const getButtonStyles = () => {
     const baseIntensity = 1;
@@ -93,8 +117,7 @@ export const AnimatedButton = ({
 
   return (
     <div
-      className={`w-[180px] h-[50px] rounded-lg transform transition-all duration-1000 ease-out overflow-hidden
-        ${buttonVisible ? 'scale-100 shadow-neumorph dark:shadow-neumorph-dark' : 'scale-95 shadow-none'}`}
+      className="w-[180px] h-[50px] rounded-lg transform transition-all duration-1000 ease-out overflow-hidden"
       style={getButtonStyles()}
       onMouseDown={() => setIsPressed(true)}
       onMouseUp={() => setIsPressed(false)}
@@ -124,3 +147,5 @@ export const AnimatedButton = ({
     </div>
   );
 };
+
+export default AnimatedButton;
