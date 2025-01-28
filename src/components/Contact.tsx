@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MailIcon, PhoneIcon, MapPinIcon, LucideIcon } from 'lucide-react';
 import { Typewriter } from './hook/Animated_typeWritter';
 
@@ -6,22 +6,26 @@ interface AnimatedNeumorphicIconProps {
   Icon: LucideIcon;
   delay?: number;
   className?: string;
+  isVisible?: boolean;
 }
 
 const AnimatedNeumorphicIcon: React.FC<AnimatedNeumorphicIconProps> = ({ 
   Icon, 
   delay = 0, 
-  className = "" 
+  className = "",
+  isVisible = false
 }) => {
   const [isAnimated, setIsAnimated] = useState(false);
 
   useEffect(() => {
+    if (!isVisible) return;
+    
     const timer = setTimeout(() => {
       setIsAnimated(true);
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [delay]);
+  }, [delay, isVisible]);
 
   return (
     <div 
@@ -63,6 +67,7 @@ interface AnimatedInputProps {
   required?: boolean;
   isTextArea?: boolean;
   rows?: number;
+  isVisible?: boolean;
 }
 
 const AnimatedInput: React.FC<AnimatedInputProps> = ({
@@ -74,18 +79,21 @@ const AnimatedInput: React.FC<AnimatedInputProps> = ({
   onChange,
   required = false,
   isTextArea = false,
-  rows = 5
+  rows = 5,
+  isVisible = false
 }) => {
   const [isAnimated, setIsAnimated] = useState(false);
   const LABEL_DURATION = 500;
 
   useEffect(() => {
+    if (!isVisible) return;
+
     const timer = setTimeout(() => {
       setIsAnimated(true);
     }, delay + LABEL_DURATION);
 
     return () => clearTimeout(timer);
-  }, [delay]);
+  }, [delay, isVisible]);
 
   const inputClasses = `
     w-full px-4 py-3 rounded-lg 
@@ -103,12 +111,14 @@ const AnimatedInput: React.FC<AnimatedInputProps> = ({
   return (
     <div>
       <label htmlFor={id} className="block text-gray-700 dark:text-gray-200 mb-2">
-        <Typewriter 
-          text={label}
-          speed={50}
-          delay={delay}
-          className="block text-gray-700 dark:text-gray-200"
-        />
+        {isVisible && (
+          <Typewriter 
+            text={label}
+            speed={50}
+            delay={delay}
+            className="block text-gray-700 dark:text-gray-200"
+          />
+        )}
       </label>
       {isTextArea ? (
         <textarea
@@ -139,12 +149,36 @@ const Contact: React.FC = () => {
     email: '',
     message: '',
   });
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  // Animation timing constants
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      {
+        threshold: 0.2
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   const ICON_ANIMATION_DURATION = 300;
   const TYPEWRITER_DURATION = 800;
-  
-  // Base delays for each section
   const EMAIL_START = 300;
   const PHONE_START = EMAIL_START + TYPEWRITER_DURATION;
   const LOCATION_START = PHONE_START + TYPEWRITER_DURATION;
@@ -153,31 +187,39 @@ const Contact: React.FC = () => {
     e.preventDefault();
     console.log(formData);
   };
-  // Timing constants untuk form
+
   const FORM_START_DELAY = 1000;
   const INPUT_SEQUENCE_DELAY = 800;
 
   return (
-    <section id="contact" className="py-20 px-6 bg-gray-100 dark:bg-dark transition-colors duration-200">
+    <section 
+      ref={sectionRef}
+      id="contact" 
+      className="py-20 px-6 bg-gray-100 dark:bg-dark transition-colors duration-200"
+    >
       <div className="max-w-6xl mx-auto">
         <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-12 text-center">
-          <Typewriter 
-            text="Get in Touch" 
-            speed={100} 
-            delay={0}
-            className="text-4xl font-bold text-gray-800 dark:text-gray-100"
-          />
+          {isVisible && (
+            <Typewriter 
+              text="Get in Touch" 
+              speed={100} 
+              delay={0}
+              className="text-4xl font-bold text-gray-800 dark:text-gray-100"
+            />
+          )}
         </h2>
         
         <div className="grid md:grid-cols-2 gap-12">
           <div className="space-y-8">
             <h3 className="text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-6">
-              <Typewriter 
-                text="Contact Information" 
-                speed={50} 
-                delay={700}
-                className="text-2xl font-semibold text-gray-700 dark:text-gray-200"
-              />
+              {isVisible && (
+                <Typewriter 
+                  text="Contact Information" 
+                  speed={50} 
+                  delay={700}
+                  className="text-2xl font-semibold text-gray-700 dark:text-gray-200"
+                />
+              )}
             </h3>
             
             {/* Email Section */}
@@ -185,23 +227,28 @@ const Contact: React.FC = () => {
               <AnimatedNeumorphicIcon 
                 Icon={MailIcon} 
                 delay={EMAIL_START}
+                isVisible={isVisible}
               />
               <div>
                 <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
-                  <Typewriter 
-                    text="Email" 
-                    speed={50} 
-                    delay={EMAIL_START + ICON_ANIMATION_DURATION}
-                    className="text-lg font-medium text-gray-700 dark:text-gray-200"
-                  />
+                  {isVisible && (
+                    <Typewriter 
+                      text="Email" 
+                      speed={50} 
+                      delay={EMAIL_START + ICON_ANIMATION_DURATION}
+                      className="text-lg font-medium text-gray-700 dark:text-gray-200"
+                    />
+                  )}
                 </h4>
                 <p className="text-gray-600 dark:text-gray-300">
-                  <Typewriter 
-                    text="yohaneskevin11222@gmail.com" 
-                    speed={50} 
-                    delay={EMAIL_START + ICON_ANIMATION_DURATION}
-                    className="text-gray-600 dark:text-gray-300"
-                  />
+                  {isVisible && (
+                    <Typewriter 
+                      text="yohaneskevin11222@gmail.com" 
+                      speed={50} 
+                      delay={EMAIL_START + ICON_ANIMATION_DURATION}
+                      className="text-gray-600 dark:text-gray-300"
+                    />
+                  )}
                 </p>
               </div>
             </div>
@@ -211,23 +258,28 @@ const Contact: React.FC = () => {
               <AnimatedNeumorphicIcon 
                 Icon={PhoneIcon} 
                 delay={PHONE_START}
+                isVisible={isVisible}
               />
               <div>
                 <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
-                  <Typewriter 
-                    text="Phone" 
-                    speed={50} 
-                    delay={PHONE_START + ICON_ANIMATION_DURATION}
-                    className="text-lg font-medium text-gray-700 dark:text-gray-200"
-                  />
+                  {isVisible && (
+                    <Typewriter 
+                      text="Phone" 
+                      speed={50} 
+                      delay={PHONE_START + ICON_ANIMATION_DURATION}
+                      className="text-lg font-medium text-gray-700 dark:text-gray-200"
+                    />
+                  )}
                 </h4>
                 <p className="text-gray-600 dark:text-gray-300">
-                  <Typewriter 
-                    text="+62 878-1021-1352" 
-                    speed={50} 
-                    delay={PHONE_START + ICON_ANIMATION_DURATION}
-                    className="text-gray-600 dark:text-gray-300"
-                  />
+                  {isVisible && (
+                    <Typewriter 
+                      text="+62 878-1021-1352" 
+                      speed={50} 
+                      delay={PHONE_START + ICON_ANIMATION_DURATION}
+                      className="text-gray-600 dark:text-gray-300"
+                    />
+                  )}
                 </p>
               </div>
             </div>
@@ -237,29 +289,34 @@ const Contact: React.FC = () => {
               <AnimatedNeumorphicIcon 
                 Icon={MapPinIcon} 
                 delay={LOCATION_START}
+                isVisible={isVisible}
               />
               <div>
                 <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
-                  <Typewriter 
-                    text="Location" 
-                    speed={50} 
-                    delay={LOCATION_START + ICON_ANIMATION_DURATION}
-                    className="text-lg font-medium text-gray-700 dark:text-gray-200"
-                  />
+                  {isVisible && (
+                    <Typewriter 
+                      text="Location" 
+                      speed={50} 
+                      delay={LOCATION_START + ICON_ANIMATION_DURATION}
+                      className="text-lg font-medium text-gray-700 dark:text-gray-200"
+                    />
+                  )}
                 </h4>
                 <p className="text-gray-600 dark:text-gray-300">
-                  <Typewriter 
-                    text="Central Java, Semarang" 
-                    speed={50} 
-                    delay={LOCATION_START + ICON_ANIMATION_DURATION}
-                    className="text-gray-600 dark:text-gray-300"
-                  />
+                  {isVisible && (
+                    <Typewriter 
+                      text="Central Java, Semarang" 
+                      speed={50} 
+                      delay={LOCATION_START + ICON_ANIMATION_DURATION}
+                      className="text-gray-600 dark:text-gray-300"
+                    />
+                  )}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Form section remains the same */}
+          {/* Form section */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <AnimatedInput
               id="name"
@@ -268,6 +325,7 @@ const Contact: React.FC = () => {
               delay={FORM_START_DELAY}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
+              isVisible={isVisible}
             />
 
             <AnimatedInput
@@ -278,6 +336,7 @@ const Contact: React.FC = () => {
               delay={FORM_START_DELAY + INPUT_SEQUENCE_DELAY}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
+              isVisible={isVisible}
             />
 
             <AnimatedInput
@@ -288,18 +347,21 @@ const Contact: React.FC = () => {
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               required
               isTextArea
+              isVisible={isVisible}
             />
 
             <button
               type="submit"
               className="w-full px-8 py-3 rounded-lg bg-gray-100 dark:bg-dark text-gray-700 dark:text-gray-200 shadow-neumorph dark:shadow-neumorph-dark hover:shadow-neumorph-hover dark:hover:shadow-neumorph-dark-hover active:shadow-neumorph-inset dark:active:shadow-neumorph-dark-inset transition-shadow"
             >
-              <Typewriter 
-                text="Send Message" 
-                speed={50} 
-                delay={FORM_START_DELAY + (INPUT_SEQUENCE_DELAY * 3)}
-                className="w-full text-center"
-              />
+              {isVisible && (
+                <Typewriter 
+                  text="Send Message" 
+                  speed={50} 
+                  delay={FORM_START_DELAY + (INPUT_SEQUENCE_DELAY * 3)}
+                  className="w-full text-center"
+                />
+              )}
             </button>
           </form>
         </div>
