@@ -9,6 +9,7 @@ export interface AnimatedButtonProps {
   onClick: () => void;
   icon?: React.ReactNode | null;
   parentRef?: React.RefObject<HTMLElement>;
+  variant?: 'default' | 'subtle';
 }
 
 export const AnimatedButton = ({ 
@@ -17,7 +18,8 @@ export const AnimatedButton = ({
   buttonVisible, 
   onClick, 
   icon = <GithubIcon size={16} />,
-  parentRef 
+  parentRef,
+  variant = 'default'
 }: AnimatedButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -40,24 +42,18 @@ export const AnimatedButton = ({
       if (parentRef?.current) {
         const rect = parentRef.current.getBoundingClientRect();
         const windowHeight = window.innerHeight;
-        
-        // Calculate how far the parent element is from the viewport center
         const elementCenter = rect.top + rect.height / 2;
         const viewportCenter = windowHeight / 2;
         const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
-        
-        // Calculate progress based on viewport height
-        const maxDistance = windowHeight * 0.3; // Similar to Hero's calculation
+        const maxDistance = windowHeight * 0.3;
         const progress = Math.min(Math.max(distanceFromCenter / maxDistance, 0), 1);
         
-        // Reset progress when element is close to viewport center
-        if (distanceFromCenter < 100) { // Threshold for resetting
+        if (distanceFromCenter < 100) {
           setScrollProgress(0);
         } else {
           setScrollProgress(progress);
         }
       } else {
-        // Fallback to window-based calculation if no parent ref
         const scrolled = Math.min(
           Math.max(window.scrollY / (window.innerHeight * 0.3), 0),
           1
@@ -71,34 +67,37 @@ export const AnimatedButton = ({
   }, [parentRef]);
 
   const getButtonStyles = () => {
-    const baseIntensity = 1;
-    const scrollEffect = scrollProgress * 1.2;
+    const baseIntensity = variant === 'subtle' ? 0.5 : 1;
+    const scrollEffect = scrollProgress * (variant === 'subtle' ? 0.6 : 1.2);
     const shadowIntensity = Math.max(baseIntensity - scrollEffect, 0);
+
+    // Reduced shadow values for subtle variant
+    const subtleFactor = variant === 'subtle' ? 0.5 : 1;
 
     // Light theme shadows
     const lightOuterShadow = `
-      ${16 * shadowIntensity}px ${16 * shadowIntensity}px ${32 * shadowIntensity}px #d1d1d1,
-      ${-16 * shadowIntensity}px ${-16 * shadowIntensity}px ${32 * shadowIntensity}px #ffffff,
-      0 0 ${15 * shadowIntensity}px rgba(209, 209, 209, 0.7)
+      ${16 * shadowIntensity * subtleFactor}px ${16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #d1d1d1,
+      ${-16 * shadowIntensity * subtleFactor}px ${-16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #ffffff,
+      0 0 ${15 * shadowIntensity}px rgba(209, 209, 209, ${variant === 'subtle' ? '0.4' : '0.7'})
     `;
     
     const lightInsetShadow = `
-      inset 12px 12px 24px #d1d1d1,
-      inset -12px -12px 24px #ffffff,
-      inset 0 0 15px rgba(209, 209, 209, 0.7)
+      inset ${12 * subtleFactor}px ${12 * subtleFactor}px ${24 * subtleFactor}px #d1d1d1,
+      inset ${-12 * subtleFactor}px ${-12 * subtleFactor}px ${24 * subtleFactor}px #ffffff,
+      inset 0 0 ${15 * subtleFactor}px rgba(209, 209, 209, ${variant === 'subtle' ? '0.4' : '0.7'})
     `;
 
     // Dark theme shadows
     const darkOuterShadow = `
-      ${16 * shadowIntensity}px ${16 * shadowIntensity}px ${32 * shadowIntensity}px #151515,
-      ${-16 * shadowIntensity}px ${-16 * shadowIntensity}px ${32 * shadowIntensity}px #353535,
-      0 0 ${15 * shadowIntensity}px rgba(21, 21, 21, 0.7)
+      ${16 * shadowIntensity * subtleFactor}px ${16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #151515,
+      ${-16 * shadowIntensity * subtleFactor}px ${-16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #353535,
+      0 0 ${15 * shadowIntensity}px rgba(21, 21, 21, ${variant === 'subtle' ? '0.4' : '0.7'})
     `;
     
     const darkInsetShadow = `
-      inset 12px 12px 24px #151515,
-      inset -12px -12px 24px #353535,
-      inset 0 0 15px rgba(21, 21, 21, 0.7)
+      inset ${12 * subtleFactor}px ${12 * subtleFactor}px ${24 * subtleFactor}px #151515,
+      inset ${-12 * subtleFactor}px ${-12 * subtleFactor}px ${24 * subtleFactor}px #353535,
+      inset 0 0 ${15 * subtleFactor}px rgba(21, 21, 21, ${variant === 'subtle' ? '0.4' : '0.7'})
     `;
 
     const isDark = window.document.documentElement.classList.contains('dark');
@@ -126,10 +125,11 @@ export const AnimatedButton = ({
       onTouchEnd={() => setIsPressed(false)}
     >
       <button 
-        className="w-full h-full bg-gray-100 dark:bg-dark text-gray-700 dark:text-gray-200 
+        className={`w-full h-full bg-gray-100 dark:bg-dark text-gray-700 dark:text-gray-200 
                    hover:shadow-neumorph-hover dark:hover:shadow-neumorph-dark-hover 
                    active:shadow-neumorph-inset dark:active:shadow-neumorph-dark-inset 
-                   transition-shadow rounded-lg flex items-center justify-center gap-2"
+                   transition-shadow rounded-lg flex items-center justify-center gap-2
+                   ${variant === 'subtle' ? 'bg-opacity-90' : ''}`}
         onClick={onClick}
       >
         {buttonVisible && (

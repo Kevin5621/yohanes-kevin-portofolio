@@ -515,6 +515,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     onClick={() => window.open(githubUrl, '_blank', 'noopener,noreferrer')}
                     icon={<GithubIcon size={16} />}
                     parentRef={cardRef}
+                    variant="subtle"
                   />
                   )}
                 </div>
