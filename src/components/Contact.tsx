@@ -1,54 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MailIcon, PhoneIcon, MessagesSquare, LucideIcon } from 'lucide-react';
+import { MailIcon, PhoneIcon, MessagesSquare } from 'lucide-react';
 import { Typewriter } from './hook/Animated_typeWritter';
-
-interface AnimatedNeumorphicIconProps {
-  Icon: LucideIcon;
-  delay?: number;
-  className?: string;
-  isVisible?: boolean;
-}
-
-const AnimatedNeumorphicIcon: React.FC<AnimatedNeumorphicIconProps> = ({ 
-  Icon, 
-  delay = 0, 
-  className = "",
-  isVisible = false
-}) => {
-  const [isAnimated, setIsAnimated] = useState(false);
-
-  useEffect(() => {
-    if (!isVisible) return;
-    
-    const timer = setTimeout(() => {
-      setIsAnimated(true);
-    }, delay);
-
-    return () => clearTimeout(timer);
-  }, [delay, isVisible]);
-
-  return (
-    <div 
-      className={`transition-all duration-700 ease-out ${className} ${
-        isAnimated 
-          ? "p-4 rounded-lg shadow-neumorph dark:shadow-neumorph-dark" 
-          : "p-2 rounded-lg opacity-50 scale-90 bg-gray-200/30 dark:bg-dark/30"
-      }`}
-      style={{
-        transformOrigin: 'center',
-      }}
-    >
-      <Icon 
-        className={`transition-all duration-500 ease-out ${
-          isAnimated 
-            ? "text-gray-600 dark:text-gray-300" 
-            : "text-gray-400 dark:text-gray-600 opacity-70"
-        }`}
-        size={24}
-      />
-    </div>
-  );
-};
+import AnimatedNeumorphicIcon from './hook/AnimaterIcon';
 
 // Define interface for form data
 interface FormData {
@@ -228,6 +181,7 @@ const Contact: React.FC = () => {
                 Icon={MessagesSquare} 
                 delay={DISCORD_START}
                 isVisible={isVisible}
+                href="https://discord.com/users/kevinyup_"
               />
               <div>
                 <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
@@ -252,13 +206,14 @@ const Contact: React.FC = () => {
                 </p>
               </div>
             </div>
-            
+
             {/* Email Section */}
             <div className="flex items-center space-x-4">
               <AnimatedNeumorphicIcon 
                 Icon={MailIcon} 
                 delay={EMAIL_START}
                 isVisible={isVisible}
+                href="mailto:yohaneskevin11222@gmail.com"
               />
               <div>
                 <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
@@ -290,7 +245,8 @@ const Contact: React.FC = () => {
                 Icon={PhoneIcon} 
                 delay={PHONE_START}
                 isVisible={isVisible}
-              />
+                href="tel:+6287810211352"
+                />
               <div>
                 <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
                   {isVisible && (
