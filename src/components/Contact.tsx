@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MailIcon, PhoneIcon, MapPinIcon, LucideIcon } from 'lucide-react';
+import { MailIcon, PhoneIcon, MessagesSquare, LucideIcon } from 'lucide-react';
 import { Typewriter } from './hook/Animated_typeWritter';
 
 interface AnimatedNeumorphicIconProps {
@@ -181,7 +181,7 @@ const Contact: React.FC = () => {
   const TYPEWRITER_DURATION = 800;
   const EMAIL_START = 300;
   const PHONE_START = EMAIL_START + TYPEWRITER_DURATION;
-  const LOCATION_START = PHONE_START + TYPEWRITER_DURATION;
+  const DISCORD_START = PHONE_START + TYPEWRITER_DURATION;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -221,6 +221,37 @@ const Contact: React.FC = () => {
                 />
               )}
             </h3>
+            
+            {/* DISCORD Section */}
+            <div className="flex items-center space-x-4">
+              <AnimatedNeumorphicIcon 
+                Icon={MessagesSquare} 
+                delay={DISCORD_START}
+                isVisible={isVisible}
+              />
+              <div>
+                <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
+                  {isVisible && (
+                    <Typewriter 
+                      text="Discord" 
+                      speed={50} 
+                      delay={DISCORD_START + ICON_ANIMATION_DURATION}
+                      className="text-lg font-medium text-gray-700 dark:text-gray-200"
+                    />
+                  )}
+                </h4>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {isVisible && (
+                    <Typewriter 
+                      text="kevinyup_" 
+                      speed={50} 
+                      delay={DISCORD_START + ICON_ANIMATION_DURATION}
+                      className="text-gray-600 dark:text-gray-300"
+                    />
+                  )}
+                </p>
+              </div>
+            </div>
             
             {/* Email Section */}
             <div className="flex items-center space-x-4">
@@ -277,37 +308,6 @@ const Contact: React.FC = () => {
                       text="+62 878-1021-1352" 
                       speed={50} 
                       delay={PHONE_START + ICON_ANIMATION_DURATION}
-                      className="text-gray-600 dark:text-gray-300"
-                    />
-                  )}
-                </p>
-              </div>
-            </div>
-
-            {/* Location Section */}
-            <div className="flex items-center space-x-4">
-              <AnimatedNeumorphicIcon 
-                Icon={MapPinIcon} 
-                delay={LOCATION_START}
-                isVisible={isVisible}
-              />
-              <div>
-                <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
-                  {isVisible && (
-                    <Typewriter 
-                      text="Location" 
-                      speed={50} 
-                      delay={LOCATION_START + ICON_ANIMATION_DURATION}
-                      className="text-lg font-medium text-gray-700 dark:text-gray-200"
-                    />
-                  )}
-                </h4>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {isVisible && (
-                    <Typewriter 
-                      text="Central Java, Semarang" 
-                      speed={50} 
-                      delay={LOCATION_START + ICON_ANIMATION_DURATION}
                       className="text-gray-600 dark:text-gray-300"
                     />
                   )}
