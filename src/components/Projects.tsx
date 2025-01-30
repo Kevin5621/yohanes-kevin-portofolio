@@ -76,8 +76,8 @@ const projects: Project[] = [
       ]
     },
     image: [
-      { title: 'Login', image: 'src/components/assets/screenshot/example/test.png' },
-      { title: 'Dashboard Student', image: 'src/components/assets/screenshot/sitama/sitama/homeMahasiswa.jpg' },
+      { title: 'Login', image: 'src/components/assets/screenshot/example/test.jpg' },
+      { title: 'Dashboard Student', image: 'src/components/assets/screenshot/sitama/homeMahasiswa.jpg' },
       { title: 'Guidance', image: 'src/components/assets/screenshot/sitama/bimbingan.jpg' },
       { title: 'Logbook Page', image: 'src/components/assets/screenshot/sitama/logbook.jpg' },
       { title: 'Add Guidance', image: 'src/components/assets/screenshot/sitama/addBimbingan.jpg' },
