@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import { Typewriter } from "./Animated_typeWritter";
-import { GithubIcon } from 'lucide-react';
 
 export interface AnimatedButtonProps {
   text: string;
   delay: number;
   buttonVisible: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   icon?: React.ReactNode | null;
   parentRef?: React.RefObject<HTMLElement>;
   variant?: 'default' | 'subtle';
+  width?: 'auto' | 'full' | 'default';
+  type?: 'button' | 'submit';
 }
 
 export const AnimatedButton = ({ 
@@ -17,9 +18,11 @@ export const AnimatedButton = ({
   delay, 
   buttonVisible, 
   onClick, 
-  icon = <GithubIcon size={16} />,
+  icon = null,
   parentRef,
-  variant = 'default'
+  variant = 'default',
+  width = 'default',
+  type = 'button'
 }: AnimatedButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -71,7 +74,6 @@ export const AnimatedButton = ({
     const scrollEffect = scrollProgress * (variant === 'subtle' ? 0.6 : 1.2);
     const shadowIntensity = Math.max(baseIntensity - scrollEffect, 0);
 
-    // Reduced shadow values for subtle variant
     const subtleFactor = variant === 'subtle' ? 0.5 : 1;
 
     // Light theme shadows
@@ -114,9 +116,15 @@ export const AnimatedButton = ({
     };
   };
 
+  const widthClasses = {
+    default: 'w-[180px]',
+    auto: 'w-auto',
+    full: 'w-full'
+  }[width];
+
   return (
     <div
-      className="w-[180px] h-[50px] rounded-lg transform transition-all duration-1000 ease-out overflow-hidden"
+      className={`${widthClasses} h-[50px] rounded-lg transform transition-all duration-1000 ease-out overflow-hidden`}
       style={getButtonStyles()}
       onMouseDown={() => setIsPressed(true)}
       onMouseUp={() => setIsPressed(false)}
@@ -125,6 +133,7 @@ export const AnimatedButton = ({
       onTouchEnd={() => setIsPressed(false)}
     >
       <button 
+        type={type}
         className={`w-full h-full bg-gray-100 dark:bg-dark text-gray-700 dark:text-gray-200 
                    hover:shadow-neumorph-hover dark:hover:shadow-neumorph-dark-hover 
                    active:shadow-neumorph-inset dark:active:shadow-neumorph-dark-inset 

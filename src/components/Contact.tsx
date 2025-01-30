@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MailIcon, PhoneIcon, MessagesSquare } from 'lucide-react';
 import { Typewriter } from './hook/Animated_typeWritter';
 import AnimatedNeumorphicIcon from './hook/AnimaterIcon';
+import AnimatedButton from './hook/AnimatedButton';
 
-// Define interface for form data
 interface FormData {
   name: string;
   email: string;
@@ -103,18 +103,34 @@ const Contact: React.FC = () => {
     message: '',
   });
   const [isVisible, setIsVisible] = useState(false);
+  const [buttonsVisible, setButtonsVisible] = useState(false);
+  const [, setScrollProgress] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            const buttonTimer = setTimeout(() => setButtonsVisible(true), 3400);
+            
+            // Calculate scroll progress based on intersection ratio
+            const scrolled = Math.min(
+              Math.max((1 - entry.intersectionRatio) * 1.2, 0),
+              1
+            );
+            setScrollProgress(scrolled);
+            
+            return () => clearTimeout(buttonTimer);
+          } else {
+            setScrollProgress(1);
+          }
+        });
       },
       {
-        threshold: 0.2
+        threshold: Array.from({ length: 100 }, (_, i) => i / 100),
+        rootMargin: "-25% 0px -15% 0px"
       }
     );
 
@@ -123,9 +139,9 @@ const Contact: React.FC = () => {
     }
 
     return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       if (sectionRef.current) {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        observer.unobserve(sectionRef.current);
+        observer.disconnect();
       }
     };
   }, []);
@@ -134,7 +150,7 @@ const Contact: React.FC = () => {
   const TYPEWRITER_DURATION = 800;
   const DISCORD_START = 300;
   const EMAIL_START = DISCORD_START + TYPEWRITER_DURATION;
-  const PHONE_START  = EMAIL_START + TYPEWRITER_DURATION;
+  const PHONE_START = EMAIL_START + TYPEWRITER_DURATION;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -175,7 +191,7 @@ const Contact: React.FC = () => {
               )}
             </h3>
             
-            {/* DISCORD Section */}
+            {/* Contact info sections remain the same */}
             <div className="flex items-center space-x-4">
               <AnimatedNeumorphicIcon 
                 Icon={MessagesSquare} 
@@ -306,19 +322,16 @@ const Contact: React.FC = () => {
               isVisible={isVisible}
             />
 
-            <button
+            <AnimatedButton
+              text="Send Message"
+              delay={1000}
+              buttonVisible={buttonsVisible}
+              width="full"
               type="submit"
-              className="w-full px-8 py-3 rounded-lg bg-gray-100 dark:bg-dark text-gray-700 dark:text-gray-200 shadow-neumorph dark:shadow-neumorph-dark hover:shadow-neumorph-hover dark:hover:shadow-neumorph-dark-hover active:shadow-neumorph-inset dark:active:shadow-neumorph-dark-inset transition-shadow"
-            >
-              {isVisible && (
-                <Typewriter 
-                  text="Send Message" 
-                  speed={50} 
-                  delay={FORM_START_DELAY + (INPUT_SEQUENCE_DELAY * 3)}
-                  className="w-full text-center"
-                />
-              )}
-            </button>
+              icon={null}
+              variant="subtle"
+              parentRef={sectionRef}
+            />
           </form>
         </div>
       </div>
