@@ -1,12 +1,14 @@
 import { useRef, useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import './styles/globals.css';
 import { ThemeProvider } from './styles/themeContexts';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
+import { NotFound } from './components/ui/404';
 
-function App() {
+function MainContent() {
   const [projectsVisible, setProjectsVisible] = useState(false);
   const [, setContactVisible] = useState(false);
   const projectsRef = useRef(null);
@@ -23,7 +25,6 @@ function App() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           setProjectsVisible(true);
-
         } else {
           setProjectsVisible(false);
         }
@@ -34,7 +35,6 @@ function App() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           setContactVisible(true);
-          // contactObserver.disconnect();
         } else {
           setContactVisible(false);
         }
@@ -56,21 +56,32 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider>
-      <div className="min-h-screen bg-gray-100 dark:bg-dark transition-colors duration-200">
-        <Navigation />
-        <Hero />
-        
-        {/* Projects Section */}
-        <div ref={projectsRef} className="min-h-screen">
-          <Projects isVisible={projectsVisible} />
-        </div>
-
-        {/* Contact Section */}
-        <div ref={contactRef} className="min-h-screen">
-          <Contact />
-        </div>
+    <div className="min-h-screen bg-gray-100 dark:bg-dark transition-colors duration-200">
+      <Navigation />
+      <Hero />
+      
+      {/* Projects Section */}
+      <div ref={projectsRef} className="min-h-screen">
+        <Projects isVisible={projectsVisible} />
       </div>
+
+      {/* Contact Section */}
+      <div ref={contactRef} className="min-h-screen">
+        <Contact />
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <Router basename="/yohanes-kevin">
+        <Routes>
+          <Route path="/" element={<MainContent />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
     </ThemeProvider>
   );
 }
