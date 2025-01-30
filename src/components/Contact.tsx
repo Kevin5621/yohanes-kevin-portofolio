@@ -132,9 +132,9 @@ const Contact: React.FC = () => {
 
   const ICON_ANIMATION_DURATION = 300;
   const TYPEWRITER_DURATION = 800;
-  const EMAIL_START = 300;
-  const PHONE_START = EMAIL_START + TYPEWRITER_DURATION;
-  const DISCORD_START = PHONE_START + TYPEWRITER_DURATION;
+  const DISCORD_START = 300;
+  const EMAIL_START = DISCORD_START + TYPEWRITER_DURATION;
+  const PHONE_START  = EMAIL_START + TYPEWRITER_DURATION;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
