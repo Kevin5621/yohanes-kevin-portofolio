@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ProjectCard } from './model/ProjectCard';
 import { Project } from './model/types';
 import { Typewriter } from './hook/Animated_typeWritter';
+import { HealthifyImages, SitamaImages } from './model/images';
 
 const projects: Project[] = [
   {
@@ -34,16 +35,16 @@ const projects: Project[] = [
       ]
     },
     image: [
-      { title: 'Login', image: 'src/components/assets/screenshot/sitama/login.jpg' },
-      { title: 'Dashboard Student', image: 'src/components/assets/screenshot/sitama/homeMahasiswa.jpg' },
-      { title: 'Guidance', image: 'src/components/assets/screenshot/sitama/bimbingan.jpg' },
-      { title: 'Logbook Page', image: 'src/components/assets/screenshot/sitama/logbook.jpg' },
-      { title: 'Add Guidance', image: 'src/components/assets/screenshot/sitama/addBimbingan.jpg' },
-      { title: 'Profile', image: 'src/components/assets/screenshot/sitama/profile.jpg' },
-      { title: 'Dashboard Lecturer', image: 'src/components/assets/screenshot/sitama/homeDosen.jpg' },
-      { title: 'Detail Student', image: 'src/components/assets/screenshot/sitama/detailStudent.jpg' },
-      { title: 'Guidance Action', image: 'src/components/assets/screenshot/sitama/actionBimbingan.jpg' },
-      { title: 'Score Page', image: 'src/components/assets/screenshot/sitama/detailNilai.jpg' }
+      { title: 'Login', image: SitamaImages.login },
+      { title: 'Dashboard Student', image: SitamaImages.homeMahasiswa },
+      { title: 'Guidance', image: SitamaImages.bimbingan },
+      { title: 'Logbook Page', image: SitamaImages.logbook },
+      { title: 'Add Guidance', image: SitamaImages.addBimbingan },
+      { title: 'Profile', image: SitamaImages.profile },
+      { title: 'Dashboard Lecturer', image: SitamaImages.homeDosen },
+      { title: 'Detail Student', image: SitamaImages.detailStudent },
+      { title: 'Guidance Action', image: SitamaImages.actionBimbingan },
+      { title: 'Score Page', image: SitamaImages.detailNilai }
     ]
   },
   {
@@ -76,16 +77,16 @@ const projects: Project[] = [
       ]
     },
     image: [
-      { title: 'Login', image: 'src/components/assets/screenshot/example/test.jpg' },
-      { title: 'Dashboard Student', image: 'src/components/assets/screenshot/sitama/homeMahasiswa.jpg' },
-      { title: 'Guidance', image: 'src/components/assets/screenshot/sitama/bimbingan.jpg' },
-      { title: 'Logbook Page', image: 'src/components/assets/screenshot/sitama/logbook.jpg' },
-      { title: 'Add Guidance', image: 'src/components/assets/screenshot/sitama/addBimbingan.jpg' },
-      { title: 'Profile', image: 'src/components/assets/screenshot/sitama/profile.jpg' },
-      { title: 'Dashboard Lecturer', image: 'src/components/assets/screenshot/sitama/homeDosen.jpg' },
-      { title: 'Detail Student', image: 'src/components/assets/screenshot/sitama/detailStudent.jpg' },
-      { title: 'Guidance Action', image: 'src/components/assets/screenshot/sitama/actionBimbingan.jpg' },
-      { title: 'Score Page', image: 'src/components/assets/screenshot/sitama/detailNilai.jpg' }
+      { title: 'Login', image: HealthifyImages.login },
+      { title: 'Dashboard Student', image: HealthifyImages.homeMahasiswa },
+      { title: 'Guidance', image: HealthifyImages.bimbingan },
+      { title: 'Logbook Page', image: HealthifyImages.logbook },
+      { title: 'Add Guidance', image: HealthifyImages.addBimbingan },
+      { title: 'Profile', image: HealthifyImages.profile },
+      { title: 'Dashboard Lecturer', image: HealthifyImages.homeDosen },
+      { title: 'Detail Student', image: HealthifyImages.detailStudent },
+      { title: 'Guidance Action', image: HealthifyImages.actionBimbingan },
+      { title: 'Score Page', image: HealthifyImages.detailNilai }
     ]
   },
 ];

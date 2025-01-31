@@ -6,7 +6,7 @@ import './styles/globals.css';
 import { ThemeProvider } from './styles/themeContexts';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
-import { NotFound } from './components/ui/404';
+import { NotFound } from './components/404';
 
 function MainContent() {
   const [projectsVisible, setProjectsVisible] = useState(false);

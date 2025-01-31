@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { MenuIcon, XIcon, GithubIcon, LinkedinIcon } from 'lucide-react';
 import ThemeToggle from '../styles/theme';
 import { ImageViewer } from './helper/ImageViewer';
+import profilePhoto from '@/public/assets/profile/foto.jpg';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +10,7 @@ const Navigation = () => {
 
   // Gambar untuk ImageViewer
   const profileImage = {
-    image: 'src/components/assets/profile/foto.jpg',
+    image: profilePhoto,
     title: 'Profile Picture',
   };
 
