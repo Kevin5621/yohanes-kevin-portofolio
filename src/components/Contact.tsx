@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MailIcon, PhoneIcon, MessagesSquare } from 'lucide-react';
+import { MailIcon, PhoneIcon, GithubIcon, LinkedinIcon } from 'lucide-react';
 import { Typewriter } from './hook/Animated_typeWritter';
 import AnimatedNeumorphicIcon from './hook/AnimaterIcon';
 import AnimatedButton from './hook/AnimatedButton';
@@ -148,9 +148,9 @@ const Contact: React.FC = () => {
 
   const ICON_ANIMATION_DURATION = 300;
   const TYPEWRITER_DURATION = 800;
-  const DISCORD_START = 300;
-  const EMAIL_START = DISCORD_START + TYPEWRITER_DURATION;
+  const EMAIL_START = 300;
   const PHONE_START = EMAIL_START + TYPEWRITER_DURATION;
+  const SOCIAL_LINKS_START = PHONE_START + TYPEWRITER_DURATION;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -190,38 +190,6 @@ const Contact: React.FC = () => {
                 />
               )}
             </h3>
-            
-            {/* Contact info sections remain the same */}
-            <div className="flex items-center space-x-4">
-              <AnimatedNeumorphicIcon 
-                Icon={MessagesSquare} 
-                delay={DISCORD_START}
-                isVisible={isVisible}
-                href="https://discord.com/users/kevinyup_"
-              />
-              <div>
-                <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
-                  {isVisible && (
-                    <Typewriter 
-                      text="Discord" 
-                      speed={50} 
-                      delay={DISCORD_START + ICON_ANIMATION_DURATION}
-                      className="text-lg font-medium text-gray-700 dark:text-gray-200"
-                    />
-                  )}
-                </h4>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {isVisible && (
-                    <Typewriter 
-                      text="kevinyup_" 
-                      speed={50} 
-                      delay={DISCORD_START + ICON_ANIMATION_DURATION}
-                      className="text-gray-600 dark:text-gray-300"
-                    />
-                  )}
-                </p>
-              </div>
-            </div>
 
             {/* Email Section */}
             <div className="flex items-center space-x-4">
@@ -262,7 +230,7 @@ const Contact: React.FC = () => {
                 delay={PHONE_START}
                 isVisible={isVisible}
                 href="tel:+6287810211352"
-                />
+              />
               <div>
                 <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
                   {isVisible && (
@@ -280,6 +248,70 @@ const Contact: React.FC = () => {
                       text="+62 878-1021-1352" 
                       speed={50} 
                       delay={PHONE_START + ICON_ANIMATION_DURATION}
+                      className="text-gray-600 dark:text-gray-300"
+                    />
+                  )}
+                </p>
+              </div>
+            </div>
+
+            {/* GitHub Section */}
+            <div className="flex items-center space-x-4">
+              <AnimatedNeumorphicIcon 
+                Icon={GithubIcon} 
+                delay={SOCIAL_LINKS_START}
+                isVisible={isVisible}
+                href="https://github.com/Kevin5621"
+              />
+              <div>
+                <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
+                  {isVisible && (
+                    <Typewriter 
+                      text="GitHub" 
+                      speed={50} 
+                      delay={SOCIAL_LINKS_START + ICON_ANIMATION_DURATION}
+                      className="text-lg font-medium text-gray-700 dark:text-gray-200"
+                    />
+                  )}
+                </h4>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {isVisible && (
+                    <Typewriter 
+                      text="Kevin5621" 
+                      speed={50} 
+                      delay={SOCIAL_LINKS_START + ICON_ANIMATION_DURATION}
+                      className="text-gray-600 dark:text-gray-300"
+                    />
+                  )}
+                </p>
+              </div>
+            </div>
+
+            {/* LinkedIn Section */}
+            <div className="flex items-center space-x-4">
+              <AnimatedNeumorphicIcon 
+                Icon={LinkedinIcon} 
+                delay={SOCIAL_LINKS_START + ICON_ANIMATION_DURATION}
+                isVisible={isVisible}
+                href="https://www.linkedin.com/in/yohanes-kevin-gilang-pratama-9711a1293/"
+              />
+              <div>
+                <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
+                  {isVisible && (
+                    <Typewriter 
+                      text="LinkedIn" 
+                      speed={50} 
+                      delay={SOCIAL_LINKS_START + (ICON_ANIMATION_DURATION * 2)}
+                      className="text-lg font-medium text-gray-700 dark:text-gray-200"
+                    />
+                  )}
+                </h4>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {isVisible && (
+                    <Typewriter 
+                      text="Yohanes Kevin Gilang Pratama" 
+                      speed={50} 
+                      delay={SOCIAL_LINKS_START + (ICON_ANIMATION_DURATION * 2)}
                       className="text-gray-600 dark:text-gray-300"
                     />
                   )}
