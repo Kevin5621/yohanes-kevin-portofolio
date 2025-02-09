@@ -4,6 +4,7 @@ import { ImageViewer } from '../helper/ImageViewer';
 import { ProjectFeatures } from './types';
 import { Typewriter } from '../hook/Animated_typeWritter';
 import { AnimatedButton } from '../hook/AnimatedButton';
+import { useTheme } from '../../styles/themeContexts';
 
 interface ProjectImage {
   image: string;
@@ -59,6 +60,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const [technologiesFinished, setTechnologiesFinished] = useState(false);
 
   const cardRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
 
   const animateTechnologies = useCallback(() => {
     if (technologies.length > 0 && !hasAnimatedTech.current) {
@@ -92,8 +94,17 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength).trim() + ' ...';
   };
+    
+  useEffect(() => {
+    const forceUpdate = () => {
+      setScrollProgress(prev => prev + 0.01);
+      requestAnimationFrame(() => {
+        setScrollProgress(prev => Math.max(prev - 0.01, 0));
+      });
+    };
+    forceUpdate();
+  }, [theme]);
 
-  // Updated scroll handling to match Hero component
   useEffect(() => {
     const handleScroll = () => {
       if (cardRef.current) {
@@ -244,19 +255,20 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     const scrollEffect = scrollProgress * 1.2;
     const shadowIntensity = Math.max(baseIntensity - scrollEffect, 0);
 
-    // Light theme shadows
     const lightOuterShadow = `
       ${16 * shadowIntensity}px ${16 * shadowIntensity}px ${32 * shadowIntensity}px #d1d1d1,
-      ${-16 * shadowIntensity}px ${-16 * shadowIntensity}px ${32 * shadowIntensity}px #ffffff
+      ${-16 * shadowIntensity}px ${-16 * shadowIntensity}px ${32 * shadowIntensity}px #ffffff,
+      0 0 ${15 * shadowIntensity}px rgba(209, 209, 209, 0.7)
     `;
 
     // Dark theme shadows
     const darkOuterShadow = `
       ${16 * shadowIntensity}px ${16 * shadowIntensity}px ${32 * shadowIntensity}px #151515,
-      ${-16 * shadowIntensity}px ${-16 * shadowIntensity}px ${32 * shadowIntensity}px #353535
+      ${-16 * shadowIntensity}px ${-16 * shadowIntensity}px ${32 * shadowIntensity}px #353535,
+      0 0 ${15 * shadowIntensity}px rgba(21, 21, 21, 0.7)
     `;
 
-    const isDark = window.document.documentElement.classList.contains('dark');
+    const isDark = document.documentElement.classList.contains('dark');
     const shadow = isDark ? darkOuterShadow : lightOuterShadow;
 
     return {
@@ -265,6 +277,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         translateY(${isHovered ? -8 : 0}px)
       `,
       boxShadow: cardVisible ? shadow : 'none',
+      opacity: 1,
     };
   };
 
@@ -280,17 +293,19 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         />
       )}
       
+    <div 
+      ref={cardRef}
+      className={`opacity-0 transition-all duration-1000 ease-out ${
+        isVisible ? 'opacity-100 delay-100' : ''
+      }`}
+    >
       <div 
-        ref={cardRef}
-        className={`opacity-0 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100' : ''}`}
+        className="card rounded-2xl bg-gray-100 dark:bg-dark p-4 relative overflow-hidden h-full
+          transition-all duration-500 ease-in-out will-change-[box-shadow]"
+        style={getCardStyle()}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <div 
-          className="card rounded-2xl bg-gray-100 dark:bg-dark p-4 relative overflow-hidden h-full
-            transition-all duration-700 ease-in-out"
-          style={getCardStyle()}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
           <div className="flex flex-col h-full">
             {/* Fixed Height Top Section */}
             <div className="min-h-[120px]">

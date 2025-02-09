@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Typewriter } from "./hook/Animated_typeWritter";
 import { AnimatedButton } from "./hook/AnimatedButton";
-import { cardClick } from "./hook/getCard";
+import { useTheme } from "../styles/themeContexts";
 
 const Hero = () => {
   const [isPressed, setIsPressed] = useState(false);
@@ -10,6 +10,7 @@ const Hero = () => {
   const [buttonsVisible, setButtonsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const sectionRef = useRef(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const cardTimer = setTimeout(() => setCardVisible(true), 500);
@@ -48,31 +49,77 @@ const Hero = () => {
     };
   }, []);
 
-  const getCardStyles = cardClick(isPressed, cardVisible, scrollProgress);
+  const getCardStyles = () => {
+    const scale = isPressed
+      ? 0.98
+      : cardVisible
+        ? 1 - scrollProgress * 0.02
+        : 0.95;
+
+    const baseIntensity = 1;
+    const scrollEffect = scrollProgress * 1.2;
+    const shadowIntensity = Math.max(baseIntensity - scrollEffect, 0);
+
+    const lightOuterShadow = `
+      ${32 * shadowIntensity}px ${32 * shadowIntensity}px ${64 * shadowIntensity}px #d1d1d1,
+      ${-32 * shadowIntensity}px ${-32 * shadowIntensity}px ${64 * shadowIntensity}px #ffffff,
+      0 0 ${30 * shadowIntensity}px rgba(209, 209, 209, 0.7)
+    `;
+
+    const lightInsetShadow = `
+      inset 24px 24px 48px #d1d1d1,
+      inset -24px -24px 48px #ffffff,
+      inset 0 0 30px rgba(209, 209, 209, 0.7)
+    `;
+
+    const darkOuterShadow = `
+      ${32 * shadowIntensity}px ${32 * shadowIntensity}px ${64 * shadowIntensity}px #151515,
+      ${-32 * shadowIntensity}px ${-32 * shadowIntensity}px ${64 * shadowIntensity}px #353535,
+      0 0 ${30 * shadowIntensity}px rgba(21, 21, 21, 0.7)
+    `;
+
+    const darkInsetShadow = `
+      inset 24px 24px 48px #151515,
+      inset -24px -24px 48px #353535,
+      inset 0 0 30px rgba(21, 21, 21, 0.7)
+    `;
+
+    const shadow = isPressed
+      ? (theme === 'dark' ? darkInsetShadow : lightInsetShadow)
+      : (theme === 'dark' ? darkOuterShadow : lightOuterShadow);
+
+    return {
+      transform: `scale(${scale})`,
+      boxShadow: shadow,
+      transitionProperty: 'transform, box-shadow, opacity',
+      transitionDuration: '1000ms',
+      transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+    };
+  };
 
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
     if (section) {
-        const targetPosition = section.getBoundingClientRect().top + window.pageYOffset;
-        const startPosition = window.pageYOffset;
-        const distance = targetPosition - startPosition;
-        const duration = 1000;
-        let startTime: number | null = null;
+      const targetPosition = section.getBoundingClientRect().top + window.pageYOffset;
+      const startPosition = window.pageYOffset;
+      const distance = targetPosition - startPosition;
+      const duration = 1000;
+      let startTime: number | null = null;
 
-        const animation = (currentTime: number) => {
-            if (startTime === null) startTime = currentTime;
-            const timeElapsed = currentTime - startTime;
-            const scrollProgress = Math.min(timeElapsed / duration, 1);
-            const ease = easeInOutQuad(scrollProgress);
-            window.scrollTo(0, startPosition + distance * ease);
-            if (timeElapsed < duration) requestAnimationFrame(animation);
-        };
+      const animation = (currentTime: number) => {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const scrollProgress = Math.min(timeElapsed / duration, 1);
+        const ease = easeInOutQuad(scrollProgress);
+        window.scrollTo(0, startPosition + distance * ease);
+        if (timeElapsed < duration) requestAnimationFrame(animation);
+      };
 
-        const easeInOutQuad = (t: number) => {
-            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-        };
+      const easeInOutQuad = (t: number) => {
+        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      };
 
-        requestAnimationFrame(animation);
+      requestAnimationFrame(animation);
     }
   };
 

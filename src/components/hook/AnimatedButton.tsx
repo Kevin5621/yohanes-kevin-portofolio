@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Typewriter } from "./Animated_typeWritter";
-import { useTheme } from "../../styles/themeContexts";
 
 export interface AnimatedButtonProps {
   text: string;
@@ -28,16 +27,6 @@ export const AnimatedButton = ({
   const [isPressed, setIsPressed] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [contentVisible, setContentVisible] = useState(false);
-  const { theme } = useTheme();
-
-  // Force rerender when theme changes
-  useEffect(() => {
-    const forceUpdate = () => {
-      setScrollProgress(prev => prev + 0.01);
-      setTimeout(() => setScrollProgress(prev => Math.max(prev - 0.01, 0)), 50);
-    };
-    forceUpdate();
-  }, [theme]);
 
   useEffect(() => {
     if (buttonVisible) {
@@ -79,7 +68,7 @@ export const AnimatedButton = ({
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [parentRef]);
-  
+
   const getButtonStyles = () => {
     const baseIntensity = variant === 'subtle' ? 0.5 : 1;
     const scrollEffect = scrollProgress * (variant === 'subtle' ? 0.6 : 1.2);
@@ -87,9 +76,6 @@ export const AnimatedButton = ({
 
     const subtleFactor = variant === 'subtle' ? 0.5 : 1;
 
-    // Get theme directly from document instead of relying on context
-    const isDark = document.documentElement.classList.contains('dark');
-    
     // Light theme shadows
     const lightOuterShadow = `
       ${16 * shadowIntensity * subtleFactor}px ${16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #d1d1d1,
@@ -116,6 +102,7 @@ export const AnimatedButton = ({
       inset 0 0 ${15 * subtleFactor}px rgba(21, 21, 21, ${variant === 'subtle' ? '0.4' : '0.7'})
     `;
 
+    const isDark = window.document.documentElement.classList.contains('dark');
     const shadow = isPressed 
       ? (isDark ? darkInsetShadow : lightInsetShadow)
       : (isDark ? darkOuterShadow : lightOuterShadow);
@@ -123,9 +110,8 @@ export const AnimatedButton = ({
     return {
       transform: `scale(${buttonVisible ? (isPressed ? 0.98 : 1) : 0.95})`,
       boxShadow: buttonVisible ? shadow : 'none',
-      opacity: 1, // Add this to ensure visibility
       transitionProperty: 'transform, box-shadow',
-      transitionDuration: '200ms',
+      transitionDuration: '1000ms',
       transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
     };
   };
