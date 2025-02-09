@@ -8,10 +8,37 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
 
-  // Gambar untuk ImageViewer
   const profileImage = {
     image: profilePhoto,
     title: 'Profile Picture',
+  };
+
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    if (section) {
+      const targetPosition = section.getBoundingClientRect().top + window.pageYOffset;
+      const startPosition = window.pageYOffset;
+      const distance = targetPosition - startPosition;
+      const duration = 1000;
+      let startTime: number | null = null;
+
+      const easeInOutQuad = (t: number) => {
+        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      };
+
+      const animation = (currentTime: number) => {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const scrollProgress = Math.min(timeElapsed / duration, 1);
+        const ease = easeInOutQuad(scrollProgress);
+        window.scrollTo(0, startPosition + distance * ease);
+        if (timeElapsed < duration) requestAnimationFrame(animation);
+      };
+
+      requestAnimationFrame(animation);
+    }
+    // Close mobile menu after clicking a link
+    setIsOpen(false);
   };
 
   return (
@@ -42,7 +69,7 @@ const Navigation = () => {
         <div className="flex items-center space-x-4">
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <NavLinks />
+            <NavLinks onNavigate={scrollToSection} />
             <SocialLinks />
           </div>
 
@@ -65,7 +92,7 @@ const Navigation = () => {
         {isOpen && (
           <div className="absolute top-full left-0 right-0 bg-gray-100 dark:bg-dark p-4 md:hidden shadow-neumorph dark:shadow-neumorph-dark transition-colors duration-200">
             <div className="flex flex-col space-y-4">
-              <NavLinks />
+              <NavLinks onNavigate={scrollToSection} />
               <div className="flex justify-center space-x-4">
                 <SocialLinks />
               </div>
@@ -77,16 +104,16 @@ const Navigation = () => {
   );
 };
 
-const NavLinks = () => (
+const NavLinks = ({ onNavigate }: { onNavigate: (id: string) => void }) => (
   <>
     {['Home', 'Projects', 'Contact'].map((item) => (
-      <a
+      <button
         key={item}
-        href={`#${item.toLowerCase()}`}
+        onClick={() => onNavigate(item.toLowerCase())}
         className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
       >
         {item}
-      </a>
+      </button>
     ))}
   </>
 );

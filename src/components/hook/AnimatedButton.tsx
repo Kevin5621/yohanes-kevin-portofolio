@@ -135,8 +135,10 @@ export const AnimatedButton = ({
       <button 
         type={type}
         className={`w-full h-full bg-gray-100 dark:bg-dark text-gray-700 dark:text-gray-200 
-                   transition-all duration-500 rounded-lg flex items-center justify-center gap-2
-                   ${variant === 'subtle' ? 'bg-opacity-90' : ''}`}
+          hover:shadow-neumorph-hover dark:hover:shadow-neumorph-dark-hover 
+          active:shadow-neumorph-inset dark:active:shadow-neumorph-dark-inset 
+          transition-shadow rounded-lg flex items-center justify-center gap-2
+          ${variant === 'subtle' ? 'bg-opacity-90' : ''}`}
         onClick={onClick}
       >
         {buttonVisible && (
