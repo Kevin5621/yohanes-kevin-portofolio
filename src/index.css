@@ -34,13 +34,6 @@
   }
 }
 
-/* Smooth transitions for interactive elements */
-button, a, .interactive {
-  transition: transform 200ms ease-out,
-              box-shadow 200ms ease-out,
-              opacity 200ms ease-out;
-}
-
 /* Theme changes should be instant */
 .dark, [class*="dark:"], [class*="dark\\:"] {
   transition: none;
@@ -59,17 +52,4 @@ button, a, .interactive {
 
 .animate-fadeIn {
   animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Animation delays for staggered entrance */
-.animation-delay-100 {
-  animation-delay: 100ms;
-}
-
-.animation-delay-200 {
-  animation-delay: 200ms;
-}
-
-.animation-delay-300 {
-  animation-delay: 300ms;
 }

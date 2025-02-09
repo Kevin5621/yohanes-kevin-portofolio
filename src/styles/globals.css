@@ -41,7 +41,7 @@
 
 /* Interactive elements transitions */
 .interactive-element {
-  transition: transform 200ms ease-out,
+  transition: transform 00ms ease-out,
               box-shadow 200ms ease-out,
               opacity 200ms ease-out !important;
 }
@@ -64,13 +64,6 @@
 
 /* Override for cards to allow smooth hover */
 .card {
-  transition: transform 200ms ease-in-out !important;
-}
-
-/* Keep other hover transitions smooth */
-button:hover,
-a:hover,
-[class*="hover"]:hover {
   transition: transform 200ms ease-in-out !important;
 }
 

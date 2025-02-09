@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Typewriter } from "./Animated_typeWritter";
-import { useTheme } from "../../styles/themeContexts"; // Sesuaikan path
+import { useTheme } from "../../styles/themeContexts";
 
 export interface AnimatedButtonProps {
   text: string;
@@ -77,43 +77,33 @@ export const AnimatedButton = ({
     const shadowIntensity = Math.max(baseIntensity - scrollEffect, 0);
     const subtleFactor = variant === 'subtle' ? 0.5 : 1;
 
-    // Light theme shadows
-    const lightOuterShadow = `
-      ${16 * shadowIntensity * subtleFactor}px ${16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #d1d1d1,
-      ${-16 * shadowIntensity * subtleFactor}px ${-16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #ffffff,
-      0 0 ${15 * shadowIntensity}px rgba(209, 209, 209, ${variant === 'subtle' ? '0.4' : '0.7'})
-    `;
-    
-    const lightInsetShadow = `
-      inset ${12 * subtleFactor}px ${12 * subtleFactor}px ${24 * subtleFactor}px #d1d1d1,
-      inset ${-12 * subtleFactor}px ${-12 * subtleFactor}px ${24 * subtleFactor}px #ffffff,
-      inset 0 0 ${15 * subtleFactor}px rgba(209, 209, 209, ${variant === 'subtle' ? '0.4' : '0.7'})
-    `;
-
-    // Dark theme shadows
-    const darkOuterShadow = `
-      ${16 * shadowIntensity * subtleFactor}px ${16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #151515,
-      ${-16 * shadowIntensity * subtleFactor}px ${-16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #353535,
-      0 0 ${15 * shadowIntensity}px rgba(21, 21, 21, ${variant === 'subtle' ? '0.4' : '0.7'})
-    `;
-    
-    const darkInsetShadow = `
-      inset ${12 * subtleFactor}px ${12 * subtleFactor}px ${24 * subtleFactor}px #151515,
-      inset ${-12 * subtleFactor}px ${-12 * subtleFactor}px ${24 * subtleFactor}px #353535,
-      inset 0 0 ${15 * subtleFactor}px rgba(21, 21, 21, ${variant === 'subtle' ? '0.4' : '0.7'})
-    `;
-
-    const shadow = isPressed 
-      ? (theme === 'dark' ? darkInsetShadow : lightInsetShadow)
-      : (theme === 'dark' ? darkOuterShadow : lightOuterShadow);
-
     return {
       transform: `scale(${buttonVisible ? (isPressed ? 0.98 : 1) : 0.95})`,
-      boxShadow: buttonVisible ? shadow : 'none',
-      transitionProperty: 'transform, box-shadow',
+      boxShadow: buttonVisible ? getThemeShadow(shadowIntensity, subtleFactor) : 'none',
+      transitionProperty: 'transform',
       transitionDuration: '1000ms',
       transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
     };
+  };
+
+  const getThemeShadow = (shadowIntensity: number, subtleFactor: number) => {
+      if (isPressed) {
+        return theme === 'dark'
+          ? `inset ${12 * subtleFactor}px ${12 * subtleFactor}px ${24 * subtleFactor}px #151515,
+            inset ${-12 * subtleFactor}px ${-12 * subtleFactor}px ${24 * subtleFactor}px #353535,
+            inset 0 0 ${15 * subtleFactor}px rgba(21, 21, 21, ${variant === 'subtle' ? '0.4' : '0.7'})`
+          : `inset ${12 * subtleFactor}px ${12 * subtleFactor}px ${24 * subtleFactor}px #d1d1d1,
+            inset ${-12 * subtleFactor}px ${-12 * subtleFactor}px ${24 * subtleFactor}px #ffffff,
+            inset 0 0 ${15 * subtleFactor}px rgba(209, 209, 209, ${variant === 'subtle' ? '0.4' : '0.7'})`;
+      }
+
+      return theme === 'dark'
+        ? `${16 * shadowIntensity * subtleFactor}px ${16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #151515,
+          ${-16 * shadowIntensity * subtleFactor}px ${-16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #353535,
+          0 0 ${15 * shadowIntensity}px rgba(21, 21, 21, ${variant === 'subtle' ? '0.4' : '0.7'})`
+        : `${16 * shadowIntensity * subtleFactor}px ${16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #d1d1d1,
+          ${-16 * shadowIntensity * subtleFactor}px ${-16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #ffffff,
+          0 0 ${15 * shadowIntensity}px rgba(209, 209, 209, ${variant === 'subtle' ? '0.4' : '0.7'})`;
   };
 
   const widthClasses = {

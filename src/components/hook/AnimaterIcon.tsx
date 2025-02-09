@@ -66,7 +66,6 @@ const AnimatedNeumorphicIcon: React.FC<AnimatedNeumorphicIconProps> = ({
         transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
         opacity 300ms cubic-bezier(0.4, 0, 0.2, 1),
         padding 300ms cubic-bezier(0.4, 0, 0.2, 1),
-        box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1)
       `
       }}
     >
