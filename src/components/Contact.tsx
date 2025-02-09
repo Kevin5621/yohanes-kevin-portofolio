@@ -190,71 +190,6 @@ const Contact: React.FC = () => {
                 />
               )}
             </h3>
-
-            {/* Email Section */}
-            <div className="flex items-center space-x-4">
-              <AnimatedNeumorphicIcon 
-                Icon={MailIcon} 
-                delay={EMAIL_START}
-                isVisible={isVisible}
-                href="mailto:yohaneskevin11222@gmail.com"
-              />
-              <div>
-                <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
-                  {isVisible && (
-                    <Typewriter 
-                      text="Email" 
-                      speed={50} 
-                      delay={EMAIL_START + ICON_ANIMATION_DURATION}
-                      className="text-lg font-medium text-gray-700 dark:text-gray-200"
-                    />
-                  )}
-                </h4>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {isVisible && (
-                    <Typewriter 
-                      text="yohaneskevin11222@gmail.com" 
-                      speed={50} 
-                      delay={EMAIL_START + ICON_ANIMATION_DURATION}
-                      className="text-gray-600 dark:text-gray-300"
-                    />
-                  )}
-                </p>
-              </div>
-            </div>
-
-            {/* Phone Section */}
-            <div className="flex items-center space-x-4">
-              <AnimatedNeumorphicIcon 
-                Icon={PhoneIcon} 
-                delay={PHONE_START}
-                isVisible={isVisible}
-                href="tel:+6287810211352"
-              />
-              <div>
-                <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
-                  {isVisible && (
-                    <Typewriter 
-                      text="Phone" 
-                      speed={50} 
-                      delay={PHONE_START + ICON_ANIMATION_DURATION}
-                      className="text-lg font-medium text-gray-700 dark:text-gray-200"
-                    />
-                  )}
-                </h4>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {isVisible && (
-                    <Typewriter 
-                      text="+62 878-1021-1352" 
-                      speed={50} 
-                      delay={PHONE_START + ICON_ANIMATION_DURATION}
-                      className="text-gray-600 dark:text-gray-300"
-                    />
-                  )}
-                </p>
-              </div>
-            </div>
-
             {/* GitHub Section */}
             <div className="flex items-center space-x-4">
               <AnimatedNeumorphicIcon 
@@ -286,7 +221,6 @@ const Contact: React.FC = () => {
                 </p>
               </div>
             </div>
-
             {/* LinkedIn Section */}
             <div className="flex items-center space-x-4">
               <AnimatedNeumorphicIcon 
@@ -312,6 +246,68 @@ const Contact: React.FC = () => {
                       text="Yohanes Kevin Gilang Pratama" 
                       speed={50} 
                       delay={SOCIAL_LINKS_START + (ICON_ANIMATION_DURATION * 2)}
+                      className="text-gray-600 dark:text-gray-300"
+                    />
+                  )}
+                </p>
+              </div>
+            </div>
+            {/* Email Section */}
+            <div className="flex items-center space-x-4">
+              <AnimatedNeumorphicIcon 
+                Icon={MailIcon} 
+                delay={SOCIAL_LINKS_START + (ICON_ANIMATION_DURATION * 3)}
+                isVisible={isVisible}
+                href="mailto:yohaneskevin11222@gmail.com"
+              />
+              <div>
+                <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
+                  {isVisible && (
+                    <Typewriter 
+                      text="Email" 
+                      speed={50} 
+                      delay={SOCIAL_LINKS_START + (ICON_ANIMATION_DURATION * 4)}
+                      className="text-lg font-medium text-gray-700 dark:text-gray-200"
+                    />
+                  )}
+                </h4>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {isVisible && (
+                    <Typewriter 
+                      text="yohaneskevin11222@gmail.com" 
+                      speed={50} 
+                      delay={SOCIAL_LINKS_START + (ICON_ANIMATION_DURATION * 4)}
+                      className="text-gray-600 dark:text-gray-300"
+                    />
+                  )}
+                </p>
+              </div>
+            </div>
+            {/* Phone Section */}
+            <div className="flex items-center space-x-4">
+              <AnimatedNeumorphicIcon 
+                Icon={PhoneIcon} 
+                delay={SOCIAL_LINKS_START + (ICON_ANIMATION_DURATION * 5)}
+                isVisible={isVisible}
+                href="tel:+6287810211352"
+              />
+              <div>
+                <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
+                  {isVisible && (
+                    <Typewriter 
+                      text="Phone" 
+                      speed={50} 
+                      delay={SOCIAL_LINKS_START + (ICON_ANIMATION_DURATION * 6)}
+                      className="text-lg font-medium text-gray-700 dark:text-gray-200"
+                    />
+                  )}
+                </h4>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {isVisible && (
+                    <Typewriter 
+                      text="+62 878-1021-1352" 
+                      speed={50} 
+                      delay={SOCIAL_LINKS_START + (ICON_ANIMATION_DURATION * 6)}
                       className="text-gray-600 dark:text-gray-300"
                     />
                   )}
