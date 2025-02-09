@@ -255,31 +255,43 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     const scrollEffect = scrollProgress * 1.2;
     const shadowIntensity = Math.max(baseIntensity - scrollEffect, 0);
 
-    // Light theme shadows
+    // Enhanced light theme shadows with faster transition
     const lightOuterShadow = `
       ${16 * shadowIntensity}px ${16 * shadowIntensity}px ${32 * shadowIntensity}px #d1d1d1,
       ${-16 * shadowIntensity}px ${-16 * shadowIntensity}px ${32 * shadowIntensity}px #ffffff,
       0 0 ${15 * shadowIntensity}px rgba(209, 209, 209, 0.7)
     `;
 
-    // Dark theme shadows
+    // Enhanced dark theme shadows with faster transition
     const darkOuterShadow = `
       ${16 * shadowIntensity}px ${16 * shadowIntensity}px ${32 * shadowIntensity}px #151515,
       ${-16 * shadowIntensity}px ${-16 * shadowIntensity}px ${32 * shadowIntensity}px #353535,
       0 0 ${15 * shadowIntensity}px rgba(21, 21, 21, 0.7)
     `;
 
-    const shadow = theme === 'dark' ? darkOuterShadow : lightOuterShadow;
-
     return {
       transform: `
         scale(${cardVisible ? (isHovered ? 1.02 : 1) : 0.95})
         translateY(${isHovered ? -8 : 0}px)
       `,
-      boxShadow: cardVisible ? shadow : 'none',
+      boxShadow: cardVisible ? (theme === 'dark' ? darkOuterShadow : lightOuterShadow) : 'none',
       opacity: 1,
+      transition: 'all 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
     };
   };
+
+  // Add a useEffect for theme changes
+  useEffect(() => {
+    const handleThemeChange = () => {
+      // Force immediate re-render on theme change
+      setScrollProgress(prev => prev + 0.001);
+      requestAnimationFrame(() => {
+        setScrollProgress(prev => Math.max(prev - 0.001, 0));
+      });
+    };
+
+    handleThemeChange();
+  }, [theme]);
 
   return (
     <>
@@ -293,19 +305,19 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         />
       )}
       
-    <div 
-      ref={cardRef}
-      className={`opacity-0 transition-all duration-1000 ease-out ${
-        isVisible ? 'opacity-100 delay-100' : ''
-      }`}
-    >
       <div 
-        className="card rounded-2xl bg-gray-100 dark:bg-dark p-4 relative overflow-hidden h-full
-          transition-all duration-500 ease-in-out will-change-[box-shadow]"
-        style={getCardStyle()}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        ref={cardRef}
+        className={`opacity-0 transition-all duration-300 ease-out ${
+          isVisible ? 'opacity-100 delay-100' : ''
+        }`}
       >
+        <div 
+          className="card rounded-2xl bg-gray-100 dark:bg-dark p-4 relative overflow-hidden h-full
+            transition-all duration-200 ease-in-out will-change-[background-color,box-shadow]"
+          style={getCardStyle()}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <div className="flex flex-col h-full">
             {/* Fixed Height Top Section */}
             <div className="min-h-[120px]">
