@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Typewriter } from "./Animated_typeWritter";
+import { useTheme } from "../../styles/themeContexts"; // Sesuaikan path
 
 export interface AnimatedButtonProps {
   text: string;
@@ -24,6 +25,7 @@ export const AnimatedButton = ({
   width = 'default',
   type = 'button'
 }: AnimatedButtonProps) => {
+  const { theme } = useTheme();
   const [isPressed, setIsPressed] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [contentVisible, setContentVisible] = useState(false);
@@ -73,7 +75,6 @@ export const AnimatedButton = ({
     const baseIntensity = variant === 'subtle' ? 0.5 : 1;
     const scrollEffect = scrollProgress * (variant === 'subtle' ? 0.6 : 1.2);
     const shadowIntensity = Math.max(baseIntensity - scrollEffect, 0);
-
     const subtleFactor = variant === 'subtle' ? 0.5 : 1;
 
     // Light theme shadows
@@ -102,10 +103,9 @@ export const AnimatedButton = ({
       inset 0 0 ${15 * subtleFactor}px rgba(21, 21, 21, ${variant === 'subtle' ? '0.4' : '0.7'})
     `;
 
-    const isDark = window.document.documentElement.classList.contains('dark');
     const shadow = isPressed 
-      ? (isDark ? darkInsetShadow : lightInsetShadow)
-      : (isDark ? darkOuterShadow : lightOuterShadow);
+      ? (theme === 'dark' ? darkInsetShadow : lightInsetShadow)
+      : (theme === 'dark' ? darkOuterShadow : lightOuterShadow);
 
     return {
       transform: `scale(${buttonVisible ? (isPressed ? 0.98 : 1) : 0.95})`,
@@ -135,9 +135,7 @@ export const AnimatedButton = ({
       <button 
         type={type}
         className={`w-full h-full bg-gray-100 dark:bg-dark text-gray-700 dark:text-gray-200 
-                   hover:shadow-neumorph-hover dark:hover:shadow-neumorph-dark-hover 
-                   active:shadow-neumorph-inset dark:active:shadow-neumorph-dark-inset 
-                   transition-shadow rounded-lg flex items-center justify-center gap-2
+                   transition-all duration-500 rounded-lg flex items-center justify-center gap-2
                    ${variant === 'subtle' ? 'bg-opacity-90' : ''}`}
         onClick={onClick}
       >
