@@ -34,8 +34,22 @@
   }
 }
 
+/* Base transitions */
 * {
-  transition: none !important;
+  transition: none;
+}
+
+/* Interactive elements transitions */
+.interactive-element {
+  transition: transform 200ms ease-out,
+              box-shadow 200ms ease-out,
+              opacity 200ms ease-out !important;
+}
+
+/* Scroll-based animations */
+.scroll-animate {
+  transition: transform 400ms ease-out,
+              opacity 400ms ease-out !important;
 }
 
 /* Add back specific transitions only for hover effects */
@@ -60,7 +74,7 @@ a:hover,
   transition: transform 200ms ease-in-out !important;
 }
 
-/* Theme toggle slider styles */
+/* Scrollbar Styles */
 ::-webkit-scrollbar {
   width: 16px;
   height: 16px;
