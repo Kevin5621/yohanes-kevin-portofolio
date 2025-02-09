@@ -255,6 +255,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     const scrollEffect = scrollProgress * 1.2;
     const shadowIntensity = Math.max(baseIntensity - scrollEffect, 0);
 
+    // Light theme shadows
     const lightOuterShadow = `
       ${16 * shadowIntensity}px ${16 * shadowIntensity}px ${32 * shadowIntensity}px #d1d1d1,
       ${-16 * shadowIntensity}px ${-16 * shadowIntensity}px ${32 * shadowIntensity}px #ffffff,
@@ -268,8 +269,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       0 0 ${15 * shadowIntensity}px rgba(21, 21, 21, 0.7)
     `;
 
-    const isDark = document.documentElement.classList.contains('dark');
-    const shadow = isDark ? darkOuterShadow : lightOuterShadow;
+    const shadow = theme === 'dark' ? darkOuterShadow : lightOuterShadow;
 
     return {
       transform: `

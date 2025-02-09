@@ -164,6 +164,7 @@ const Projects: React.FC<ProjectsProps> = ({ isVisible }) => {
                   index={index * 2} 
                   isVisible={visibleProjects.includes(index * 2)}
                   typewriterDelay={0}
+                  
                 />
               </div>
             ))}
@@ -181,6 +182,7 @@ const Projects: React.FC<ProjectsProps> = ({ isVisible }) => {
                   index={index * 2 + 1} 
                   isVisible={visibleProjects.includes(index * 2 + 1)}
                   typewriterDelay={0}
+                  
                 />
               </div>
             ))}
@@ -199,6 +201,7 @@ const Projects: React.FC<ProjectsProps> = ({ isVisible }) => {
                 index={index} 
                 isVisible={visibleProjects.includes(index)}
                 typewriterDelay={0}
+                
               />
             </div>
           ))}
