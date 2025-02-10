@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ProjectCard } from './model/ProjectCard';
 import { Project } from './model/types';
 import { Typewriter } from './hook/Animated_typeWritter';
-import { HealthifyImages, SitamaImages } from './model/images';
+import { SmartIrrigationImages, SitamaImages } from './model/images';
 
 const projects: Project[] = [
   {
@@ -48,47 +48,43 @@ const projects: Project[] = [
     ]
   },
   {
-    title: 'Healthify2',
-    description: 'A health tracking app that helps users monitor their fitness and wellness goals. Includes features for calorie tracking, exercise planning, and health reports.',
-    technologies: ['React Native', 'Firebase', 'TypeScript', 'Node.js'],
-    githubUrl: 'https://github.com/example/healthify',
+    title: 'IoT Smart Irrigation System',
+    description: 'An IoT-based smart irrigation system that automates watering plants based on schedules or soil moisture thresholds. It also supports manual control for flexibility.',
+    technologies: ['Dart', 'MQTT', 'ESP32', 'Soil Moisture Sensor', 'Relay Module'],
+    githubUrl: 'https://github.com/Kevin5621/iot_smart_irigation',
     features: {
       sections: [
         {
-          title: 'User Features',
+          title: 'Core Features',
           items: [
-            'Track daily calorie intake',
-            'Log workouts and physical activities',
-            'Set and monitor weight loss goals',
-            'View personalized health reports',
-            'Integrate with wearable devices'
+            'Automated watering based on predefined schedules',
+            'Real-time soil moisture monitoring with threshold-based triggering',
+            'Manual watering control via mobile app or web interface',
+            'Data logging and visualization of soil moisture levels',
+            'Integration with MQTT for real-time communication'
           ]
         },
         {
-          title: 'Premium Features',
+          title: 'Hardware Components',
           items: [
-            'Access to advanced fitness plans',
-            'Personalized meal recommendations',
-            'One-on-one sessions with a nutritionist',
-            'Detailed body composition analysis',
-            'Priority support'
+            'ESP32 microcontroller for processing and connectivity',
+            'Soil moisture sensor for detecting water levels',
+            'Relay module to control water pump',
+            'Water pump for irrigation',
+            'Power supply and wiring setup'
           ]
         }
       ]
     },
     image: [
-      { title: 'Login', image: HealthifyImages.login },
-      { title: 'Dashboard Student', image: HealthifyImages.homeMahasiswa },
-      { title: 'Guidance', image: HealthifyImages.bimbingan },
-      { title: 'Logbook Page', image: HealthifyImages.logbook },
-      { title: 'Add Guidance', image: HealthifyImages.addBimbingan },
-      { title: 'Profile', image: HealthifyImages.profile },
-      { title: 'Dashboard Lecturer', image: HealthifyImages.homeDosen },
-      { title: 'Detail Student', image: HealthifyImages.detailStudent },
-      { title: 'Guidance Action', image: HealthifyImages.actionBimbingan },
-      { title: 'Score Page', image: HealthifyImages.detailNilai }
+      { title: 'System Overview ON', image: SmartIrrigationImages.systemOverviewON },
+      { title: 'System Overview OFF', image: SmartIrrigationImages.systemOverviewOFF },
+      { title: 'Control Interface', image: SmartIrrigationImages.controlInterface },
+      { title: 'Add Schedule', image: SmartIrrigationImages.scheduleInterface },
+      { title: 'Schedule', image: SmartIrrigationImages.dataVisualization },
+      { title: 'Hardware Setup', video: SmartIrrigationImages.hardwareSetup }
     ]
-  },
+  }
 ];
 
 interface ProjectsProps {

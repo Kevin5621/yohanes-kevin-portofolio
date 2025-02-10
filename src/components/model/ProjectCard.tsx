@@ -1,20 +1,21 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { ChevronLeftIcon, ChevronRightIcon, GithubIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
+import { ChevronLeftIcon, ChevronRightIcon, GithubIcon, ChevronDownIcon, ChevronUpIcon, PlayIcon, PauseIcon } from 'lucide-react';
 import { ImageViewer } from '../helper/ImageViewer';
 import { ProjectFeatures } from './types';
 import { Typewriter } from '../hook/Animated_typeWritter';
 import { AnimatedButton } from '../hook/AnimatedButton';
 import { useTheme } from '../../styles/themeContexts';
 
-interface ProjectImage {
-  image: string;
+interface ProjectMedia {
+  image?: string;
+  video?: string;
   title: string;
 }
 
 interface Project {
   title: string;
   description: string;
-  image: ProjectImage[];
+  image: ProjectMedia[];
   technologies: string[];
   githubUrl: string;
   features?: ProjectFeatures;
@@ -60,6 +61,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const [technologiesFinished, setTechnologiesFinished] = useState(false);
   const [isEntering, setIsEntering] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const cardRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
@@ -113,7 +116,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     setIsTransitioning(true);
     const timer = setTimeout(() => {
       setIsTransitioning(false);
-    }, );
+    }, 1000);
     return () => clearTimeout(timer);
   }, [theme]);
 
@@ -262,6 +265,59 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     setCurrentImageIndex((prev) => (prev - 1 + image.length) % image.length);
   }, [image.length]);
 
+  const handleMediaClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const currentMedia = image[currentImageIndex];
+    if (currentMedia.video && videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    } else {
+      setIsFullscreen(true);
+    }
+  };
+
+  const renderMedia = () => {
+    const currentMedia = image[currentImageIndex];
+    
+    if (currentMedia.video) {
+      return (
+        <div className="relative w-full h-full">
+          <video
+            ref={videoRef}
+            src={currentMedia.video}
+            className="w-full h-full object-contain"
+            onClick={handleMediaClick}
+            onEnded={() => setIsPlaying(false)}
+          />
+          <button
+            onClick={handleMediaClick}
+            className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 hover:opacity-100 transition-opacity"
+          >
+            {isPlaying ? (
+              <PauseIcon size={48} className="text-white" />
+            ) : (
+              <PlayIcon size={48} className="text-white" />
+            )}
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <img
+        src={currentMedia.image}
+        alt={currentMedia.title}
+        className={`w-full h-full object-contain absolute inset-0 z-30
+          transition-all duration-1000 ease-in-out
+          ${showImage ? 'opacity-100 scale-100 blur-none' : 'opacity-0 scale-95 blur-sm'}`}
+      />
+    );
+  };
+
   const getCardStyle = () => {
     const baseIntensity = 1;
     const scrollEffect = scrollProgress * 1.2;
@@ -293,36 +349,36 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
   return (
     <>
-    {isFullscreen && (
-      <ImageViewer
-        images={image}
-        currentIndex={currentImageIndex}
-        onClose={() => setIsFullscreen(false)}
-        onNext={handleNext}
-        onPrev={handlePrev}
-      />
-    )}
+      {isFullscreen && (
+        <ImageViewer
+          media={image}
+          currentIndex={currentImageIndex}
+          onClose={() => setIsFullscreen(false)}
+          onNext={handleNext}
+          onPrev={handlePrev}
+        />
+      )}
       
       <div 
         ref={cardRef}
         className="transform-gpu"
       >
-      <div 
-        className={`
-          card 
-          rounded-2xl 
-          bg-gray-100 
-          dark:bg-dark 
-          p-4 
-          relative 
-          overflow-hidden 
-          h-full
-          ${isEntering || isTransitioning ? 'card-entrance' : 'card-hover'}
-        `}
-        style={getCardStyle()}
-        onMouseEnter={() => !isEntering && setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
+        <div 
+          className={`
+            card 
+            rounded-2xl 
+            bg-gray-100 
+            dark:bg-dark 
+            p-4 
+            relative 
+            overflow-hidden 
+            h-full
+            ${isEntering || isTransitioning ? 'card-entrance' : 'card-hover'}
+          `}
+          style={getCardStyle()}
+          onMouseEnter={() => !isEntering && setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <div className="flex flex-col h-full">
             {/* Fixed Height Top Section */}
             <div className="min-h-[120px]">
@@ -458,7 +514,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
             {/* Bottom Section with Fixed Heights */}
             <div className="mt-auto">
-              {/* Image Section - Fixed Height */}
+              {/* Image/Video Section - Fixed Height */}
               <div className="h-[300px] mb-4">
                 {image && image.length > 0 && isVisible && technologiesFinished && (
                   <div 
@@ -479,7 +535,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                       className={`relative h-full rounded-lg overflow-hidden cursor-pointer
                         transition-all duration-1000 ease-in-out
                         ${showContent ? 'opacity-100' : 'opacity-0'}`}
-                      onClick={() => setIsFullscreen(true)}
+                      onClick={handleMediaClick}
                     >
                       {/* Layer for morphing effect */}
                       <div 
@@ -490,15 +546,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                             : 'opacity-100 scale-100 rotate-0'}`}
                       />
 
-                      <img
-                        src={image[currentImageIndex].image}
-                        alt={image[currentImageIndex].title}
-                        className={`w-full h-full object-contain absolute inset-0 z-30
-                          transition-all duration-1000 ease-in-out
-                          ${showImage 
-                            ? 'opacity-100 scale-100 blur-none' 
-                            : 'opacity-0 scale-95 blur-sm'}`}
-                      />
+                      {renderMedia()}
 
                       <p 
                         className={`absolute bottom-2 left-2 text-sm text-gray-600 dark:text-gray-300 
@@ -511,24 +559,40 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                         {image[currentImageIndex].title} ({currentImageIndex + 1}/{image.length})
                       </p>
                     </div>
-
+                    {/* Inside the renderMedia section, replace the navigation buttons with: */}
                     {image.length > 1 && (
                       <>
                         <button
                           onClick={handlePrev}
-                          className={`absolute left-0 top-1/2 transform -translate-y-1/2 w-10 h-10
-                                   flex items-center justify-center transition-all duration-500
-                                   ${showNavButtons ? 'opacity-80 hover:opacity-100' : 'opacity-0'}`}
+                          className={`absolute left-0 top-0 h-full w-24
+                            flex items-center justify-start
+                            transition-opacity duration-300 ease-in-out z-40
+                            ${showNavButtons ? 'opacity-100' : 'opacity-0'}`}
                         >
-                          <ChevronLeftIcon size={20} className="text-gray-600 dark:text-gray-300" />
+                          <div className="w-8 h-8 flex items-center justify-center ml-2 group">
+                            <ChevronLeftIcon 
+                              size={24} 
+                              className="text-white/70 group-hover:text-white 
+                                transition-all duration-300 ease-in-out 
+                                drop-shadow-lg" 
+                            />
+                          </div>
                         </button>
                         <button
                           onClick={handleNext}
-                          className={`absolute right-0 top-1/2 transform -translate-y-1/2 w-10 h-10
-                                   flex items-center justify-center transition-all duration-500
-                                   ${showNavButtons ? 'opacity-80 hover:opacity-100' : 'opacity-0'}`}
+                          className={`absolute right-0 top-0 h-full w-24
+                            flex items-center justify-end
+                            transition-opacity duration-300 ease-in-out z-40
+                            ${showNavButtons ? 'opacity-100' : 'opacity-0'}`}
                         >
-                          <ChevronRightIcon size={20} className="text-gray-600 dark:text-gray-300" />
+                          <div className="w-8 h-8 flex items-center justify-center mr-2 group">
+                            <ChevronRightIcon 
+                              size={24} 
+                              className="text-white/70 group-hover:text-white 
+                                transition-all duration-300 ease-in-out 
+                                drop-shadow-lg" 
+                            />
+                          </div>
                         </button>
                       </>
                     )}
@@ -541,14 +605,14 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 <div className="w-48 sm:w-auto">
                   {isVisible && technologiesFinished && (
                     <AnimatedButton
-                    text="View on GitHub"
-                    delay={1000}
-                    buttonVisible={buttonsVisible}
-                    onClick={() => window.open(githubUrl, '_blank', 'noopener,noreferrer')}
-                    icon={<GithubIcon size={16} />}
-                    parentRef={cardRef}
-                    variant="subtle"
-                  />
+                      text="View on GitHub"
+                      delay={1000}
+                      buttonVisible={buttonsVisible}
+                      onClick={() => window.open(githubUrl, '_blank', 'noopener,noreferrer')}
+                      icon={<GithubIcon size={16} />}
+                      parentRef={cardRef}
+                      variant="subtle"
+                    />
                   )}
                 </div>
               </div>

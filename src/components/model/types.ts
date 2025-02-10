@@ -1,15 +1,14 @@
 export interface Screenshot {
+  image?: string;
+  video?: string;
   title: string;
-  image: string;
-}
-
-export interface FeatureSection {
-  title: string;
-  items: string[];
 }
 
 export interface ProjectFeatures {
-  sections: FeatureSection[];
+  sections: {
+    title: string;
+    items: string[];
+  }[];
 }
 
 export interface Project {

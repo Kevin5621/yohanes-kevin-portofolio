@@ -1,5 +1,3 @@
-// src/constants/images/projectImages.ts
-
 import loginSitama from '@/public/assets/screenshot/sitama/login.jpg';
 import homeMahasiswa from '@/public/assets/screenshot/sitama/homeMahasiswa.jpg';
 import bimbingan from '@/public/assets/screenshot/sitama/bimbingan.jpg';
@@ -11,8 +9,13 @@ import detailStudent from '@/public/assets/screenshot/sitama/detailStudent.jpg';
 import actionBimbingan from '@/public/assets/screenshot/sitama/actionBimbingan.jpg';
 import detailNilai from '@/public/assets/screenshot/sitama/detailNilai.jpg';
 
-// Healthify2 Placeholder Images
-import healthifyLogin from '@/public/assets/screenshot/example/test.jpg';
+// SmartIrrigationImages Placeholder Images
+import systemOverviewON from '@/public/assets/screenshot/SmartIrrigation/systemOverviewON.jpg';
+import systemOverviewOFF from '@/public/assets/screenshot/SmartIrrigation/systemOverviewOFF.jpg';
+import scheduleInterface from '@/public/assets/screenshot/SmartIrrigation/scheduleInterface.jpg';
+import controlInterface from '@/public/assets/screenshot/SmartIrrigation/controlInterface.jpg';
+import dataVisualization from '@/public/assets/screenshot/SmartIrrigation/dataVisualization.jpg';
+import hardwareSetup from '@/public/assets/screenshot/SmartIrrigation/hardwareSetup.mp4';
 
 export const SitamaImages = {
   login: loginSitama,
@@ -27,15 +30,11 @@ export const SitamaImages = {
   detailNilai
 };
 
-export const HealthifyImages = {
-  login: healthifyLogin,
-  homeMahasiswa, 
-  bimbingan,     
-  logbook,       
-  addBimbingan,  
-  profile,       
-  homeDosen,     
-  detailStudent, 
-  actionBimbingan, 
-  detailNilai    
+export const SmartIrrigationImages = {
+  systemOverviewON,
+  systemOverviewOFF,
+  scheduleInterface,     
+  controlInterface,       
+  dataVisualization,  
+  hardwareSetup,       
 };
