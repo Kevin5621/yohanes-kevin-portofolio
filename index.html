@@ -5,6 +5,20 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>yohanes-kevin</title>
+    <script>
+      // Check localStorage and system preferences before page load
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+          document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+        } else {
+          // If no saved theme, check system preference
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.classList.toggle('dark', prefersDark);
+          localStorage.setItem('theme', prefersDark ? 'dark' : 'light');
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

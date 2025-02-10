@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -12,14 +13,26 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
-    // Only check localStorage if we're in the browser
+    // Get initial theme from localStorage
     if (typeof window !== 'undefined') {
       return (localStorage.getItem('theme') as Theme) || 'light';
     }
     return 'light';
   });
 
-  // Immediately update theme without transitions
+  // Sync with system theme changes
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e: MediaQueryListEvent) => {
+      const newTheme = e.matches ? 'dark' : 'light';
+      setThemeAndUpdate(newTheme);
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  // Update theme without transitions
   const updateTheme = useCallback((newTheme: Theme) => {
     if (typeof window !== 'undefined') {
       // Remove any existing transition classes
@@ -44,6 +57,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setThemeAndUpdate(newTheme);
   }, [theme, setThemeAndUpdate]);
+
+  // Sync theme with localStorage on mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as Theme;
+    if (savedTheme && savedTheme !== theme) {
+      setThemeAndUpdate(savedTheme);
+    }
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme: setThemeAndUpdate }}>
