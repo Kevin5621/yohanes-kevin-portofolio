@@ -1,5 +1,6 @@
-import SbannerLight from '@/public/assets/screenshot/sitama/banner_light.jpg';
-import SbannerDark from '@/public/assets/screenshot/sitama/banner_dark.jpg';
+import Sbanner from '@/public/assets/screenshot/sitama/banner_light.jpg';
+import SbannerLight from '@/public/assets/screenshot/sitama/banner_light.png';
+import SbannerDark from '@/public/assets/screenshot/sitama/banner_dark.png';
 import loginSitama from '@/public/assets/screenshot/sitama/login.jpg';
 import homeMahasiswa from '@/public/assets/screenshot/sitama/homeMahasiswa.jpg';
 import bimbingan from '@/public/assets/screenshot/sitama/bimbingan.jpg';
@@ -12,8 +13,9 @@ import actionBimbingan from '@/public/assets/screenshot/sitama/actionBimbingan.j
 import detailNilai from '@/public/assets/screenshot/sitama/detailNilai.jpg';
 
 // SmartIrrigationImages Placeholder Images
-import BbannerLight from '@/public/assets/screenshot/SmartIrrigation/Bbanner_light.jpg';
-import BbannerDark from '@/public/assets/screenshot/SmartIrrigation/Bbanner_dark.jpg';
+import Bbanner from '@/public/assets/screenshot/SmartIrrigation/Bbanner_light.jpg';
+import BbannerLight from '@/public/assets/screenshot/SmartIrrigation/Bbanner_light.png';
+import BbannerDark from '@/public/assets/screenshot/SmartIrrigation/Bbanner_dark.png';
 import systemOverviewON from '@/public/assets/screenshot/SmartIrrigation/systemOverviewON.jpg';
 import systemOverviewOFF from '@/public/assets/screenshot/SmartIrrigation/systemOverviewOFF.jpg';
 import scheduleInterface from '@/public/assets/screenshot/SmartIrrigation/scheduleInterface.jpg';
@@ -22,6 +24,7 @@ import dataVisualization from '@/public/assets/screenshot/SmartIrrigation/dataVi
 import hardwareSetup from '@/public/assets/screenshot/SmartIrrigation/hardwareSetup.mp4';
 
 export const SitamaImages = {
+  Sbanner,
   SbannerLight,
   SbannerDark,
   login: loginSitama,
@@ -37,6 +40,7 @@ export const SitamaImages = {
 };
 
 export const SmartIrrigationImages = {
+  Bbanner,
   BbannerLight,
   BbannerDark,
   systemOverviewON,

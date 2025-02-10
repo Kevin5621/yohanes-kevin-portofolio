@@ -37,7 +37,7 @@ const projects: Project[] = [
     image: [
       { 
         title: 'banner', 
-        image: SitamaImages.SbannerLight,
+        image: SitamaImages.Sbanner,
         bannerLight: SitamaImages.SbannerLight,
         bannerDark: SitamaImages.SbannerDark
       },
@@ -85,7 +85,7 @@ const projects: Project[] = [
     image: [
       { 
         title: 'banner', 
-        image: SmartIrrigationImages.BbannerLight,
+        image: SmartIrrigationImages.Bbanner,
         bannerLight: SmartIrrigationImages.BbannerLight,
         bannerDark: SmartIrrigationImages.BbannerDark
       },

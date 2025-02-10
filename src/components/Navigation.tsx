@@ -58,7 +58,7 @@ const Navigation = () => {
         {/* ImageViewer */}
         {isViewerOpen && (
           <ImageViewer
-            images={[profileImage]}
+            media={[profileImage]}
             currentIndex={0}
             onClose={() => setIsViewerOpen(false)}
             onNext={() => {}}
