@@ -35,6 +35,12 @@ const projects: Project[] = [
       ]
     },
     image: [
+      { 
+        title: 'banner', 
+        image: SitamaImages.SbannerLight,
+        bannerLight: SitamaImages.SbannerLight,
+        bannerDark: SitamaImages.SbannerDark
+      },
       { title: 'Login', image: SitamaImages.login },
       { title: 'Dashboard Student', image: SitamaImages.homeMahasiswa },
       { title: 'Guidance', image: SitamaImages.bimbingan },
@@ -77,6 +83,12 @@ const projects: Project[] = [
       ]
     },
     image: [
+      { 
+        title: 'banner', 
+        image: SmartIrrigationImages.BbannerLight,
+        bannerLight: SmartIrrigationImages.BbannerLight,
+        bannerDark: SmartIrrigationImages.BbannerDark
+      },
       { title: 'System Overview ON', image: SmartIrrigationImages.systemOverviewON },
       { title: 'System Overview OFF', image: SmartIrrigationImages.systemOverviewOFF },
       { title: 'Control Interface', image: SmartIrrigationImages.controlInterface },

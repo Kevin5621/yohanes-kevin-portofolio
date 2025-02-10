@@ -1,31 +1,10 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon, GithubIcon, ChevronDownIcon, ChevronUpIcon, PlayIcon, PauseIcon } from 'lucide-react';
 import { ImageViewer } from '../helper/ImageViewer';
-import { ProjectFeatures } from './types';
+import { ProjectCardProps } from './types';
 import { Typewriter } from '../hook/Animated_typeWritter';
 import { AnimatedButton } from '../hook/AnimatedButton';
 import { useTheme } from '../../styles/themeContexts';
-
-interface ProjectMedia {
-  image?: string;
-  video?: string;
-  title: string;
-}
-
-interface Project {
-  title: string;
-  description: string;
-  image: ProjectMedia[];
-  technologies: string[];
-  githubUrl: string;
-  features?: ProjectFeatures;
-}
-
-interface ProjectCardProps extends Project {
-  index: number;
-  isVisible: boolean;
-  typewriterDelay: number;
-}
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
   title,
@@ -66,6 +45,16 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
   const cardRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
+
+  const getBannerImage = useCallback(() => {
+    const currentMedia = image[currentImageIndex];
+    // Check if the current image has theme-specific banners
+    if (currentMedia.bannerLight && currentMedia.bannerDark) {
+      return theme === 'dark' ? currentMedia.bannerDark : currentMedia.bannerLight;
+    }
+    // Fallback to regular image if no theme-specific banners
+    return currentMedia.image;
+  }, [currentImageIndex, theme, image]);
 
   const animateTechnologies = useCallback(() => {
     if (technologies.length > 0 && !hasAnimatedTech.current) {
@@ -309,7 +298,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
     return (
       <img
-        src={currentMedia.image}
+        src={getBannerImage()}
         alt={currentMedia.title}
         className={`w-full h-full object-contain absolute inset-0 z-30
           transition-all duration-1000 ease-in-out
@@ -380,9 +369,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           onMouseLeave={() => setIsHovered(false)}
         >
           <div className="flex flex-col h-full">
-            {/* Fixed Height Top Section */}
+            {/* Title Section */}
             <div className="min-h-[120px]">
-              {/* Title */}
               <h3 className={`text-xl font-semibold text-gray-800 dark:text-gray-100 h-7 mb-3 transition-opacity duration-500 ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
                 {isVisible && (
                   <Typewriter 
@@ -395,7 +383,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 )}
               </h3>
 
-              {/* Description */}
               <div className={`transition-all duration-500 ${showDescription ? 'opacity-100' : 'opacity-0'}`}>
                 {isVisible && titleFinished && (
                   <Typewriter
@@ -409,7 +396,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               </div>
             </div>
 
-            {/* Read More Section - Fixed Height */}
+            {/* Read More Section */}
             <div className="h-[40px] flex items-center">
               {(description.length > 150 || features) && (
                 <div className={`transition-all duration-500 ${showReadMore ? 'opacity-100' : 'opacity-0'}`}>
@@ -437,7 +424,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               )}
             </div>
 
-            {/* Features Content - Expandable */}
+            {/* Expandable Content */}
             <div
               ref={contentRef}
               style={{
@@ -482,7 +469,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               )}
             </div>
 
-            {/* Technologies Section - Fixed Height */}
+            {/* Technologies Section */}
             <div className="h-[60px] flex items-center">
               <div className={`w-full transition-all duration-500 ${showTechnologies ? 'opacity-100' : 'opacity-0'}`}>
                 {isVisible && readMoreFinished && (
@@ -512,9 +499,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               </div>
             </div>
 
-            {/* Bottom Section with Fixed Heights */}
+            {/* Media Section */}
             <div className="mt-auto">
-              {/* Image/Video Section - Fixed Height */}
               <div className="h-[300px] mb-4">
                 {image && image.length > 0 && isVisible && technologiesFinished && (
                   <div 
@@ -537,7 +523,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                         ${showContent ? 'opacity-100' : 'opacity-0'}`}
                       onClick={handleMediaClick}
                     >
-                      {/* Layer for morphing effect */}
                       <div 
                         className={`absolute inset-0 z-20 bg-gray-200 dark:bg-gray-800 
                           transition-all duration-1000 ease-in-out
@@ -559,7 +544,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                         {image[currentImageIndex].title} ({currentImageIndex + 1}/{image.length})
                       </p>
                     </div>
-                    {/* Inside the renderMedia section, replace the navigation buttons with: */}
+
                     {image.length > 1 && (
                       <>
                         <button
@@ -600,7 +585,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 )}
               </div>
 
-              {/* GitHub Button - Fixed Height */}
+              {/* GitHub Button */}
               <div className="h-[40px] flex items-center">
                 <div className="w-48 sm:w-auto">
                   {isVisible && technologiesFinished && (

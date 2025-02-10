@@ -2,6 +2,8 @@ export interface Screenshot {
   image?: string;
   video?: string;
   title: string;
+  bannerLight?: string;
+  bannerDark?: string;
 }
 
 export interface ProjectFeatures {
@@ -18,4 +20,10 @@ export interface Project {
   technologies: string[];
   githubUrl: string;
   features?: ProjectFeatures;
+}
+
+export interface ProjectCardProps extends Project {
+  index: number;
+  isVisible: boolean;
+  typewriterDelay: number;
 }
