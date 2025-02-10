@@ -58,6 +58,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const [descriptionFinished, setDescriptionFinished] = useState(false);
   const [readMoreFinished, setReadMoreFinished] = useState(false);
   const [technologiesFinished, setTechnologiesFinished] = useState(false);
+  const [isEntering, setIsEntering] = useState(true);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const cardRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
@@ -94,15 +96,25 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength).trim() + ' ...';
   };
-    
+
+  // Handle initial entrance
   useEffect(() => {
-    const forceUpdate = () => {
-      setScrollProgress(prev => prev + 0.01);
-      requestAnimationFrame(() => {
-        setScrollProgress(prev => Math.max(prev - 0.01, 0));
-      });
-    };
-    forceUpdate();
+    if (isVisible) {
+      setIsEntering(true);
+      const timer = setTimeout(() => {
+        setIsEntering(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible]);
+
+  // Handle theme changes
+  useEffect(() => {
+    setIsTransitioning(true);
+    const timer = setTimeout(() => {
+      setIsTransitioning(false);
+    }, );
+    return () => clearTimeout(timer);
   }, [theme]);
 
   useEffect(() => {
@@ -254,70 +266,63 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     const baseIntensity = 1;
     const scrollEffect = scrollProgress * 1.2;
     const shadowIntensity = Math.max(baseIntensity - scrollEffect, 0);
+    const subtleFactor = 1;
 
-    // Enhanced light theme shadows with faster transition
     const lightOuterShadow = `
-      ${16 * shadowIntensity}px ${16 * shadowIntensity}px ${32 * shadowIntensity}px #d1d1d1,
-      ${-16 * shadowIntensity}px ${-16 * shadowIntensity}px ${32 * shadowIntensity}px #ffffff,
+      ${16 * shadowIntensity * subtleFactor}px ${16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #d1d1d1,
+      ${-16 * shadowIntensity * subtleFactor}px ${-16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #ffffff,
       0 0 ${15 * shadowIntensity}px rgba(209, 209, 209, 0.7)
     `;
 
-    // Enhanced dark theme shadows with faster transition
     const darkOuterShadow = `
-      ${16 * shadowIntensity}px ${16 * shadowIntensity}px ${32 * shadowIntensity}px #151515,
-      ${-16 * shadowIntensity}px ${-16 * shadowIntensity}px ${32 * shadowIntensity}px #353535,
+      ${16 * shadowIntensity * subtleFactor}px ${16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #151515,
+      ${-16 * shadowIntensity * subtleFactor}px ${-16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #353535,
       0 0 ${15 * shadowIntensity}px rgba(21, 21, 21, 0.7)
     `;
 
     return {
-      transform: `
-        scale(${cardVisible ? (isHovered ? 1.02 : 1) : 0.95})
-        translateY(${isHovered ? -8 : 0}px)
-      `,
+      transform: `scale(${cardVisible ? (isHovered ? 1.02 : 1) : 0.95})
+        translateY(${isHovered ? -8 : 0}px)`,
       boxShadow: cardVisible ? (theme === 'dark' ? darkOuterShadow : lightOuterShadow) : 'none',
-      opacity: 1,
-      transition: 'all 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+      opacity: cardVisible ? 1 : 0,
+      transition: isTransitioning 
+        ? 'transform 1000ms cubic-bezier(0.4, 0, 0.2, 1)'
+        : 'all 1000ms cubic-bezier(0.4, 0, 0.2, 1)',
     };
   };
 
-  // Add a useEffect for theme changes
-  useEffect(() => {
-    const handleThemeChange = () => {
-      // Force immediate re-render on theme change
-      setScrollProgress(prev => prev + 0.001);
-      requestAnimationFrame(() => {
-        setScrollProgress(prev => Math.max(prev - 0.001, 0));
-      });
-    };
-
-    handleThemeChange();
-  }, [theme]);
-
   return (
     <>
-      {isFullscreen && (
-        <ImageViewer
-          images={image}
-          currentIndex={currentImageIndex}
-          onClose={() => setIsFullscreen(false)}
-          onNext={handleNext}
-          onPrev={handlePrev}
-        />
-      )}
+    {isFullscreen && (
+      <ImageViewer
+        images={image}
+        currentIndex={currentImageIndex}
+        onClose={() => setIsFullscreen(false)}
+        onNext={handleNext}
+        onPrev={handlePrev}
+      />
+    )}
       
       <div 
         ref={cardRef}
-        className={`opacity-0 transition-all duration-300 ease-out ${
-          isVisible ? 'opacity-100 delay-100' : ''
-        }`}
+        className="transform-gpu"
       >
-        <div 
-          className="card rounded-2xl bg-gray-100 dark:bg-dark p-4 relative overflow-hidden h-full
-            transition-all duration-200 ease-in-out will-change-[background-color,box-shadow]"
-          style={getCardStyle()}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
+      <div 
+        className={`
+          card 
+          rounded-2xl 
+          bg-gray-100 
+          dark:bg-dark 
+          p-4 
+          relative 
+          overflow-hidden 
+          h-full
+          ${isEntering || isTransitioning ? 'card-entrance' : 'card-hover'}
+        `}
+        style={getCardStyle()}
+        onMouseEnter={() => !isEntering && setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
           <div className="flex flex-col h-full">
             {/* Fixed Height Top Section */}
             <div className="min-h-[120px]">
@@ -554,3 +559,5 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     </>
   );
 };
+
+export default ProjectCard;
