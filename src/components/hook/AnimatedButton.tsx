@@ -29,6 +29,7 @@ export const AnimatedButton = ({
   const [isPressed, setIsPressed] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [contentVisible, setContentVisible] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     if (buttonVisible) {
@@ -41,6 +42,16 @@ export const AnimatedButton = ({
       setContentVisible(false);
     }
   }, [buttonVisible]);
+
+  // Handle theme changes
+  useEffect(() => {
+    setIsTransitioning(true);
+    const timer = setTimeout(() => {
+      setIsTransitioning(false);
+    }, 1000); // Match the transition duration
+
+    return () => clearTimeout(timer);
+  }, [theme]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,30 +91,30 @@ export const AnimatedButton = ({
     return {
       transform: `scale(${buttonVisible ? (isPressed ? 0.98 : 1) : 0.95})`,
       boxShadow: buttonVisible ? getThemeShadow(shadowIntensity, subtleFactor) : 'none',
-      transitionProperty: 'transform',
-      transitionDuration: '1000ms',
-      transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+      transition: isTransitioning 
+        ? 'transform 1000ms cubic-bezier(0.4, 0, 0.2, 1)'
+        : 'all 1000ms cubic-bezier(0.4, 0, 0.2, 1)',
     };
   };
 
   const getThemeShadow = (shadowIntensity: number, subtleFactor: number) => {
-      if (isPressed) {
-        return theme === 'dark'
-          ? `inset ${12 * subtleFactor}px ${12 * subtleFactor}px ${24 * subtleFactor}px #151515,
-            inset ${-12 * subtleFactor}px ${-12 * subtleFactor}px ${24 * subtleFactor}px #353535,
-            inset 0 0 ${15 * subtleFactor}px rgba(21, 21, 21, ${variant === 'subtle' ? '0.4' : '0.7'})`
-          : `inset ${12 * subtleFactor}px ${12 * subtleFactor}px ${24 * subtleFactor}px #d1d1d1,
-            inset ${-12 * subtleFactor}px ${-12 * subtleFactor}px ${24 * subtleFactor}px #ffffff,
-            inset 0 0 ${15 * subtleFactor}px rgba(209, 209, 209, ${variant === 'subtle' ? '0.4' : '0.7'})`;
-      }
-
+    if (isPressed) {
       return theme === 'dark'
-        ? `${16 * shadowIntensity * subtleFactor}px ${16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #151515,
-          ${-16 * shadowIntensity * subtleFactor}px ${-16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #353535,
-          0 0 ${15 * shadowIntensity}px rgba(21, 21, 21, ${variant === 'subtle' ? '0.4' : '0.7'})`
-        : `${16 * shadowIntensity * subtleFactor}px ${16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #d1d1d1,
-          ${-16 * shadowIntensity * subtleFactor}px ${-16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #ffffff,
-          0 0 ${15 * shadowIntensity}px rgba(209, 209, 209, ${variant === 'subtle' ? '0.4' : '0.7'})`;
+        ? `inset ${12 * subtleFactor}px ${12 * subtleFactor}px ${24 * subtleFactor}px #151515,
+          inset ${-12 * subtleFactor}px ${-12 * subtleFactor}px ${24 * subtleFactor}px #353535,
+          inset 0 0 ${15 * subtleFactor}px rgba(21, 21, 21, ${variant === 'subtle' ? '0.4' : '0.7'})`
+        : `inset ${12 * subtleFactor}px ${12 * subtleFactor}px ${24 * subtleFactor}px #d1d1d1,
+          inset ${-12 * subtleFactor}px ${-12 * subtleFactor}px ${24 * subtleFactor}px #ffffff,
+          inset 0 0 ${15 * subtleFactor}px rgba(209, 209, 209, ${variant === 'subtle' ? '0.4' : '0.7'})`;
+    }
+
+    return theme === 'dark'
+      ? `${16 * shadowIntensity * subtleFactor}px ${16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #151515,
+        ${-16 * shadowIntensity * subtleFactor}px ${-16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #353535,
+        0 0 ${15 * shadowIntensity}px rgba(21, 21, 21, ${variant === 'subtle' ? '0.4' : '0.7'})`
+      : `${16 * shadowIntensity * subtleFactor}px ${16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #d1d1d1,
+        ${-16 * shadowIntensity * subtleFactor}px ${-16 * shadowIntensity * subtleFactor}px ${32 * shadowIntensity}px #ffffff,
+        0 0 ${15 * shadowIntensity}px rgba(209, 209, 209, ${variant === 'subtle' ? '0.4' : '0.7'})`;
   };
 
   const widthClasses = {
@@ -114,7 +125,7 @@ export const AnimatedButton = ({
 
   return (
     <div
-      className={`${widthClasses} h-[50px] rounded-lg transform transition-all duration-1000 ease-out overflow-hidden`}
+      className={`${widthClasses} h-[50px] rounded-lg overflow-hidden`}
       style={getButtonStyles()}
       onMouseDown={() => setIsPressed(true)}
       onMouseUp={() => setIsPressed(false)}
@@ -127,7 +138,7 @@ export const AnimatedButton = ({
         className={`w-full h-full bg-gray-100 dark:bg-dark text-gray-700 dark:text-gray-200 
           hover:shadow-neumorph-hover dark:hover:shadow-neumorph-dark-hover 
           active:shadow-neumorph-inset dark:active:shadow-neumorph-dark-inset 
-          transition-shadow rounded-lg flex items-center justify-center gap-2
+          rounded-lg flex items-center justify-center gap-2
           ${variant === 'subtle' ? 'bg-opacity-90' : ''}`}
         onClick={onClick}
       >
