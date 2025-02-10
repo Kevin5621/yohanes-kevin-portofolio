@@ -116,7 +116,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     setIsTransitioning(true);
     const timer = setTimeout(() => {
       setIsTransitioning(false);
-    }, 1000);
+    }, );
     return () => clearTimeout(timer);
   }, [theme]);
 
