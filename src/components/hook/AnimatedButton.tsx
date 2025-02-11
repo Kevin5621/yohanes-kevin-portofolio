@@ -48,7 +48,7 @@ export const AnimatedButton = ({
     setIsTransitioning(true);
     const timer = setTimeout(() => {
       setIsTransitioning(false);
-    }, 5000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [theme]);

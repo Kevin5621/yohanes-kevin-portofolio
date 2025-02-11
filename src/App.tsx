@@ -76,7 +76,7 @@ function MainContent() {
 function App() {
   return (
     <ThemeProvider>
-      <Router basename="/yohanes-kevin">
+      <Router basename={import.meta.env.BASE_URL}>
         <Routes>
           <Route path="/" element={<MainContent />} />
           <Route path="*" element={<NotFound />} />
