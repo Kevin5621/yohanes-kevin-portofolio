@@ -1,52 +1,27 @@
-import Sbanner from '/assets/sitama/banner_light.jpg';
-import SbannerLight from '/assets/sitama/banner_light.png';
-import SbannerDark from '/assets/sitama/banner_dark.png';
-import loginSitama from '/assets/sitama/login.jpg';
-import homeMahasiswa from '/assets/sitama/homeMahasiswa.jpg';
-import bimbingan from '/assets/sitama/bimbingan.jpg';
-import logbook from '/assets/sitama/logbook.jpg';
-import addBimbingan from '/assets/sitama/addBimbingan.jpg';
-import profile from '/assets/sitama/profile.jpg';
-import homeDosen from '/assets/sitama/homeDosen.jpg';
-import detailStudent from '/assets/sitama/detailStudent.jpg';
-import actionBimbingan from '/assets/sitama/actionBimbingan.jpg';
-import detailNilai from '/assets/sitama/detailNilai.jpg';
-
-// SmartIrrigationImages Placeholder Images
-import Bbanner from '/assets/SmartIrrigation/Bbanner_light.jpg';
-import BbannerLight from '/assets/SmartIrrigation/Bbanner_light.png';
-import BbannerDark from '/assets/SmartIrrigation/Bbanner_dark.png';
-import systemOverviewON from '/assets/SmartIrrigation/systemOverviewON.jpg';
-import systemOverviewOFF from '/assets/SmartIrrigation/systemOverviewOFF.jpg';
-import scheduleInterface from '/assets/SmartIrrigation/scheduleInterface.jpg';
-import controlInterface from '/assets/SmartIrrigation/controlInterface.jpg';
-import dataVisualization from '/assets/SmartIrrigation/dataVisualization.jpg';
-import hardwareSetup from '/assets/SmartIrrigation/hardwareSetup.mp4';
-
 export const SitamaImages = {
-  Sbanner,
-  SbannerLight,
-  SbannerDark,
-  login: loginSitama,
-  homeMahasiswa,
-  bimbingan,
-  logbook,
-  addBimbingan,
-  profile,
-  homeDosen,
-  detailStudent,
-  actionBimbingan,
-  detailNilai
+  Sbanner: './assets/sitama/banner_light.jpg',
+  SbannerLight: './assets/sitama/banner_light.png',
+  SbannerDark: './assets/sitama/banner_dark.png',
+  login: './assets/sitama/login.jpg',
+  homeMahasiswa: './assets/sitama/homeMahasiswa.jpg',
+  bimbingan: './assets/sitama/bimbingan.jpg',
+  logbook: './assets/sitama/logbook.jpg',
+  addBimbingan: './assets/sitama/addBimbingan.jpg',
+  profile: './assets/sitama/profile.jpg',
+  homeDosen: './assets/sitama/homeDosen.jpg',
+  detailStudent: './assets/sitama/detailStudent.jpg',
+  actionBimbingan: './assets/sitama/actionBimbingan.jpg',
+  detailNilai: './assets/sitama/detailNilai.jpg',
 };
 
 export const SmartIrrigationImages = {
-  Bbanner,
-  BbannerLight,
-  BbannerDark,
-  systemOverviewON,
-  systemOverviewOFF,
-  scheduleInterface,     
-  controlInterface,       
-  dataVisualization,  
-  hardwareSetup,       
+  Bbanner: './assets/SmartIrrigation/Bbanner_light.jpg',
+  BbannerLight: './assets/SmartIrrigation/Bbanner_light.png',
+  BbannerDark: './assets/SmartIrrigation/Bbanner_dark.png',
+  systemOverviewON: './assets/SmartIrrigation/systemOverviewON.jpg',
+  systemOverviewOFF: './assets/SmartIrrigation/systemOverviewOFF.jpg',
+  scheduleInterface: './assets/SmartIrrigation/scheduleInterface.jpg',
+  controlInterface: './assets/SmartIrrigation/controlInterface.jpg',
+  dataVisualization: './assets/SmartIrrigation/dataVisualization.jpg',
+  hardwareSetup: './assets/SmartIrrigation/hardwareSetup.mp4',
 };

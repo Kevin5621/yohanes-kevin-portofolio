@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { MenuIcon, XIcon, GithubIcon, LinkedinIcon } from 'lucide-react';
 import ThemeToggle from '../styles/theme';
 import { ImageViewer } from './helper/ImageViewer';
-import profilePhoto from '/assets/profile/foto.jpg';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
 
   const profileImage = {
-    image: profilePhoto,
+    image: "./assets/profile/foto.jpg",
     title: 'Profile Picture',
   };
 
