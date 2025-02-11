@@ -149,7 +149,7 @@ const Hero = () => {
 
               <div className="w-full">
                 <Typewriter 
-                  text="Smart Contract Developer"
+                  text="Web3 Developer"
                   delay={1900}
                   className="block text-lg sm:text-2xl md:text-3xl text-gray-600 dark:text-gray-300 mb-6"
                 />
