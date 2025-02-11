@@ -14,7 +14,7 @@ export default defineConfig({
       ],
     },
   },
-  base: '/yohanes-kevin-portofolio/',
+  base: 'yohanes-kevin-portofolio',
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
