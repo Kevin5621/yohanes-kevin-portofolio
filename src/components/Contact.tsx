@@ -180,6 +180,15 @@ const Contact: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    // Ensure the form is registered with Netlify on mount
+    const form = document.querySelector('form[name="contact"]') as HTMLFormElement;
+    if (form) {
+      form.setAttribute('data-netlify', 'true');
+      form.setAttribute('netlify', '');
+    }
+  }, []);
+
+  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -216,24 +225,24 @@ const Contact: React.FC = () => {
     };
   }, []);
 
-  const ICON_ANIMATION_DURATION = 300;
-  const TYPEWRITER_DURATION = 800;
-  const EMAIL_START = 300;
-  const PHONE_START = EMAIL_START + TYPEWRITER_DURATION;
-  const SOCIAL_LINKS_START = PHONE_START + TYPEWRITER_DURATION;
+  const encode = (data: { [key: string]: string }) => {
+    return Object.keys(data)
+      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+      .join("&");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      const form = e.target as HTMLFormElement;
-      const formData = new FormData(form);
-      
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(Object.fromEntries(formData) as Record<string, string>).toString(),
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({
+          "form-name": "contact",
+          ...formData
+        })
       });
 
       if (response.ok) {
@@ -247,6 +256,11 @@ const Contact: React.FC = () => {
     }
   };
 
+  const ICON_ANIMATION_DURATION = 300;
+  const TYPEWRITER_DURATION = 800;
+  const EMAIL_START = 300;
+  const PHONE_START = EMAIL_START + TYPEWRITER_DURATION;
+  const SOCIAL_LINKS_START = PHONE_START + TYPEWRITER_DURATION;
   const FORM_START_DELAY = 1000;
   const INPUT_SEQUENCE_DELAY = 800;
 
@@ -409,18 +423,19 @@ const Contact: React.FC = () => {
           {/* Form section */}
           <form 
             name="contact"
-            method="post"
+            method="POST"
             data-netlify="true"
+            data-netlify-honeypot="bot-field"
             onSubmit={handleSubmit}
             className="space-y-6"
           >
-            {/* Hidden input untuk Netlify */}
             <input type="hidden" name="form-name" value="contact" />
             
-            {/* Bot protection */}
-            <div hidden>
-              <input name="bot-field" />
-            </div>
+            <p hidden>
+              <label>
+                Don't fill this out if you're human: <input name="bot-field" />
+              </label>
+            </p>
 
             <AnimatedInput
               id="name"
