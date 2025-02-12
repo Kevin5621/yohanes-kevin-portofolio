@@ -229,12 +229,6 @@ const Contact: React.FC = () => {
     try {
       const form = e.target as HTMLFormElement;
       const formData = new FormData(form);
-      const data = new FormData(form);
-      const params = new URLSearchParams();
-      
-      for (const [key, value] of data.entries()) {
-        params.append(key, value.toString());
-      }
       
       const response = await fetch('/', {
         method: 'POST',
@@ -273,7 +267,7 @@ const Contact: React.FC = () => {
             />
           )}
         </h2>
-        
+
         <div className="grid md:grid-cols-2 gap-12">
           <div className="space-y-8">
             <h3 className="text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-6">
@@ -415,14 +409,15 @@ const Contact: React.FC = () => {
           {/* Form section */}
           <form 
             name="contact"
-            method="POST"
+            method="post"
             data-netlify="true"
             onSubmit={handleSubmit}
             className="space-y-6"
           >
+            {/* Hidden input untuk Netlify */}
             <input type="hidden" name="form-name" value="contact" />
             
-            {/* Add bot protection */}
+            {/* Bot protection */}
             <div hidden>
               <input name="bot-field" />
             </div>
