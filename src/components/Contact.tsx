@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MailIcon, PhoneIcon, GithubIcon, LinkedinIcon } from 'lucide-react';
+import { MailIcon, PhoneIcon, GithubIcon, LinkedinIcon, CheckCircle2, XCircle } from 'lucide-react';
 import { Typewriter } from './hook/Animated_typeWritter';
 import AnimatedNeumorphicIcon from './hook/AnimaterIcon';
 import AnimatedButton from './hook/AnimatedButton';
@@ -21,7 +21,65 @@ interface AnimatedInputProps {
   isTextArea?: boolean;
   rows?: number;
   isVisible?: boolean;
+  name: string;
 }
+
+interface AlertProps {
+  type: 'success' | 'error';
+  message: string;
+  onClose: () => void;
+}
+
+const Alert: React.FC<AlertProps> = ({ type, message, onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  return (
+    <div
+      className={`
+        fixed bottom-4 right-4 
+        p-4 rounded-lg
+        shadow-lg
+        transition-all duration-300 ease
+        transform translate-y-0
+        flex items-center gap-3
+        ${type === 'success' 
+          ? 'bg-emerald-500 text-white' 
+          : 'bg-rose-500 text-white'
+        }
+      `}
+      role="alert"
+    >
+      <div className="flex-shrink-0">
+        {type === 'success' ? (
+          <CheckCircle2 className="w-5 h-5 text-white" />
+        ) : (
+          <XCircle className="w-5 h-5 text-white" />
+        )}
+      </div>
+
+      <p className="text-sm font-medium">{message}</p>
+
+      <button
+        onClick={onClose}
+        className="ml-4 p-1 rounded-full 
+                   hover:bg-white/20
+                   transition-colors duration-200 
+                   flex-shrink-0"
+      >
+        <span className="sr-only">Close</span>
+        <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  );
+};
 
 const AnimatedInput: React.FC<AnimatedInputProps> = ({
   id,
@@ -33,7 +91,8 @@ const AnimatedInput: React.FC<AnimatedInputProps> = ({
   required = false,
   isTextArea = false,
   rows = 5,
-  isVisible = false
+  isVisible = false,
+  name
 }) => {
   const [isAnimated, setIsAnimated] = useState(false);
   const LABEL_DURATION = 500;
@@ -59,6 +118,15 @@ const AnimatedInput: React.FC<AnimatedInputProps> = ({
     text-gray-700 dark:text-gray-200 
     focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600
     hover:shadow-neumorph-inset-hover dark:hover:shadow-neumorph-dark-inset-hover
+    [&:-webkit-autofill]:bg-clip-text
+    [&:-webkit-autofill]:[background-clip:text]
+    [&:-webkit-autofill]:[text-fill-color:inherit]
+    [&:-webkit-autofill]:[webkit-text-fill-color:inherit]
+    dark:[&:-webkit-autofill]:[text-fill-color:rgb(229,231,235)]
+    dark:[&:-webkit-autofill]:[webkit-text-fill-color:rgb(229,231,235)]
+    [&:-webkit-autofill]:[transition-delay:9999s]
+    [&:-webkit-autofill]:[-webkit-transition-delay:9999s]
+    dark:[-webkit-text-fill-color:rgb(229,231,235)]
   `;
 
   return (
@@ -76,6 +144,7 @@ const AnimatedInput: React.FC<AnimatedInputProps> = ({
       {isTextArea ? (
         <textarea
           id={id}
+          name={name}
           rows={rows}
           className={inputClasses}
           value={value}
@@ -86,6 +155,7 @@ const AnimatedInput: React.FC<AnimatedInputProps> = ({
         <input
           type={type}
           id={id}
+          name={name}
           className={inputClasses}
           value={value}
           onChange={onChange}
@@ -105,6 +175,8 @@ const Contact: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [buttonsVisible, setButtonsVisible] = useState(false);
   const [, setScrollProgress] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -115,7 +187,6 @@ const Contact: React.FC = () => {
             setIsVisible(true);
             const buttonTimer = setTimeout(() => setButtonsVisible(true), 3400);
             
-            // Calculate scroll progress based on intersection ratio
             const scrolled = Math.min(
               Math.max((1 - entry.intersectionRatio) * 1.2, 0),
               1
@@ -139,8 +210,7 @@ const Contact: React.FC = () => {
     }
 
     return () => {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      if (sectionRef.current) {
+      if (sectionRef) {
         observer.disconnect();
       }
     };
@@ -152,9 +222,34 @@ const Contact: React.FC = () => {
   const PHONE_START = EMAIL_START + TYPEWRITER_DURATION;
   const SOCIAL_LINKS_START = PHONE_START + TYPEWRITER_DURATION;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    setIsSubmitting(true);
+
+    try {
+      const form = e.target as HTMLFormElement;
+      const data = new FormData(form);
+      const params = new URLSearchParams();
+      
+      for (const [key, value] of data.entries()) {
+        params.append(key, value.toString());
+      }
+      
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString(),
+      });
+
+      if (response.ok) {
+        setAlert({ type: 'success', message: 'Message sent successfully!' });
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        setAlert({ type: 'error', message: 'Failed to send message. Please try again.' });
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const FORM_START_DELAY = 1000;
@@ -317,9 +412,18 @@ const Contact: React.FC = () => {
           </div>
 
           {/* Form section */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form 
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            onSubmit={handleSubmit}
+            className="space-y-6"
+          >
+            <input type="hidden" name="form-name" value="contact" />
+
             <AnimatedInput
               id="name"
+              name="name"
               label="Name"
               value={formData.name}
               delay={FORM_START_DELAY}
@@ -330,6 +434,7 @@ const Contact: React.FC = () => {
 
             <AnimatedInput
               id="email"
+              name="email"
               type="email"
               label="Email"
               value={formData.email}
@@ -341,6 +446,7 @@ const Contact: React.FC = () => {
 
             <AnimatedInput
               id="message"
+              name="message"
               label="Message"
               value={formData.message}
               delay={FORM_START_DELAY + (INPUT_SEQUENCE_DELAY * 2)}
@@ -351,7 +457,7 @@ const Contact: React.FC = () => {
             />
 
             <AnimatedButton
-              text="Send Message"
+              text={isSubmitting ? "Sending..." : "Send Message"}
               delay={1000}
               buttonVisible={buttonsVisible}
               width="full"
@@ -359,10 +465,19 @@ const Contact: React.FC = () => {
               icon={null}
               variant="subtle"
               parentRef={sectionRef}
+              isSubmitting={isSubmitting}
             />
           </form>
         </div>
       </div>
+
+      {alert && (
+        <Alert
+          type={alert.type}
+          message={alert.message}
+          onClose={() => setAlert(null)}
+        />
+      )}
     </section>
   );
 };

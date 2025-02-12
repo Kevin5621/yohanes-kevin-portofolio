@@ -12,6 +12,7 @@ export interface AnimatedButtonProps {
   variant?: 'default' | 'subtle';
   width?: 'auto' | 'full' | 'default';
   type?: 'button' | 'submit';
+  isSubmitting?: boolean;
 }
 
 export const AnimatedButton = ({ 
@@ -23,7 +24,8 @@ export const AnimatedButton = ({
   parentRef,
   variant = 'default',
   width = 'default',
-  type = 'button'
+  type = 'button',
+  isSubmitting = false
 }: AnimatedButtonProps) => {
   const { theme } = useTheme();
   const [isPressed, setIsPressed] = useState(false);
@@ -94,6 +96,8 @@ export const AnimatedButton = ({
       transition: isTransitioning 
         ? 'transform 1000ms cubic-bezier(0.4, 0, 0.2, 1)'
         : 'all 1000ms cubic-bezier(0.4, 0, 0.2, 1)',
+      opacity: isSubmitting ? 0.7 : 1,
+      cursor: isSubmitting ? 'not-allowed' : 'pointer',
     };
   };
 
@@ -127,19 +131,22 @@ export const AnimatedButton = ({
     <div
       className={`${widthClasses} h-[50px] rounded-lg overflow-hidden`}
       style={getButtonStyles()}
-      onMouseDown={() => setIsPressed(true)}
-      onMouseUp={() => setIsPressed(false)}
-      onMouseLeave={() => setIsPressed(false)}
-      onTouchStart={() => setIsPressed(true)}
-      onTouchEnd={() => setIsPressed(false)}
+      onMouseDown={() => !isSubmitting && setIsPressed(true)}
+      onMouseUp={() => !isSubmitting && setIsPressed(false)}
+      onMouseLeave={() => !isSubmitting && setIsPressed(false)}
+      onTouchStart={() => !isSubmitting && setIsPressed(true)}
+      onTouchEnd={() => !isSubmitting && setIsPressed(false)}
     >
       <button 
         type={type}
+        disabled={isSubmitting}
         className={`w-full h-full bg-gray-100 dark:bg-dark text-gray-700 dark:text-gray-200 
           hover:shadow-neumorph-hover dark:hover:shadow-neumorph-dark-hover 
           active:shadow-neumorph-inset dark:active:shadow-neumorph-dark-inset 
           rounded-lg flex items-center justify-center gap-2
-          ${variant === 'subtle' ? 'bg-opacity-90' : ''}`}
+          transition-opacity duration-300
+          ${variant === 'subtle' ? 'bg-opacity-90' : ''}
+          ${isSubmitting ? 'cursor-not-allowed opacity-70' : ''}`}
         onClick={onClick}
       >
         {buttonVisible && (
