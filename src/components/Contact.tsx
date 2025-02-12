@@ -228,6 +228,7 @@ const Contact: React.FC = () => {
 
     try {
       const form = e.target as HTMLFormElement;
+      const formData = new FormData(form);
       const data = new FormData(form);
       const params = new URLSearchParams();
       
@@ -238,7 +239,7 @@ const Contact: React.FC = () => {
       const response = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: params.toString(),
+        body: new URLSearchParams(Object.fromEntries(formData) as Record<string, string>).toString(),
       });
 
       if (response.ok) {
@@ -420,6 +421,11 @@ const Contact: React.FC = () => {
             className="space-y-6"
           >
             <input type="hidden" name="form-name" value="contact" />
+            
+            {/* Add bot protection */}
+            <div hidden>
+              <input name="bot-field" />
+            </div>
 
             <AnimatedInput
               id="name"
