@@ -236,12 +236,13 @@ const Contact: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("/", {
+      const response = await fetch(window.location.href, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: encode({
           "form-name": "contact",
-          ...formData
+          ...formData,
+          "bot-field": ""
         })
       });
 
@@ -249,8 +250,11 @@ const Contact: React.FC = () => {
         setAlert({ type: 'success', message: 'Message sent successfully!' });
         setFormData({ name: '', email: '', message: '' });
       } else {
-        setAlert({ type: 'error', message: 'Failed to send message. Please try again.' });
+        throw new Error('Network response was not ok');
       }
+    } catch (error) {
+      setAlert({ type: 'error', message: 'Failed to send message. Please try again.' });
+      console.error('Error:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -426,6 +430,7 @@ const Contact: React.FC = () => {
             method="POST"
             data-netlify="true"
             data-netlify-honeypot="bot-field"
+            action="/"
             onSubmit={handleSubmit}
             className="space-y-6"
           >
