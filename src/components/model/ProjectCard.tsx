@@ -42,19 +42,87 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [preloadedImages, setPreloadedImages] = useState<Set<string>>(new Set());
 
   const cardRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
 
+  const getImagePath = useCallback((mediaItem: typeof image[0]) => {
+    if (mediaItem.video) return null;
+    if (mediaItem.bannerLight && mediaItem.bannerDark) {
+      return theme === 'dark' ? mediaItem.bannerDark : mediaItem.bannerLight;
+    }
+    return mediaItem.image;
+  }, [theme]);
+
   const getBannerImage = useCallback(() => {
     const currentMedia = image[currentImageIndex];
-    // Check if the current image has theme-specific banners
     if (currentMedia.bannerLight && currentMedia.bannerDark) {
       return theme === 'dark' ? currentMedia.bannerDark : currentMedia.bannerLight;
     }
-    // Fallback to regular image if no theme-specific banners
     return currentMedia.image;
   }, [currentImageIndex, theme, image]);
+
+  useEffect(() => {
+    if (isVisible) {
+      // Preload current image immediately
+      const currentMedia = image[currentImageIndex];
+      const currentPath = getImagePath(currentMedia);
+      if (currentPath && !preloadedImages.has(currentPath)) {
+        const img = new Image();
+        img.src = currentPath;
+        img.onload = () => {
+          setPreloadedImages(prev => new Set([...prev, currentPath]));
+        };
+      }
+
+      // Preload next and previous images
+      const nextIndex = (currentImageIndex + 1) % image.length;
+      const prevIndex = (currentImageIndex - 1 + image.length) % image.length;
+      
+      [nextIndex, prevIndex].forEach(index => {
+        const mediaPath = getImagePath(image[index]);
+        if (mediaPath && !preloadedImages.has(mediaPath)) {
+          const img = new Image();
+          img.src = mediaPath;
+          img.onload = () => {
+            setPreloadedImages(prev => new Set([...prev, mediaPath]));
+          };
+        }
+      });
+
+      // Preload remaining images with lower priority
+      const preloadRemaining = async () => {
+        const imagesToPreload = image
+          .map(img => getImagePath(img))
+          .filter(path => path && !preloadedImages.has(path)) as string[];
+
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(() => {
+            imagesToPreload.forEach(path => {
+              const img = new Image();
+              img.src = path;
+              img.onload = () => {
+                setPreloadedImages(prev => new Set([...prev, path]));
+              };
+            });
+          });
+        } else {
+          setTimeout(() => {
+            imagesToPreload.forEach(path => {
+              const img = new Image();
+              img.src = path;
+              img.onload = () => {
+                setPreloadedImages(prev => new Set([...prev, path]));
+              };
+            });
+          }, 1000);
+        }
+      };
+
+      preloadRemaining();
+    }
+  }, [isVisible, currentImageIndex, image, getImagePath, preloadedImages]);
 
   const animateTechnologies = useCallback(() => {
     if (technologies.length > 0 && !hasAnimatedTech.current) {
@@ -214,10 +282,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       };
     }
   }, [
-    isVisible, 
-    title.length, 
-    description.length, 
-    technologies.length, 
+    isVisible,
+    title.length,
+    description.length,
+    technologies.length,
     animateTechnologies
   ]);
 
@@ -246,13 +314,35 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
   const handleNext = useCallback((e?: React.MouseEvent) => {
     e?.stopPropagation();
-    setCurrentImageIndex((prev) => (prev + 1) % image.length);
-  }, [image.length]);
+    const nextIndex = (currentImageIndex + 1) % image.length;
+    setCurrentImageIndex(nextIndex);
+    
+    const nextNextIndex = (nextIndex + 1) % image.length;
+    const nextImagePath = getImagePath(image[nextNextIndex]);
+    if (nextImagePath && !preloadedImages.has(nextImagePath)) {
+      const img = new Image();
+      img.src = nextImagePath;
+      img.onload = () => {
+        setPreloadedImages(prev => new Set([...prev, nextImagePath]));
+      };
+    }
+  }, [currentImageIndex, image, getImagePath, preloadedImages]);
 
   const handlePrev = useCallback((e?: React.MouseEvent) => {
     e?.stopPropagation();
-    setCurrentImageIndex((prev) => (prev - 1 + image.length) % image.length);
-  }, [image.length]);
+    const prevIndex = (currentImageIndex - 1 + image.length) % image.length;
+    setCurrentImageIndex(prevIndex);
+    
+    const prevPrevIndex = (prevIndex - 1 + image.length) % image.length;
+    const prevImagePath = getImagePath(image[prevPrevIndex]);
+    if (prevImagePath && !preloadedImages.has(prevImagePath)) {
+      const img = new Image();
+      img.src = prevImagePath;
+      img.onload = () => {
+        setPreloadedImages(prev => new Set([...prev, prevImagePath]));
+      };
+    }
+  }, [currentImageIndex, image, getImagePath, preloadedImages]);
 
   const handleMediaClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -271,6 +361,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
   const renderMedia = () => {
     const currentMedia = image[currentImageIndex];
+    const currentImagePath = getImagePath(currentMedia);
+    const isPreloaded = currentImagePath ? preloadedImages.has(currentImagePath) : true;
     
     if (currentMedia.video) {
       return (
@@ -281,6 +373,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             className="w-full h-full object-contain"
             onClick={handleMediaClick}
             onEnded={() => setIsPlaying(false)}
+            preload="metadata"
           />
           <button
             onClick={handleMediaClick}
@@ -297,13 +390,27 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     }
 
     return (
-      <img
-        src={getBannerImage()}
-        alt={currentMedia.title}
-        className={`w-full h-full object-contain absolute inset-0 z-30
-          transition-all duration-1000 ease-in-out
-          ${showImage ? 'opacity-100 scale-100 blur-none' : 'opacity-0 scale-95 blur-sm'}`}
-      />
+      <>
+        {/* Placeholder image */}
+        <div 
+          className={`absolute inset-0 bg-gray-200 dark:bg-gray-800 
+            transition-opacity duration-300
+            ${isPreloaded ? 'opacity-0' : 'opacity-100'}`}
+        />
+        
+        {/* Actual image with loading state */}
+        <img
+          src={getBannerImage()}
+          alt={currentMedia.title}
+          className={`w-full h-full object-contain absolute inset-0 z-30
+            transition-all duration-500 ease-in-out
+            ${showImage && isPreloaded ? 'opacity-100 scale-100 blur-none' : 'opacity-0 scale-95 blur-sm'}`}
+          style={{
+            willChange: 'transform, opacity, filter'
+          }}
+          loading="eager"
+        />
+      </>
     );
   };
 
