@@ -128,7 +128,7 @@ const SocialLinks = () => (
       <GithubIcon size={20} />
     </a>
     <a
-      href="https://www.linkedin.com/in/yohanes-kevin-gilang-pratama-9711a1293/"
+      href="https://www.linkedin.com/in/yohaneskevingilangpratama/"
       target="_blank"
       rel="noopener noreferrer"
       className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"

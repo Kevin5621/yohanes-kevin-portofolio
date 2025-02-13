@@ -335,7 +335,7 @@ const Contact: React.FC = () => {
                 Icon={LinkedinIcon} 
                 delay={SOCIAL_LINKS_START + ICON_ANIMATION_DURATION}
                 isVisible={isVisible}
-                href="https://www.linkedin.com/in/yohanes-kevin-gilang-pratama-9711a1293/"
+                href="https://www.linkedin.com/in/yohaneskevingilangpratama/"
               />
               <div>
                 <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
