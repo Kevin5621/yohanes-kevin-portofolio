@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Typewriter } from "./hook/Animated_typeWritter";
 import { AnimatedButton } from "./hook/AnimatedButton";
 import { useTheme } from "../styles/themeContexts";
+import { DecryptEffect } from "./hook/Animated_decrypt";
 
 const Hero = () => {
   const [isPressed, setIsPressed] = useState(false);
@@ -9,13 +10,19 @@ const Hero = () => {
   const [contentVisible, setContentVisible] = useState(false);
   const [buttonsVisible, setButtonsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [showDecryptEffect, setShowDecryptEffect] = useState(false);
+  const [, setDecryptReady] = useState(false);
   const sectionRef = useRef(null);
   const { theme } = useTheme();
 
   useEffect(() => {
     const cardTimer = setTimeout(() => setCardVisible(true), 500);
     const contentTimer = setTimeout(() => setContentVisible(true), 1500);
-    const buttonTimer = setTimeout(() => setButtonsVisible(true), 6300);
+    const buttonTimer = setTimeout(() => setButtonsVisible(true), 3900);
+    
+    // Modifikasi untuk menambahkan delay sebelum memulai DecryptEffect
+    const decryptShowTimer = setTimeout(() => setShowDecryptEffect(true), 3000);
+    const decryptReadyTimer = setTimeout(() => setDecryptReady(true), 3200);
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -45,6 +52,8 @@ const Hero = () => {
       clearTimeout(cardTimer);
       clearTimeout(contentTimer);
       clearTimeout(buttonTimer);
+      clearTimeout(decryptShowTimer);
+      clearTimeout(decryptReadyTimer);
       observer.disconnect();
     };
   }, []);
@@ -71,23 +80,23 @@ const Hero = () => {
 
   // Fungsi terpisah untuk shadow
   const getThemeShadow = (shadowIntensity: number) => {
-      if (isPressed) {
-        return theme === 'dark' 
-          ? `inset 24px 24px 48px #151515,
-            inset -24px -24px 48px #353535,
-            inset 0 0 30px rgba(21, 21, 21, 0.7)`
-          : `inset 24px 24px 48px #d1d1d1,
-            inset -24px -24px 48px #ffffff,
-            inset 0 0 30px rgba(209, 209, 209, 0.7)`;
-      }
+    if (isPressed) {
+      return theme === 'dark' 
+        ? `inset 24px 24px 48px #151515,
+          inset -24px -24px 48px #353535,
+          inset 0 0 30px rgba(21, 21, 21, 0.7)`
+        : `inset 24px 24px 48px #d1d1d1,
+          inset -24px -24px 48px #ffffff,
+          inset 0 0 30px rgba(209, 209, 209, 0.7)`;
+    }
 
-      return theme === 'dark'
-        ? `${32 * shadowIntensity}px ${32 * shadowIntensity}px ${64 * shadowIntensity}px #151515,
-          ${-32 * shadowIntensity}px ${-32 * shadowIntensity}px ${64 * shadowIntensity}px #353535,
-          0 0 ${30 * shadowIntensity}px rgba(21, 21, 21, 0.7)`
-        : `${32 * shadowIntensity}px ${32 * shadowIntensity}px ${64 * shadowIntensity}px #d1d1d1,
-          ${-32 * shadowIntensity}px ${-32 * shadowIntensity}px ${64 * shadowIntensity}px #ffffff,
-          0 0 ${30 * shadowIntensity}px rgba(209, 209, 209, 0.7)`;
+    return theme === 'dark'
+      ? `${32 * shadowIntensity}px ${32 * shadowIntensity}px ${64 * shadowIntensity}px #151515,
+        ${-32 * shadowIntensity}px ${-32 * shadowIntensity}px ${64 * shadowIntensity}px #353535,
+        0 0 ${30 * shadowIntensity}px rgba(21, 21, 21, 0.7)`
+      : `${32 * shadowIntensity}px ${32 * shadowIntensity}px ${64 * shadowIntensity}px #d1d1d1,
+        ${-32 * shadowIntensity}px ${-32 * shadowIntensity}px ${64 * shadowIntensity}px #ffffff,
+        0 0 ${30 * shadowIntensity}px rgba(209, 209, 209, 0.7)`;
   };
 
   const scrollToSection = (id: string) => {
@@ -143,23 +152,36 @@ const Hero = () => {
                 <Typewriter 
                   text="Yohanes Kevin Gilang Pratama"
                   delay={0}
+                  speed={25}
                   className="block text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 dark:text-gray-100 mb-4"
                 />
               </div>
 
               <div className="w-full">
-                <Typewriter 
-                  text="Web3 Developer"
-                  delay={1900}
-                  className="block text-lg sm:text-2xl md:text-3xl text-gray-600 dark:text-gray-300 mb-6"
-                />
+                {showDecryptEffect ? (
+                  <DecryptEffect 
+                    text="Web3 Developer" 
+                    isActive={true}
+                    normalDuration={2000}
+                    encryptedDuration={2000}
+                    transitionSpeed={50}
+                    className="block text-lg sm:text-2xl md:text-3xl text-gray-600 dark:text-gray-300 mb-6"
+                  />
+                ) : (
+                  <Typewriter 
+                    text="Web3 Developer"
+                    delay={700}
+                    speed={20}
+                    className="block font-mono text-lg sm:text-2xl md:text-3xl text-gray-600 dark:text-gray-300 mb-6"
+                  />
+                )}
               </div>
 
               <div className="mb-10 w-full max-w-2xl mx-auto">
                 <Typewriter 
                   text="I make elegant solutions to complex problems, specializing in React, Dart, and BlockChain Technology. Let's build something amazing together."
-                  delay={2900}
-                  speed={13}
+                  delay={1000}
+                  speed={10}
                   className="block text-sm sm:text-lg text-gray-600 dark:text-gray-300"
                 />
               </div>
@@ -168,7 +190,7 @@ const Hero = () => {
                 <div className="w-48 sm:w-auto">
                   <AnimatedButton 
                     text="View Projects" 
-                    delay={1000}
+                    delay={1100}
                     buttonVisible={buttonsVisible}
                     onClick={() => scrollToSection('projects')}
                     icon={null} 
@@ -177,7 +199,7 @@ const Hero = () => {
                 <div className="w-48 sm:w-auto">
                   <AnimatedButton 
                     text="Contact Me" 
-                    delay={1000}
+                    delay={1100}
                     buttonVisible={buttonsVisible}
                     onClick={() => scrollToSection('contact')}
                     icon={null} 
