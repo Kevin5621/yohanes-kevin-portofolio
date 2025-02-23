@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Typewriter } from "./Animated_typeWritter";
-import { useTheme } from "../../styles/themeContexts";
+import { Typewriter } from "../../hook/Animated_typeWritter";
+import { useTheme } from "../../../styles/themeContexts";
 
 export interface AnimatedButtonProps {
   text: string;
@@ -86,7 +86,7 @@ export const AnimatedButton = ({
 
   const getButtonStyles = () => {
     const baseIntensity = variant === 'subtle' ? 0.5 : 1;
-    const scrollEffect = scrollProgress * (variant === 'subtle' ? 0.6 : 1.2);
+    const scrollEffect = variant === 'subtle' ? 0 : scrollProgress * 0.6;
     const shadowIntensity = Math.max(baseIntensity - scrollEffect, 0);
     const subtleFactor = variant === 'subtle' ? 0.5 : 1;
 

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Typewriter } from "./hook/Animated_typeWritter";
-import { AnimatedButton } from "./hook/AnimatedButton";
+import { AnimatedButton } from "./ProjectCard/hooks/AnimatedButton";
 import { useTheme } from "../styles/themeContexts";
 import { DecryptEffect } from "./hook/Animated_decrypt";
 

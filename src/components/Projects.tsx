@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Project } from './model/types';
 import { Typewriter } from './hook/Animated_typeWritter';
 import { SmartIrrigationImages, SitamaImages } from './model/images';
-import { ProjectCard } from './ProjectCard';
+import { ProjectCard } from './ProjectCard/ProjectCard';
 
 const projects: Project[] = [
   {

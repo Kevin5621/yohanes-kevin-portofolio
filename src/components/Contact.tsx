@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MailIcon, PhoneIcon, GithubIcon, LinkedinIcon, CheckCircle2, XCircle } from 'lucide-react';
 import { Typewriter } from './hook/Animated_typeWritter';
 import AnimatedNeumorphicIcon from './hook/AnimaterIcon';
-import AnimatedButton from './hook/AnimatedButton';
+import AnimatedButton from './ProjectCard/hooks/AnimatedButton';
 
 interface FormData {
   name: string;
