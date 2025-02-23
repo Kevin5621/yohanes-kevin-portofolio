@@ -1,13 +1,14 @@
 import { LucideIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTheme } from "../../styles/themeContexts";
+import { IconType } from "react-icons/lib";
 
 interface AnimatedNeumorphicIconProps {
-  Icon: LucideIcon;
+  Icon: LucideIcon | IconType;
   delay?: number;
   className?: string;
   isVisible?: boolean;
-  href: string;
+  href?: string;
 }
 
 const AnimatedNeumorphicIcon: React.FC<AnimatedNeumorphicIconProps> = ({ 

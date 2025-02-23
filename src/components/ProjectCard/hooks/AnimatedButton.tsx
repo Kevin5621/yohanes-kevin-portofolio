@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Typewriter } from "../../hook/Animated_typeWritter";
+import { Typewriter } from "../../hooks/Animated_typeWritter";
 import { useTheme } from "../../../styles/themeContexts";
 
 export interface AnimatedButtonProps {

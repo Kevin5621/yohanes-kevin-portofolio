@@ -7,11 +7,14 @@ import { ThemeProvider } from './styles/themeContexts';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
 import { NotFound } from './components/404';
+import Skills from './components/Skills/Skills';
 
 function MainContent() {
   const [projectsVisible, setProjectsVisible] = useState(false);
+  const [skillsVisible, setSkillsVisible] = useState(false);
   const [, setContactVisible] = useState(false);
   const projectsRef = useRef(null);
+  const skillsRef = useRef(null);
   const contactRef = useRef(null);
 
   useEffect(() => {
@@ -41,6 +44,16 @@ function MainContent() {
       });
     }, options);
 
+    const skillsObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setSkillsVisible(true);
+        } else {
+          setSkillsVisible(false);
+        }
+      });
+    }, options);
+
     if (projectsRef.current) {
       projectsObserver.observe(projectsRef.current);
     }
@@ -49,9 +62,14 @@ function MainContent() {
       contactObserver.observe(contactRef.current);
     }
 
+    if (skillsRef.current) {
+      skillsObserver.observe(skillsRef.current);
+    }
+
     return () => {
       projectsObserver.disconnect();
       contactObserver.disconnect();
+      skillsObserver.disconnect();
     };
   }, []);
 
@@ -60,6 +78,11 @@ function MainContent() {
       <Navigation />
       <Hero />
       
+      {/* Skills Section */}
+      <div ref={skillsRef} className="min-h-screen">
+        <Skills isVisible={skillsVisible} />
+      </div>
+
       {/* Projects Section */}
       <div ref={projectsRef} className="min-h-screen">
         <Projects isVisible={projectsVisible} />

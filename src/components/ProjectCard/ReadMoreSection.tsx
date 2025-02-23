@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 import { ProjectCardProps } from './types';
-import { Typewriter } from '../hook/Animated_typeWritter';
+import { Typewriter } from '../hooks/Animated_typeWritter';
 import { useAnimationSequence } from './hooks/useAnimationSequence';
 
 export const ReadMoreSection: React.FC<ProjectCardProps> = ({

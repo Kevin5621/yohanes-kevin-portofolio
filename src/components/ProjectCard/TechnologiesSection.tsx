@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProjectCardProps } from './types';
-import { Typewriter } from '../hook/Animated_typeWritter';
+import { Typewriter } from '../hooks/Animated_typeWritter';
 import { useAnimationSequence } from './hooks/useAnimationSequence';
 
 export const TechnologiesSection: React.FC<ProjectCardProps> = ({

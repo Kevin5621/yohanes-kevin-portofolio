@@ -5,14 +5,15 @@ interface TypewriterProps {
   delay?: number;
   speed?: number;
   className?: string;
-  onComplete?:() => void
+  onComplete?: () => void;
 }
 
 export const Typewriter: React.FC<TypewriterProps> = ({
   text = '',
   delay = 0,
   speed = 50,
-  className = ''
+  className = '',
+  onComplete
 }) => {
   const [displayText, setDisplayText] = useState('');
   const [started, setStarted] = useState(false);
@@ -40,11 +41,12 @@ export const Typewriter: React.FC<TypewriterProps> = ({
         currentIndex++;
       } else {
         clearInterval(interval);
+        onComplete?.();
       }
     }, speed);
 
     return () => clearInterval(interval);
-  }, [cleanText, speed, started]);
+  }, [cleanText, speed, started, onComplete]);
 
   return (
     <span className={className}>

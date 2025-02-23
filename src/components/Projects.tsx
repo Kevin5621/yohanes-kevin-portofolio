@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Typewriter } from './hook/Animated_typeWritter';
-import { SmartIrrigationImages, SitamaImages } from './model/images';
+import { Typewriter } from './hooks/Animated_typeWritter';
+import { SmartIrrigationImages, SitamaImages } from './ProjectCard/hooks/images';
 import { ProjectCard } from './ProjectCard/ProjectCard';
 import { Project } from './ProjectCard/types';
 
