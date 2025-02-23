@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-// import { ProjectCard } from './model/ProjectCard';
-import { Project } from './model/types';
 import { Typewriter } from './hook/Animated_typeWritter';
 import { SmartIrrigationImages, SitamaImages } from './model/images';
 import { ProjectCard } from './ProjectCard/ProjectCard';
+import { Project } from './ProjectCard/types';
 
 const projects: Project[] = [
   {
@@ -108,9 +107,30 @@ const Projects: React.FC<ProjectsProps> = ({ isVisible }) => {
   const [sectionVisible, setSectionVisible] = useState(false);
   const [titleVisible, setTitleVisible] = useState(false);
   const [visibleProjects, setVisibleProjects] = useState<number[]>([]);
+  const [theme, setTheme] = useState('light');
 
   useEffect(() => {
+    const isDark = document.documentElement.classList.contains('dark');
+    setTheme(isDark ? 'dark' : 'light');
+    
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          const isDark = document.documentElement.classList.contains('dark');
+          setTheme(isDark ? 'dark' : 'light');
+        }
+      });
+    });
 
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
     // Only start animations when section becomes visible
     if (isVisible) {
       const sectionTimer = setTimeout(() => {
@@ -126,7 +146,7 @@ const Projects: React.FC<ProjectsProps> = ({ isVisible }) => {
       projects.forEach((_, index) => {
         const timer = setTimeout(() => {
           setVisibleProjects(prev => [...prev, index]);
-        }, 2000 + (index * 500)); // Adjusted timing for smoother animation
+        }, 2000 + (index * 500));
         projectTimers.push(timer);
       });
 
@@ -173,7 +193,7 @@ const Projects: React.FC<ProjectsProps> = ({ isVisible }) => {
                   index={index * 2} 
                   isVisible={visibleProjects.includes(index * 2)}
                   typewriterDelay={0}
-                  
+                  theme={theme}
                 />
               </div>
             ))}
@@ -191,7 +211,7 @@ const Projects: React.FC<ProjectsProps> = ({ isVisible }) => {
                   index={index * 2 + 1} 
                   isVisible={visibleProjects.includes(index * 2 + 1)}
                   typewriterDelay={0}
-                  
+                  theme={theme}
                 />
               </div>
             ))}
@@ -210,7 +230,7 @@ const Projects: React.FC<ProjectsProps> = ({ isVisible }) => {
                 index={index} 
                 isVisible={visibleProjects.includes(index)}
                 typewriterDelay={0}
-                
+                theme={theme}
               />
             </div>
           ))}

@@ -26,4 +26,5 @@ export interface Screenshot {
     index: number;
     isVisible: boolean;
     typewriterDelay: number;
+    theme: string;
   }

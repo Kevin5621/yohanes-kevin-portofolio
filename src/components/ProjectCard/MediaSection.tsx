@@ -12,6 +12,7 @@ export const MediaSection: React.FC<ProjectCardProps & {
 }> = ({
   image,
   isVisible,
+  theme,
   currentImageIndex,
   handleNext,
   handlePrev,
@@ -25,7 +26,7 @@ export const MediaSection: React.FC<ProjectCardProps & {
     description: '',
     technologiesLength: 0,
   });
-  const { getBannerImage, preloadedImages } = useImagePreload({ image, currentImageIndex });
+  const { getBannerImage,preloadedImages } = useImagePreload({ image, currentImageIndex, theme });
 
   const handleMediaClick = (e: React.MouseEvent) => {
     e.stopPropagation();
