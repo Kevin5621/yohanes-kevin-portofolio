@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { ProjectCard } from './model/ProjectCard';
+// import { ProjectCard } from './model/ProjectCard';
 import { Project } from './model/types';
 import { Typewriter } from './hook/Animated_typeWritter';
 import { SmartIrrigationImages, SitamaImages } from './model/images';
+import { ProjectCard } from './ProjectCard';
 
 const projects: Project[] = [
   {
