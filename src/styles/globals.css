@@ -37,6 +37,9 @@
 /* Base transitions */
 * {
   transition: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -moz-user-select: none;
 }
 
 /* Interactive elements transitions */
