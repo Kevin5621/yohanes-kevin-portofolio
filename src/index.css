@@ -54,77 +54,21 @@
   animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Scrollbar Styles */
+/* For Webkit browsers (Chrome, Safari, newer versions of Edge) */
 ::-webkit-scrollbar {
-  width: 16px;
-  height: 16px;
-  background: transparent;
+  width: 0;
+  height: 0;
+  display: none;
 }
 
-/* Light Theme Scrollbar */
-:root:not(.dark) ::-webkit-scrollbar-track {
-  background: #e0e0e0;
-  margin: 3px;
-  border-radius: 8px;
-  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.1),
-              inset -2px -2px 4px rgba(255, 255, 255, 0.9);
-}
-
-:root:not(.dark) ::-webkit-scrollbar-thumb {
-  background: linear-gradient(145deg, #f0f0f0, #e6e6e6);
-  border-radius: 8px;
-  border: 2px solid #e0e0e0;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1),
-             -2px -2px 4px rgba(255, 255, 255, 0.9);
-}
-
-:root:not(.dark) ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(145deg, #ffffff, #f5f5f5);
-  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15),
-             -3px -3px 6px rgba(255, 255, 255, 1);
-}
-
-/* Dark Theme Scrollbar */
-:root.dark ::-webkit-scrollbar-track {
-  background: #2a2a2a;
-  margin: 3px;
-  border-radius: 8px;
-  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.3),
-              inset -2px -2px 4px rgba(255, 255, 255, 0.05);
-}
-
-:root.dark ::-webkit-scrollbar-thumb {
-  background: linear-gradient(145deg, #383838, #2e2e2e);
-  border-radius: 8px;
-  border: 2px solid #2a2a2a;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3),
-             -2px -2px 4px rgba(255, 255, 255, 0.05);
-}
-
-:root.dark ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(145deg, #404040, #363636);
-  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4),
-             -3px -3px 6px rgba(255, 255, 255, 0.06);
-}
-
-::-webkit-scrollbar-corner {
-  background: transparent;
-}
-
-/* Firefox Scrollbar Support */
+/* For Firefox */
 * {
-  scrollbar-width: auto;
-  scrollbar-color: var(--scroll-thumb-color) var(--scroll-track-color);
+  scrollbar-width: none;
 }
 
-:root:not(.dark) {
-  --scroll-thumb-color: #e6e6e6;
-  --scroll-track-color: #f0f0f0;
-}
-
-:root.dark {
-  --scroll-thumb-color: #383838;
-  --scroll-track-color: #2a2a2a;
+/* For IE and Edge */
+* {
+  -ms-overflow-style: none;
 }
 
 .theme-transition-line,
