@@ -8,6 +8,7 @@ import Projects from './components/Projects';
 import Contact from './components/Contact';
 import { NotFound } from './components/404';
 import Skills from './components/Skills/Skills';
+import LenisProvider from './components/LenisProvider';
 
 function MainContent() {
   const [projectsVisible, setProjectsVisible] = useState(false);
@@ -75,23 +76,25 @@ function MainContent() {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-dark transition-colors duration-200">
-      <Navigation />
-      <Hero />
-      
-      {/* Skills Section */}
-      <div ref={skillsRef} className="min-h-screen">
-        <Skills isVisible={skillsVisible} />
-      </div>
+      <LenisProvider>
+        <Navigation />
+        <Hero />
+        
+        {/* Skills Section */}
+        <div ref={skillsRef} className="min-h-screen">
+          <Skills isVisible={skillsVisible} />
+        </div>
 
-      {/* Projects Section */}
-      <div ref={projectsRef} className="min-h-screen">
-        <Projects isVisible={projectsVisible} />
-      </div>
+        {/* Projects Section */}
+        <div ref={projectsRef} className="min-h-screen">
+          <Projects isVisible={projectsVisible} />
+        </div>
 
-      {/* Contact Section */}
-      <div ref={contactRef} className="min-h-screen">
-        <Contact />
-      </div>
+        {/* Contact Section */}
+        <div ref={contactRef} className="min-h-screen">
+          <Contact />
+        </div>
+      </LenisProvider>
     </div>
   );
 }

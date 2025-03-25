@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { MenuIcon, XIcon, GithubIcon, LinkedinIcon } from 'lucide-react';
 import ThemeToggle from '../styles/theme';
 import { ImageViewer } from './helper/ImageViewer';
+import { useLenis } from '@studio-freight/react-lenis';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const lenis = useLenis();
 
   const profileImage = {
     image: "./assets/profile/foto.jpg",
@@ -14,27 +16,12 @@ const Navigation = () => {
 
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
-    if (section) {
-      const targetPosition = section.getBoundingClientRect().top + window.pageYOffset;
-      const startPosition = window.pageYOffset;
-      const distance = targetPosition - startPosition;
-      const duration = 1000;
-      let startTime: number | null = null;
-
-      const easeInOutQuad = (t: number) => {
-        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-      };
-
-      const animation = (currentTime: number) => {
-        if (startTime === null) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const scrollProgress = Math.min(timeElapsed / duration, 1);
-        const ease = easeInOutQuad(scrollProgress);
-        window.scrollTo(0, startPosition + distance * ease);
-        if (timeElapsed < duration) requestAnimationFrame(animation);
-      };
-
-      requestAnimationFrame(animation);
+    if (section && lenis) {
+      lenis.scrollTo(section, {
+        offset: 0,
+        duration: 1.2,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
     }
     // Close mobile menu after clicking a link
     setIsOpen(false);

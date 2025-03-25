@@ -2,6 +2,27 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+/* Lenis smooth scroll styles */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
 @layer utilities {
   .shadow-neumorph {
     box-shadow: 8px 8px 16px #d1d1d1,

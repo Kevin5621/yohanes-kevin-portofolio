@@ -3,6 +3,7 @@ import { Typewriter } from "./hooks/Animated_typeWritter";
 import { AnimatedButton } from "./ProjectCard/hooks/AnimatedButton";
 import { useTheme } from "../styles/themeContexts";
 import { DecryptEffect } from "./hooks/Animated_decrypt";
+import { useLenis } from '@studio-freight/react-lenis';
 
 const Hero = () => {
   const [isPressed, setIsPressed] = useState(false);
@@ -99,29 +100,16 @@ const Hero = () => {
         0 0 ${30 * shadowIntensity}px rgba(209, 209, 209, 0.7)`;
   };
 
+  const lenis = useLenis();
+
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
-    if (section) {
-      const targetPosition = section.getBoundingClientRect().top + window.pageYOffset;
-      const startPosition = window.pageYOffset;
-      const distance = targetPosition - startPosition;
-      const duration = 1000;
-      let startTime: number | null = null;
-
-      const animation = (currentTime: number) => {
-        if (startTime === null) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const scrollProgress = Math.min(timeElapsed / duration, 1);
-        const ease = easeInOutQuad(scrollProgress);
-        window.scrollTo(0, startPosition + distance * ease);
-        if (timeElapsed < duration) requestAnimationFrame(animation);
-      };
-
-      const easeInOutQuad = (t: number) => {
-        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-      };
-
-      requestAnimationFrame(animation);
+    if (section && lenis) {
+      lenis.scrollTo(section, {
+        offset: 0,
+        duration: 1.2,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
     }
   };
 
