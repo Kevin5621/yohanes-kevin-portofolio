@@ -17,6 +17,7 @@ export interface SkillBarProps {
   level: number;
   color: string;
   isVisible: boolean;
+  index?: number;
 }
 
 export interface SectionTitleProps {

@@ -1,5 +1,6 @@
 import { Typewriter } from '../../hooks/Animated_typeWritter';
 import { SectionTitleProps } from '../types';
+import { useEffect, useState } from 'react';
 
 export const SectionTitle: React.FC<SectionTitleProps> = ({
   text,
@@ -8,17 +9,36 @@ export const SectionTitle: React.FC<SectionTitleProps> = ({
   onComplete,
   isCompleted
 }) => {
+  const [shouldAnimate, setShouldAnimate] = useState(false);
+  
+  useEffect(() => {
+    // Only start animation when component is mounted and not completed
+    if (!isCompleted) {
+      const timer = setTimeout(() => {
+        setShouldAnimate(true);
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isCompleted]);
+
   if (isCompleted) {
     return <h2 className={className}>{text}</h2>;
   }
 
   return (
-    <Typewriter
-      text={text}
-      className={className}
-      delay={delay}
-      speed={50}
-      onComplete={onComplete}
-    />
+    <>
+      {shouldAnimate ? (
+        <Typewriter
+          text={text}
+          className={className}
+          delay={delay}
+          speed={50}
+          onComplete={onComplete}
+        />
+      ) : (
+        <h2 className={`${className} opacity-0`}>{text}</h2>
+      )}
+    </>
   );
 };
