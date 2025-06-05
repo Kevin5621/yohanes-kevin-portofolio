@@ -3,8 +3,7 @@ import { useTypewriterComplete } from './hooks/useTypewriterComplete';
 import { useAnimationSequence } from './hooks/useAnimationSequence';
 import { SectionTitle } from './components/SectionTitle';
 import { FrameworkIcon } from './components/FrameworkIcon';
-import { SkillBar } from './components/SkillBar';
-import { frameworks, programmingSkills } from './constants';
+import { frameworks } from './constants';
 import { SkillsProps } from './types';
 
 const Skills: React.FC<SkillsProps> = ({ isVisible }) => {
@@ -13,7 +12,6 @@ const Skills: React.FC<SkillsProps> = ({ isVisible }) => {
   const { markAsCompleted, isCompleted, hasRunBefore } = useTypewriterComplete(isVisible);
   const {
     currentFrameworkIndex,
-    currentSkillIndex,
     startFrameworkAnimation,
     startSkillAnimation
   } = useAnimationSequence(isVisible);
@@ -102,34 +100,6 @@ const Skills: React.FC<SkillsProps> = ({ isVisible }) => {
                   color={framework.color}
                   index={index}
                   isActive={currentFrameworkIndex >= index}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Programming Languages */}
-        {isCompleted('frameworks') && currentFrameworkIndex >= 0 && (
-          <div>
-            <SectionTitle
-              text="Programming Languages"
-              className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-12"
-              delay={500}
-              onComplete={() => {
-                if (isVisible) {
-                  markAsCompleted('programming');
-                  startSkillAnimation();
-                }
-              }}
-              isCompleted={isCompleted('programming')}
-            />
-            <div className="grid md:grid-cols-2 gap-x-16 gap-y-8">
-              {programmingSkills.map((skill, index) => (
-                <SkillBar
-                  key={skill.name}
-                  {...skill}
-                  isVisible={currentSkillIndex >= index}
-                  index={index} 
                 />
               ))}
             </div>
