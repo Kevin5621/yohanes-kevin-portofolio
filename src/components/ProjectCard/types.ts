@@ -20,6 +20,7 @@ export interface Screenshot {
     technologies: string[];
     githubUrl: string;
     features?: ProjectFeatures;
+    type: 'real' | 'playground';
   }
   
   export interface ProjectCardProps extends Project {

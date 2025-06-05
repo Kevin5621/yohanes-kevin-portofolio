@@ -7,6 +7,7 @@ export const projects: Project[] = [
       description: 'Education Platform that helps simplify internship management for students and lecturers at Politeknik Negeri Semarang. Features a dual-role system with specific functionalities for both students and supervising lecturers.',
       technologies: ['Dart', 'Laravel', 'SQL', 'Firebase'],
       githubUrl: 'https://github.com/Kevin5621/Sitama',
+      type: 'real',
       features: {
         sections: [
           {
@@ -51,10 +52,106 @@ export const projects: Project[] = [
       ]
     },
     {
+      "title": "Fiber Monitoring Project",
+      "description": "A monorepo for the Fiber Monitoring Project with different user roles for managing fiber optic installation and monitoring. This project is a comprehensive solution for monitoring fiber optic installation projects. It consists of two main applications: Admin (dashboard for administrators to manage projects, view reports, and monitor overall progress) and Waspang (user interface for field workers to submit reports, track milestones, and manage project documentation).",
+      "technologies": [
+        "Next.js",
+        "Tailwind CSS",
+        "shadcn/ui",
+        "Supabase (Auth, Supabase-js)",
+        "Turborepo",
+        "React",
+        "Leaflet",
+        "TypeScript",
+        "Docker",
+        "ExcelJS",
+        "jsPDF"
+      ],
+      "githubUrl": "https://github.com/Kevin5621/fiber-monitoring-project",
+      "type": "real",
+      "features": {
+        "sections": [
+          {
+            "title": "Admin Dashboard Features",
+            "items": [
+              "Project overview and statistics",
+              "Daily report monitoring",
+              "Document management",
+              "Progress tracking",
+              "Project status visualization",
+              "Team management",
+              "Team performance metrics",
+              "Document approval workflow",
+              "Project creation and assignment",
+              "Comprehensive reporting tools"
+            ]
+          },
+          {
+            "title": "Waspang (Field Worker Interface) Features",
+            "items": [
+              "View project details and milestones",
+              "Submit daily reports",
+              "Upload project documents",
+              "Track project activities",
+              "Manage project-specific documentation",
+              "Report issues and progress",
+              "Document upload with categorization",
+              "Project milestone tracking",
+              "Field issue reporting",
+              "Location-based project view"
+            ]
+          },
+          {
+            "title": "Shared Features",
+            "items": [
+              "Authentication with Supabase Auth",
+              "Responsive design for desktop and mobile",
+              "Real-time updates",
+              "Document management system",
+              "Project tracking and reporting"
+            ]
+          }
+        ]
+      },
+      "image": [
+        {
+          "title": "banner",
+          "image": "PUT_YOUR_BANNER_IMAGE_VARIABLE_HERE",
+          "bannerLight": "PUT_YOUR_BANNER_LIGHT_IMAGE_VARIABLE_HERE",
+          "bannerDark": "PUT_YOUR_BANNER_DARK_IMAGE_VARIABLE_HERE"
+        },
+        {
+          "title": "LoginPage",
+          "image": "PUT_YOUR_LOGIN_IMAGE_VARIABLE_HERE"
+        },
+        {
+          "title": "AdminDashboardOverview",
+          "image": "PUT_YOUR_ADMIN_OVERVIEW_IMAGE_VARIABLE_HERE"
+        },
+        {
+          "title": "AdminProjectManagement",
+          "image": "PUT_YOUR_ADMIN_PROJECT_MGMT_IMAGE_VARIABLE_HERE"
+        },
+        {
+          "title": "WaspangDashboard",
+          "image": "PUT_YOUR_WASPANG_DASHBOARD_IMAGE_VARIABLE_HERE"
+        },
+        {
+          "title": "WaspangReportSubmission",
+          "image": "PUT_YOUR_WASPANG_REPORT_SUBMISSION_IMAGE_VARIABLE_HERE"
+        },
+        {
+          "title": "MapViewInterface",
+          "image": "PUT_YOUR_MAP_VIEW_IMAGE_VARIABLE_HERE"
+        }
+      ]
+    },
+    {
       title: 'IoT Smart Irrigation System',
       description: 'An IoT-based smart irrigation system that automates watering plants based on schedules or soil moisture thresholds. It also supports manual control for flexibility.',
       technologies: ['Dart', 'MQTT', 'ESP32', 'Soil Moisture Sensor', 'Relay Module'],
       githubUrl: 'https://github.com/Kevin5621/iot_smart_irigation',
+      type: 'playground',
       features: {
         sections: [
           {
