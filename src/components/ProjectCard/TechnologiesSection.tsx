@@ -15,10 +15,10 @@ export const TechnologiesSection: React.FC<ProjectCardProps> = ({
   });
 
   return (
-    <div className="h-[60px] flex items-center">
+    <div className="min-h-[60px] mb-4 flex items-start">
       <div className={`w-full transition-all duration-500 ${showTechnologies ? 'opacity-100' : 'opacity-0'}`}>
         {isVisible && (
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap gap-2.5 py-1">
             {technologies.map((tech, idx) => (
               <div
                 key={tech}
