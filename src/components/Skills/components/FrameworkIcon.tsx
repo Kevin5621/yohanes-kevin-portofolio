@@ -11,8 +11,7 @@ export const FrameworkIcon: React.FC<FrameworkIconProps> = ({ Icon, name, color,
     <div
       style={getFrameworkStyles()}
       className="flex flex-col items-center gap-3 p-6 rounded-xl shadow-neumorph dark:shadow-neumorph-dark 
-                hover:shadow-neumorph-hover dark:hover:shadow-neumorph-dark-hover 
-                active:shadow-neumorph-inset dark:active:shadow-neumorph-dark-inset 
+                hover:shadow-neumorph-inset dark:hover:shadow-neumorph-dark-inset 
                 transition-all duration-300 bg-gray-100 dark:bg-dark"
     >
       <Icon className={`text-5xl ${color}`} />
