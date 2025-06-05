@@ -19,11 +19,7 @@ export const useAnimationSequence = (isVisible: boolean) => {
   // Reset animations when visibility changes
   useEffect(() => {
     if (!isVisible) {
-      // Only reset if we haven't animated before
-      if (!hasAnimatedRef.current) {
-        setCurrentFrameworkIndex(-1);
-        setCurrentSkillIndex(-1);
-        
+      if (!hasAnimatedRef.current && currentFrameworkIndex === -1) {
         // Clear any running animations
         if (animationIntervalRef.current) {
           clearInterval(animationIntervalRef.current);
@@ -31,7 +27,7 @@ export const useAnimationSequence = (isVisible: boolean) => {
         }
       }
     }
-  }, [isVisible]);
+  }, [isVisible, currentFrameworkIndex]);
 
   const startFrameworkAnimation = () => {
     // Only start animation if not already showing all frameworks AND section is visible
