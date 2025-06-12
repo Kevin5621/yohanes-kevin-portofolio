@@ -232,7 +232,7 @@ export const projects: Project[] = [
       "description": "A creative agency website with a distinctive neo-brutalist design. This project features a highly interactive and animated user interface, including a custom glitch-style cursor, smooth scrolling, and dynamic visual elements. The site is structured with dedicated sections for services, portfolio work, and contact information.",
       "technologies": ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"],
       "githubUrl": "https://github.com/kevin5621/fivex",
-      "type": "real",
+      "type": "playground",
       "features": {
         "sections": [
           {
@@ -285,7 +285,7 @@ export const projects: Project[] = [
         "GSAP"
       ],
       "githubUrl": "https://github.com/Kevin5621/portofolio-website-digital-marketer",
-      "type": "real",
+      "type": "playground",
       "features": {
         "sections": [
           {
