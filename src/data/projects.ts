@@ -1,4 +1,4 @@
-import { SitamaImages, SmartIrrigationImages, CryptoTrackerImages } from "../components/ProjectCard/hooks/images";
+import { SitamaImages, SmartIrrigationImages, CryptoTrackerImages, PortofolioWebsiteImages } from "../components/ProjectCard/hooks/images";
 import { Project } from "../components/ProjectCard/types";
 
 export const projects: Project[] = [
@@ -359,30 +359,14 @@ export const projects: Project[] = [
     image: [
       {
         title: "banner",
-        image: "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.Banner */",
-        bannerLight: "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.BannerLight */",
-        bannerDark: "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.BannerDark */"
+        image: PortofolioWebsiteImages.Pbanner,
+        bannerLight: PortofolioWebsiteImages.PbannerLight,
+        bannerDark: PortofolioWebsiteImages.PbannerDark,
       },
-      {
-        title: "Hero Section",
-        image: "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.Hero */"
-      },
-      {
-        title: "Portfolio Galaxy View",
-        image: "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.GalaxyView */"
-      },
-      {
-        title: "Project Grid View",
-        image: "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.ProjectGrid */"
-      },
-      {
-        title: "Project Modal",
-        image: "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.ProjectModal */"
-      },
-      {
-        title: "About Me Page",
-        image: "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.AboutMe */"
-      }
+      { title: "Portfolio 1", image: PortofolioWebsiteImages.portofolio1 },
+      { title: "Portfolio 2", image: PortofolioWebsiteImages.portofolio2 },
+      { title: "Portfolio 3", image: PortofolioWebsiteImages.portofolio3 },
+      { title: "Process", image: PortofolioWebsiteImages.process },
     ]
   }
 ];

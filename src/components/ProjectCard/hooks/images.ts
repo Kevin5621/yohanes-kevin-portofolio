@@ -34,3 +34,13 @@ export const CryptoTrackerImages = {
   cryptoPrices: '/assets/CryptoTrackerImages/cryptoPrices.png',
   cryptoWallets: '/assets/CryptoTrackerImages/cryptoWallets.png',
 };
+
+export const PortofolioWebsiteImages = {
+  Pbanner: '/assets/PortofolioWebsiteImages/imageWhite.png',
+  PbannerLight: '/assets/PortofolioWebsiteImages/imageWhite.png',
+  PbannerDark: '/assets/PortofolioWebsiteImages/imageBlack.png',
+  portofolio1: '/assets/PortofolioWebsiteImages/portofolio.png',
+  portofolio2: '/assets/PortofolioWebsiteImages/portofolioVideo.png',
+  portofolio3: '/assets/PortofolioWebsiteImages/portofolioSocial.png',
+  process: '/assets/PortofolioWebsiteImages/process.png',
+};
