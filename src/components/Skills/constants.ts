@@ -1,7 +1,8 @@
 import { 
     SiReact, SiNextdotjs, SiTailwindcss, SiTypescript,
-    SiNodedotjs, SiExpress, SiMongodb, SiFirebase,
-    SiFlutter, SiDart, SiGit, SiDocker
+    SiNodedotjs, SiExpress, SiFirebase,
+    SiFlutter, SiDart, SiGit, SiDocker,
+    SiGo,
   } from 'react-icons/si';
   import { Framework, ProgrammingSkill } from './types';
   
@@ -12,7 +13,7 @@ import {
     { name: 'TypeScript', icon: SiTypescript, color: 'text-blue-600' },
     { name: 'Node.js', icon: SiNodedotjs, color: 'text-green-600' },
     { name: 'Express', icon: SiExpress, color: 'text-gray-800 dark:text-gray-200' },
-    { name: 'MongoDB', icon: SiMongodb, color: 'text-green-500' },
+    { name: 'Golang', icon: SiGo, color: 'text-blue-500' },
     { name: 'Firebase', icon: SiFirebase, color: 'text-yellow-500' },
     { name: 'Flutter', icon: SiFlutter, color: 'text-blue-400' },
     { name: 'Dart', icon: SiDart, color: 'text-blue-500' },
