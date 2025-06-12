@@ -190,5 +190,41 @@ export const projects: Project[] = [
         { title: 'Schedule', image: SmartIrrigationImages.dataVisualization },
         { title: 'Hardware Setup', video: SmartIrrigationImages.hardwareSetup }
       ]
+    },
+    {
+      "title": "Crypto Price Tracker",
+      "description": "Crypto Price Tracker is a Chrome extension that allows users to track real-time cryptocurrency prices directly from their browser. It provides a user-friendly interface to monitor your favorite coins and manage your crypto investment portfolio.",
+      "technologies": ["React", "TypeScript", "Vite", "Chrome Extension APIs", "Fuse.js"],
+      "githubUrl": "https://github.com/kevin5621/chrome-extension-crypto-tracker",
+      "type": "playground",
+      "features": {
+        "sections": [
+          {
+            "title": "Key Features",
+            "items": [
+              "Real-Time Price Tracking with automatic refreshes every 15 seconds",
+              "Fuzzy autocomplete search for cryptocurrencies",
+              "In-depth coin details including market cap, 24h volume, and price range",
+              "Simple charts to visualize price changes",
+              "Portfolio management to track investments and view summaries",
+              "Multi-wallet support for organizing assets",
+              "Automatic Profit/Loss analysis"
+            ]
+          }
+        ]
+      },
+      "image": [
+        {
+          "title": "banner",
+          "image": "CryptoTrackerImages.banner",
+          "bannerLight": "CryptoTrackerImages.bannerLight",
+          "bannerDark": "CryptoTrackerImages.bannerDark"
+        },
+        { "title": "Crypto Prices Tab", "image": "CryptoTrackerImages.cryptoPrices" },
+        { "title": "Portfolio Tab", "image": "CryptoTrackerImages.portfolio" },
+        { "title": "Add Transaction Dialog", "image": "CryptoTrackerImages.addTransaction" },
+        { "title": "Coin Details with Chart", "image": "CryptoTrackerImages.coinDetails" },
+        { "title": "Autocomplete Search", "image": "CryptoTrackerImages.autocomplete" }
+      ]
     }
   ];
