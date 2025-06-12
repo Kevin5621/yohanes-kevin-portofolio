@@ -147,6 +147,54 @@ export const projects: Project[] = [
     ]
   },
   {
+    title: "Portfolio Website Digital Marketer",
+    description: "A modern, interactive portfolio website to showcase creative projects, professional experience, and contact information. Built with Next.js and React, featuring smooth animations, project galleries, and a responsive design.",
+    technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    githubUrl: "https://github.com/Kevin5621/portofolio-website-digital-marketer-2",
+    type: "real",
+    features: {
+      sections: [
+        {
+          title: "Showcase",
+          items: [
+            "Animated project gallery with detailed pages",
+            "Interactive project reveal effects",
+            "Project metrics and achievements display"
+          ]
+        },
+        {
+          title: "Experience & Skills",
+          items: [
+            "Professional experience timeline",
+            "Skills slider with smooth animation",
+            "Certificates and recognitions section"
+          ]
+        },
+        {
+          title: "Contact",
+          items: [
+            "Contact form with validation",
+            "Social media integration",
+            "Responsive layout for all devices"
+          ]
+        }
+      ]
+    },
+    "image": [
+      {
+        title: "Banner",
+        "image": "/project/cover5.jpg",
+        "bannerLight": "/project/cover5.jpg",
+        "bannerDark": "/project/cover5.jpg"
+      },
+      { title: "Portfolio Home", "image": "/project/cover5.jpg" },
+      { title: "Project Gallery", "image": "/project/cover1.jpg" },
+      { title: "Project Detail", "image": "/project/project-detail/1-kronju/foto-1-1.png" },
+      { title: "Skills Section", "image": "/project/cover2.jpg" },
+      { title: "Contact Page", "image": "/project/cover3.jpg" }
+    ]
+  },
+  {
     title: 'IoT Smart Irrigation System',
     description: 'An IoT-based smart irrigation system that automates watering plants based on schedules or soil moisture thresholds. It also supports manual control for flexibility.',
     technologies: ['Dart', 'MQTT', 'ESP32', 'Soil Moisture Sensor', 'Relay Module'],
@@ -271,7 +319,7 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: "Portfolio Website Digital Marketer",
+    title: "Portfolio Website",
     description: "An interactive portfolio website for a digital marketer, featuring a 3D navigable solar system to showcase projects. Built with Next.js, Three.js (React Three Fiber), and Framer Motion for a dynamic and engaging user experience.",
     technologies: [
       "Next.js",
