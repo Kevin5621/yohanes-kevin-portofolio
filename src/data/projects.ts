@@ -1,4 +1,4 @@
-import { SitamaImages, SmartIrrigationImages, CryptoTrackerImages, PortofolioWebsiteImages, PortofolioMarketerImages } from "../components/ProjectCard/hooks/images";
+import { SitamaImages, SmartIrrigationImages, CryptoTrackerImages, PortofolioWebsiteImages, PortofolioMarketerImages, FiberMonitoringImages } from "../components/ProjectCard/hooks/images";
 import { Project } from "../components/ProjectCard/types";
 
 export const projects: Project[] = [
@@ -116,34 +116,19 @@ export const projects: Project[] = [
     image: [
       {
         title: "banner",
-        image: "PUT_YOUR_BANNER_IMAGE_VARIABLE_HERE",
-        bannerLight: "PUT_YOUR_BANNER_LIGHT_IMAGE_VARIABLE_HERE",
-        bannerDark: "PUT_YOUR_BANNER_DARK_IMAGE_VARIABLE_HERE"
+        image: FiberMonitoringImages.Fbanner,
+        bannerLight: FiberMonitoringImages.FbannerLight,
+        bannerDark: FiberMonitoringImages.FbannerDark
       },
-      {
-        title: "LoginPage",
-        image: "PUT_YOUR_LOGIN_IMAGE_VARIABLE_HERE"
-      },
-      {
-        title: "AdminDashboardOverview",
-        image: "PUT_YOUR_ADMIN_OVERVIEW_IMAGE_VARIABLE_HERE"
-      },
-      {
-        title: "AdminProjectManagement",
-        image: "PUT_YOUR_ADMIN_PROJECT_MGMT_IMAGE_VARIABLE_HERE"
-      },
-      {
-        title: "WaspangDashboard",
-        image: "PUT_YOUR_WASPANG_DASHBOARD_IMAGE_VARIABLE_HERE"
-      },
-      {
-        title: "WaspangReportSubmission",
-        image: "PUT_YOUR_WASPANG_REPORT_SUBMISSION_IMAGE_VARIABLE_HERE"
-      },
-      {
-        title: "MapViewInterface",
-        image: "PUT_YOUR_MAP_VIEW_IMAGE_VARIABLE_HERE"
-      }
+      { title: 'admin dashboard', image: FiberMonitoringImages.adminDashboard },
+      { title: 'notification', image: FiberMonitoringImages.notification },
+      { title: 'project list', image: FiberMonitoringImages.projectList },
+      { title: 'map', image: FiberMonitoringImages.map },
+      { title: 'add project', image: FiberMonitoringImages.addProject },
+      { title: 'user management', image: FiberMonitoringImages.userManagement },
+      { title: 'project detail', image: FiberMonitoringImages.projectDetail },
+      { title: 'add milestone photo', image: FiberMonitoringImages.addMilestone },
+      { title: 'add daily report', image: FiberMonitoringImages.addDailyReport },
     ]
   },
   {
@@ -182,7 +167,7 @@ export const projects: Project[] = [
     },
     "image": [
       {
-        title: "Banner",
+        title: "banner",
         image: PortofolioMarketerImages.Mbanner,
         bannerLight: PortofolioMarketerImages.MbannerLight,
         bannerDark: PortofolioMarketerImages.MbannerDark

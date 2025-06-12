@@ -61,3 +61,18 @@ export const PortofolioMarketerImages = {
   projectDetailExpertise: '/assets/PortofolioMarketerImages/projectDetailExpertise.png',
   projectDetailShowcase: '/assets/PortofolioMarketerImages/projectDetailShowcase.png',
 };
+
+export const FiberMonitoringImages = {
+  Fbanner: '/assets/FiberMonitoringImages/loginWhite.png',
+  FbannerLight: '/assets/FiberMonitoringImages/loginWhite.png',
+  FbannerDark: '/assets/FiberMonitoringImages/loginBlack.png',
+  adminDashboard: '/assets/FiberMonitoringImages/adminDashboard.png',
+  notification: '/assets/FiberMonitoringImages/notification.png',
+  projectList: '/assets/FiberMonitoringImages/projectList.png',
+  map: '/assets/FiberMonitoringImages/map.png',
+  addProject: '/assets/FiberMonitoringImages/addProject.png',
+  userManagement: '/assets/FiberMonitoringImages/userManagement.png',
+  projectDetail: '/assets/FiberMonitoringImages/projectDetail.png',
+  addMilestone: '/assets/FiberMonitoringImages/addMilestone.png',
+  addDailyReport: '/assets/FiberMonitoringImages/addDailyReport.png',
+};
