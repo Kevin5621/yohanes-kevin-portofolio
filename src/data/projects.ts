@@ -226,5 +226,117 @@ export const projects: Project[] = [
         { "title": "Coin Details with Chart", "image": "CryptoTrackerImages.coinDetails" },
         { "title": "Autocomplete Search", "image": "CryptoTrackerImages.autocomplete" }
       ]
-    }
+    },
+    {
+      "title": "FiveX Agency Website",
+      "description": "A creative agency website with a distinctive neo-brutalist design. This project features a highly interactive and animated user interface, including a custom glitch-style cursor, smooth scrolling, and dynamic visual elements. The site is structured with dedicated sections for services, portfolio work, and contact information.",
+      "technologies": ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"],
+      "githubUrl": "https://github.com/kevin5621/fivex",
+      "type": "real",
+      "features": {
+        "sections": [
+          {
+            "title": "Core Features",
+            "items": [
+              "Interactive neo-brutalist user interface",
+              "Custom glitch-style cursor hook ('useGlitchCursor')",
+              "Smooth animated scrolling between sections ('useScrollToSection')",
+              "Dynamic animations using Framer Motion",
+              "Responsive design for various screen sizes"
+            ]
+          },
+          {
+            "title": "Key Components",
+            "items": [
+              "Hero section with animated text and a grid-based layout",
+              "Services section with distinct cards for different offerings (Video Production, Photography, Web Dev)",
+              "Portfolio (Work) section with hover-reveal effects",
+              "Detailed contact form with neo-brutalist styling",
+              "Separate pages for individual services like Photography and Video Production"
+            ]
+          }
+        ]
+      },
+      "image": [
+        {
+          "title": "banner",
+          "image": "/path/to/FiveXImages.banner.png",
+          "bannerLight": "/path/to/FiveXImages.bannerLight.png",
+          "bannerDark": "/path/to/FiveXImages.bannerDark.png"
+        },
+        { "title": "Hero Section", "image": "/path/to/FiveXImages.hero.png" },
+        { "title": "Services Showcase", "image": "/path/to/FiveXImages.services.png" },
+        { "title": "Work Portfolio", "image": "/path/to/FiveXImages.work.png" },
+        { "title": "Contact Form", "image": "/path/to/FiveXImages.contact.png" },
+        { "title": "Video Production Page", "image": "/path/to/FiveXImages.videoPage.png" },
+        { "title": "Photography Page", "image": "/path/to/FiveXImages.photoPage.png" }
+      ]
+    },
+    {
+      "title": "Portfolio Website Digital Marketer",
+      "description": "An interactive portfolio website for a digital marketer, featuring a 3D navigable solar system to showcase projects. Built with Next.js, Three.js (React Three Fiber), and Framer Motion for a dynamic and engaging user experience.",
+      "technologies": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Three.js (R3F)",
+        "Framer Motion",
+        "Tailwind CSS",
+        "GSAP"
+      ],
+      "githubUrl": "https://github.com/Kevin5621/portofolio-website-digital-marketer",
+      "type": "real",
+      "features": {
+        "sections": [
+          {
+            "title": "Core Features",
+            "items": [
+              "Interactive 3D solar system for project category navigation, allowing users to click planets to filter projects.",
+              "Dynamic page transitions and animations powered by Framer Motion.",
+              "Immersive, animated 3D galaxy background created with WebGL.",
+              "Project filtering system based on the selected planet (category).",
+              "Modal pop-ups for viewing detailed project information without leaving the page."
+            ]
+          },
+          {
+            "title": "Website Sections",
+            "items": [
+              "A stunning hero section with a 'warp speed' entry animation to engage users from the start.",
+              "A comprehensive portfolio section that showcases various projects.",
+              "An 'About Me' page detailing skills, professional experience, and social links.",
+              "A 'Creative Process' section with a unique animated wave timeline.",
+              "A fully functional contact form for user inquiries."
+            ]
+          }
+        ]
+      },
+      "image": [
+        {
+          "title": "banner",
+          "image": "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.Banner */",
+          "bannerLight": "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.BannerLight */",
+          "bannerDark": "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.BannerDark */"
+        },
+        {
+          "title": "Hero Section",
+          "image": "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.Hero */"
+        },
+        {
+          "title": "Portfolio Galaxy View",
+          "image": "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.GalaxyView */"
+        },
+        {
+          "title": "Project Grid View",
+          "image": "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.ProjectGrid */"
+        },
+        {
+          "title": "Project Modal",
+          "image": "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.ProjectModal */"
+        },
+        {
+          "title": "About Me Page",
+          "image": "/* Ganti dengan import gambar Anda, contoh: PortfolioImages.AboutMe */"
+        }
+      ]
+    },
   ];
