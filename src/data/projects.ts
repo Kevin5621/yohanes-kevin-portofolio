@@ -1,4 +1,4 @@
-import { SitamaImages, SmartIrrigationImages, CryptoTrackerImages, PortofolioWebsiteImages } from "../components/ProjectCard/hooks/images";
+import { SitamaImages, SmartIrrigationImages, CryptoTrackerImages, PortofolioWebsiteImages, PortofolioMarketerImages } from "../components/ProjectCard/hooks/images";
 import { Project } from "../components/ProjectCard/types";
 
 export const projects: Project[] = [
@@ -183,15 +183,21 @@ export const projects: Project[] = [
     "image": [
       {
         title: "Banner",
-        "image": "/project/cover5.jpg",
-        "bannerLight": "/project/cover5.jpg",
-        "bannerDark": "/project/cover5.jpg"
+        image: PortofolioMarketerImages.Mbanner,
+        bannerLight: PortofolioMarketerImages.MbannerLight,
+        bannerDark: PortofolioMarketerImages.MbannerDark
       },
-      { title: "Portfolio Home", "image": "/project/cover5.jpg" },
-      { title: "Project Gallery", "image": "/project/cover1.jpg" },
-      { title: "Project Detail", "image": "/project/project-detail/1-kronju/foto-1-1.png" },
-      { title: "Skills Section", "image": "/project/cover2.jpg" },
-      { title: "Contact Page", "image": "/project/cover3.jpg" }
+      { title: 'menu', image: PortofolioMarketerImages.menu },
+      { title: 'quotes', image: PortofolioMarketerImages.addon },
+      { title: 'experience', image: PortofolioMarketerImages.experience },
+      { title: 'quotes', image: PortofolioMarketerImages.quotes },
+      { title: 'horizontal scroll', image: PortofolioMarketerImages.projectlist1 },
+      { title: 'project list', image: PortofolioMarketerImages.projectlist2 },
+      { title: 'get connect', image: PortofolioMarketerImages.getconnect },
+      { title: 'project detail', image: PortofolioMarketerImages.projectDetail },
+      { title: 'expertise', image: PortofolioMarketerImages.projectDetailExpertise },
+      { title: 'showcase coursel', image: PortofolioMarketerImages.projectDetailShowcase },
+      { title: 'end', image: PortofolioMarketerImages.projectDetailEnd }
     ]
   },
   {

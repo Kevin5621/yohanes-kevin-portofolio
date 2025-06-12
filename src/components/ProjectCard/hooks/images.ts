@@ -44,3 +44,20 @@ export const PortofolioWebsiteImages = {
   portofolio3: '/assets/PortofolioWebsiteImages/portofolioSocial.png',
   process: '/assets/PortofolioWebsiteImages/process.png',
 };
+
+export const PortofolioMarketerImages = {
+  Mbanner: '/assets/PortofolioMarketerImages/hero.png',
+  MbannerLight: '/assets/PortofolioMarketerImages/hero.png',
+  MbannerDark: '/assets/PortofolioMarketerImages/hero.png',
+  menu: '/assets/PortofolioMarketerImages/menu.png',
+  addon: '/assets/PortofolioMarketerImages/addon.png',
+  experience: '/assets/PortofolioMarketerImages/experience.png',
+  quotes: '/assets/PortofolioMarketerImages/quotes.png',
+  projectlist1: '/assets/PortofolioMarketerImages/projectlist1.png',
+  projectlist2: '/assets/PortofolioMarketerImages/projectlist2.png',
+  getconnect: '/assets/PortofolioMarketerImages/getconnect.png',
+  projectDetail: '/assets/PortofolioMarketerImages/project-detail.png',
+  projectDetailEnd: '/assets/PortofolioMarketerImages/projectDetailEnd.png',
+  projectDetailExpertise: '/assets/PortofolioMarketerImages/projectDetailExpertise.png',
+  projectDetailShowcase: '/assets/PortofolioMarketerImages/projectDetailShowcase.png',
+};
