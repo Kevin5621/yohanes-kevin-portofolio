@@ -25,3 +25,12 @@ export const SmartIrrigationImages = {
   dataVisualization: '/assets/SmartIrrigation/dataVisualization.jpg',
   hardwareSetup: '/assets/SmartIrrigation/hardwareSetup.mp4',
 };
+
+export const CryptoTrackerImages = {
+  Cbanner: '/assets/CryptoTrackerImages/imageWhite.png',
+  CbannerLight: '/assets/CryptoTrackerImages/imageWhite.png',
+  CbannerDark: '/assets/CryptoTrackerImages/imageBlack.png',
+  cryptoAddTransaction: '/assets/CryptoTrackerImages/cryptoAddTransaction.png',
+  cryptoPrices: '/assets/CryptoTrackerImages/cryptoPrices.png',
+  cryptoWallets: '/assets/CryptoTrackerImages/cryptoWallets.png',
+};
