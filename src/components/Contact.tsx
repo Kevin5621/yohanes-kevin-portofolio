@@ -366,7 +366,7 @@ const Contact: React.FC = () => {
                 Icon={MailIcon} 
                 delay={SOCIAL_LINKS_START + (ICON_ANIMATION_DURATION * 3)}
                 isVisible={isVisible}
-                href="mailto:yohaneskevin11222@gmail.com"
+                href="mailto:yohanes123kevin123@gmail.com"
               />
               <div>
                 <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200">
@@ -382,7 +382,7 @@ const Contact: React.FC = () => {
                 <p className="text-gray-600 dark:text-gray-300">
                   {isVisible && (
                     <Typewriter 
-                      text="yohaneskevin11222@gmail.com" 
+                      text="yohanes123kevin123@gmail.com" 
                       speed={50} 
                       delay={SOCIAL_LINKS_START + (ICON_ANIMATION_DURATION * 4)}
                       className="text-gray-600 dark:text-gray-300"
