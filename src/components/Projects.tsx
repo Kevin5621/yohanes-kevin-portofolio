@@ -137,6 +137,7 @@ const Projects: React.FC<ProjectsProps> = ({ isVisible }) => {
                 onClick={() => setActiveTab('all')}
                 icon={null}
                 variant={activeTab === 'all' ? 'default' : 'subtle'}
+                isActive={activeTab === 'all'}
                 parentRef={tabsContainerRef}
               />
             </div>
@@ -148,6 +149,7 @@ const Projects: React.FC<ProjectsProps> = ({ isVisible }) => {
                 onClick={() => setActiveTab('real')}
                 icon={null}
                 variant={activeTab === 'real' ? 'default' : 'subtle'}
+                isActive={activeTab === 'real'}
                 parentRef={tabsContainerRef}
               />
             </div>
@@ -159,6 +161,7 @@ const Projects: React.FC<ProjectsProps> = ({ isVisible }) => {
                 onClick={() => setActiveTab('playground')}
                 icon={null}
                 variant={activeTab === 'playground' ? 'default' : 'subtle'}
+                isActive={activeTab === 'playground'}
                 parentRef={tabsContainerRef}
               />
             </div>

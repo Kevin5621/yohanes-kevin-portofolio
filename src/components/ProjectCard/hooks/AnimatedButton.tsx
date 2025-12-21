@@ -13,6 +13,7 @@ export interface AnimatedButtonProps {
   width?: 'auto' | 'full' | 'default';
   type?: 'button' | 'submit';
   isSubmitting?: boolean;
+  isActive?: boolean;
 }
 
 export const AnimatedButton = ({ 
@@ -25,7 +26,8 @@ export const AnimatedButton = ({
   variant = 'default',
   width = 'default',
   type = 'button',
-  isSubmitting = false
+  isSubmitting = false,
+  isActive = false
 }: AnimatedButtonProps) => {
   const { theme } = useTheme();
   const [isPressed, setIsPressed] = useState(false);
@@ -102,14 +104,15 @@ export const AnimatedButton = ({
   };
 
   const getThemeShadow = (shadowIntensity: number, subtleFactor: number) => {
-    if (isPressed) {
+    // Inset neumorphic for pressed or active state
+    if (isPressed || isActive) {
       return theme === 'dark'
-        ? `inset ${12 * subtleFactor}px ${12 * subtleFactor}px ${24 * subtleFactor}px #151515,
-          inset ${-12 * subtleFactor}px ${-12 * subtleFactor}px ${24 * subtleFactor}px #353535,
-          inset 0 0 ${15 * subtleFactor}px rgba(21, 21, 21, ${variant === 'subtle' ? '0.4' : '0.7'})`
-        : `inset ${12 * subtleFactor}px ${12 * subtleFactor}px ${24 * subtleFactor}px #d1d1d1,
-          inset ${-12 * subtleFactor}px ${-12 * subtleFactor}px ${24 * subtleFactor}px #ffffff,
-          inset 0 0 ${15 * subtleFactor}px rgba(209, 209, 209, ${variant === 'subtle' ? '0.4' : '0.7'})`;
+        ? `inset 8px 8px 16px #0d0d0d,
+          inset -8px -8px 16px #3d3d3d,
+          inset 0 0 12px rgba(0, 0, 0, 0.7)`
+        : `inset 8px 8px 16px #bebebe,
+          inset -8px -8px 16px #ffffff,
+          inset 0 0 12px rgba(190, 190, 190, 0.7)`;
     }
 
     return theme === 'dark'

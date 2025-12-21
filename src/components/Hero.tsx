@@ -148,7 +148,7 @@ const Hero = () => {
               <div className="w-full">
                 {showDecryptEffect ? (
                   <DecryptEffect 
-                    text="Web3 Developer" 
+                    text="Web Developer" 
                     isActive={true}
                     normalDuration={2000}
                     encryptedDuration={2000}
@@ -157,7 +157,7 @@ const Hero = () => {
                   />
                 ) : (
                   <Typewriter 
-                    text="Web3 Developer"
+                    text="Web Developer"
                     delay={700}
                     speed={20}
                     className="block font-mono text-lg sm:text-2xl md:text-3xl text-gray-600 dark:text-gray-300 mb-6"
