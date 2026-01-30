@@ -25,6 +25,117 @@ export interface WorkResultProject {
 export const workResultsProjects: Record<string, WorkResultProject[]> = {
   en: [
     {
+      title: 'Internal ERP',
+      description: 'Streamlined ERP system handling auth, complex data flows, and role-based access for operations.',
+      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'PostgreSQL'],
+      githubUrl: '#',
+      type: 'real',
+      features: {
+        sections: [
+          {
+            title: 'Features',
+            items: [
+              'Role-based access control',
+              'Complex data management',
+              'Employee and user management',
+              'Financial modules (General Ledger, Budget)',
+              'Purchase Orders and Goods Receipts'
+            ]
+          }
+        ]
+      },
+      image: [
+        {
+           title: 'banner',
+           image: '/work/erp/banner.png'
+        },
+        { title: 'Companies Data', image: '/work/erp/Screenshot 2026-01-29 at 19-35-56 Companies Data Master.webp' },
+        { title: 'Quotations', image: '/work/erp/Screenshot 2026-01-29 at 19-36-36 Quotations Sales.webp' },
+        { title: 'User Management', image: '/work/erp/Screenshot 2026-01-29 at 19-42-56 Role Access Management User Management.webp' },
+        { title: 'Purchase Orders', image: '/work/erp/Screenshot 2026-01-29 at 19-38-54 Purchase Orders Purchase.webp' },
+        { title: 'Employees', image: '/work/erp/Screenshot 2026-01-29 at 19-39-50 Employees Data Master.webp' },
+        { title: 'Finance GL', image: '/work/erp/Screenshot 2026-01-29 at 19-46-15 General Ledger Finance.webp' }
+      ]
+    },
+    {
+      title: 'SalesView',
+      description: 'Healthcare CRM for managing leads, sales performance, and territory mapping.',
+      technologies: ['Next.js', 'TypeScript', 'TanStack Query', 'Tailwind CSS', 'TurboRepo'],
+      githubUrl: '#',
+      type: 'real',
+      features: {
+        sections: [
+          {
+            title: 'Modern Architecture & High Performance',
+            items: [
+              'Next.js 16 App Router with Server-Side Rendering',
+              'Monorepo structure using TurboRepo for modular development',
+              'Efficient server state management with TanStack Query (caching & revalidation)',
+              'Lightweight client state management with Zustand',
+              'Responsive and interactive UI with Framer Motion animations'
+            ]
+          },
+          {
+            title: 'Advanced Data Visualization',
+            items: [
+              'Rich Sales Overview dashboard with comprehensive analytics',
+              'Deep analytical charts using Recharts',
+              'Leaflet Maps integration for sales territory mapping and accurate client location',
+              'Real-time performance metrics and KPIs',
+              'Interactive data tables and reports'
+            ]
+          },
+          {
+            title: 'Sales Management Features',
+            items: [
+              'Lead Management with lead scoring and tracking',
+              'Sales Pipeline visualization with Kanban board',
+              'Visit scheduling and management',
+              'Task and reminder system',
+              'Route optimization for field sales',
+              'Customer account and contact management'
+            ]
+          },
+          {
+            title: 'Security & Validation',
+            items: [
+              'Full TypeScript implementation for type safety',
+              'Zod schema validation for complex forms',
+              'React Hook Form for form handling',
+              'Strong type safety minimizing runtime errors',
+              'Secure authentication and authorization'
+            ]
+          },
+          {
+            title: 'Consistent Design System',
+            items: [
+              'Tailwind CSS v4 for modern styling',
+              'Radix UI headless components ensuring full accessibility',
+              'Consistent design across the entire application',
+              'Responsive design for desktop and mobile',
+              'Dark/Light theme support'
+            ]
+          }
+        ]
+      },
+      image: [
+        {
+          title: 'banner',
+          image: '/work/salesview/banner.png'
+        },
+        { title: 'Dashboard Overview', image: '/work/salesview/Screenshot 2026-01-30 at 12-34-39 CRM Healthcare Platform.webp' },
+        { title: 'Route Optimization', image: '/work/salesview/Screenshot 2026-01-30 at 12-34-52 CRM Healthcare Platform.webp' },
+        { title: 'Lead Management', image: '/work/salesview/Screenshot 2026-01-30 at 12-35-16 CRM Healthcare Platform.webp' },
+        { title: 'Sales Pipeline', image: '/work/salesview/Screenshot 2026-01-30 at 12-35-55 CRM Healthcare Platform.webp' },
+        { title: 'Schedule Management', image: '/work/salesview/Screenshot 2026-01-30 at 12-36-06 CRM Healthcare Platform.webp' },
+        { title: 'Visit Reports', image: '/work/salesview/Screenshot 2026-01-30 at 12-36-53 CRM Healthcare Platform.webp' },
+        { title: 'Task Details', image: '/work/salesview/Screenshot 2026-01-30 at 12-38-03 CRM Healthcare Platform.webp' },
+        { title: 'Product Analytics', image: '/work/salesview/Screenshot 2026-01-30 at 12-38-45 CRM Healthcare Platform.webp' },
+        { title: 'Territory Management', image: '/work/salesview/Screenshot 2026-01-30 at 12-39-04 CRM Healthcare Platform.webp' },
+        { title: 'AI Chatbot', image: '/work/salesview/Screenshot 2026-01-30 at 12-34-26 CRM Healthcare Platform.webp' }
+      ]
+    },
+    {
       title: 'Sitama',
       description: 'Dual-role internship management platform for students and lecturers at Politeknik Negeri Semarang.',
       technologies: ['Dart', 'Laravel', 'SQL', 'Firebase'],
@@ -262,84 +373,7 @@ export const workResultsProjects: Record<string, WorkResultProject[]> = {
         { title: 'end', image: '/work/PortofolioMarketerImages/Screenshot 2025-12-16 at 16-14-40 Adhara Eka - Portfolio.webp' }
       ]
     },
-    {
-      title: 'SalesView',
-      description: 'Healthcare CRM for managing leads, sales performance, and territory mapping.',
-      technologies: ['Next.js', 'TypeScript', 'TanStack Query', 'Tailwind CSS', 'TurboRepo'],
-      githubUrl: '#',
-      type: 'real',
-      features: {
-        sections: [
-          {
-            title: 'Modern Architecture & High Performance',
-            items: [
-              'Next.js 16 App Router with Server-Side Rendering',
-              'Monorepo structure using TurboRepo for modular development',
-              'Efficient server state management with TanStack Query (caching & revalidation)',
-              'Lightweight client state management with Zustand',
-              'Responsive and interactive UI with Framer Motion animations'
-            ]
-          },
-          {
-            title: 'Advanced Data Visualization',
-            items: [
-              'Rich Sales Overview dashboard with comprehensive analytics',
-              'Deep analytical charts using Recharts',
-              'Leaflet Maps integration for sales territory mapping and accurate client location',
-              'Real-time performance metrics and KPIs',
-              'Interactive data tables and reports'
-            ]
-          },
-          {
-            title: 'Sales Management Features',
-            items: [
-              'Lead Management with lead scoring and tracking',
-              'Sales Pipeline visualization with Kanban board',
-              'Visit scheduling and management',
-              'Task and reminder system',
-              'Route optimization for field sales',
-              'Customer account and contact management'
-            ]
-          },
-          {
-            title: 'Security & Validation',
-            items: [
-              'Full TypeScript implementation for type safety',
-              'Zod schema validation for complex forms',
-              'React Hook Form for form handling',
-              'Strong type safety minimizing runtime errors',
-              'Secure authentication and authorization'
-            ]
-          },
-          {
-            title: 'Consistent Design System',
-            items: [
-              'Tailwind CSS v4 for modern styling',
-              'Radix UI headless components ensuring full accessibility',
-              'Consistent design across the entire application',
-              'Responsive design for desktop and mobile',
-              'Dark/Light theme support'
-            ]
-          }
-        ]
-      },
-      image: [
-        {
-          title: 'banner',
-          image: '/work/salesview/banner.png'
-        },
-        { title: 'Dashboard Overview', image: '/work/salesview/Screenshot 2026-01-30 at 12-34-39 CRM Healthcare Platform.webp' },
-        { title: 'Route Optimization', image: '/work/salesview/Screenshot 2026-01-30 at 12-34-52 CRM Healthcare Platform.webp' },
-        { title: 'Lead Management', image: '/work/salesview/Screenshot 2026-01-30 at 12-35-16 CRM Healthcare Platform.webp' },
-        { title: 'Sales Pipeline', image: '/work/salesview/Screenshot 2026-01-30 at 12-35-55 CRM Healthcare Platform.webp' },
-        { title: 'Schedule Management', image: '/work/salesview/Screenshot 2026-01-30 at 12-36-06 CRM Healthcare Platform.webp' },
-        { title: 'Visit Reports', image: '/work/salesview/Screenshot 2026-01-30 at 12-36-53 CRM Healthcare Platform.webp' },
-        { title: 'Task Details', image: '/work/salesview/Screenshot 2026-01-30 at 12-38-03 CRM Healthcare Platform.webp' },
-        { title: 'Product Analytics', image: '/work/salesview/Screenshot 2026-01-30 at 12-38-45 CRM Healthcare Platform.webp' },
-        { title: 'Territory Management', image: '/work/salesview/Screenshot 2026-01-30 at 12-39-04 CRM Healthcare Platform.webp' },
-        { title: 'AI Chatbot', image: '/work/salesview/Screenshot 2026-01-30 at 12-34-26 CRM Healthcare Platform.webp' }
-      ]
-    },
+
     {
       title: 'CRM Pharmaceutical',
       description: 'Healthcare CRM with AI insights, 20+ modules, and real-time analytics.',
@@ -476,38 +510,5 @@ export const workResultsProjects: Record<string, WorkResultProject[]> = {
         }
       ]
     },
-    {
-      title: 'Internal ERP',
-      description: 'Streamlined ERP system handling auth, complex data flows, and role-based access for operations.',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'PostgreSQL'],
-      githubUrl: '#',
-      type: 'real',
-      features: {
-        sections: [
-          {
-            title: 'Features',
-            items: [
-              'Role-based access control',
-              'Complex data management',
-              'Employee and user management',
-              'Financial modules (General Ledger, Budget)',
-              'Purchase Orders and Goods Receipts'
-            ]
-          }
-        ]
-      },
-      image: [
-        {
-           title: 'banner',
-           image: '/work/erp/banner.png'
-        },
-        { title: 'Companies Data', image: '/work/erp/Screenshot 2026-01-29 at 19-35-56 Companies Data Master.webp' },
-        { title: 'Quotations', image: '/work/erp/Screenshot 2026-01-29 at 19-36-36 Quotations Sales.webp' },
-        { title: 'User Management', image: '/work/erp/Screenshot 2026-01-29 at 19-42-56 Role Access Management User Management.webp' },
-        { title: 'Purchase Orders', image: '/work/erp/Screenshot 2026-01-29 at 19-38-54 Purchase Orders Purchase.webp' },
-        { title: 'Employees', image: '/work/erp/Screenshot 2026-01-29 at 19-39-50 Employees Data Master.webp' },
-        { title: 'Finance GL', image: '/work/erp/Screenshot 2026-01-29 at 19-46-15 General Ledger Finance.webp' }
-      ]
-    }
   ],
 };
