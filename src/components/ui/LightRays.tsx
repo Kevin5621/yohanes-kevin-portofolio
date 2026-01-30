@@ -104,6 +104,15 @@ const LightRays: React.FC<LightRaysProps> = ({
   const animationIdRef = useRef<number | null>(null);
   const meshRef = useRef<Mesh | null>(null);
   const cleanupFunctionRef = useRef<(() => void) | null>(null);
+  
+  // Smooth transition state and refs
+  const [activeOrigin, setActiveOrigin] = useState<RaysOrigin>(raysOrigin);
+  const activeOriginRef = useRef<RaysOrigin>(raysOrigin);
+  const currentAnchorRef = useRef<Vec2>([0, 0]);
+  const currentDirRef = useRef<Vec2>([0, 1]);
+  const targetAnchorRef = useRef<Vec2>([0, 0]);
+  const targetDirRef = useRef<Vec2>([0, 1]);
+
   const [isVisible, setIsVisible] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -126,6 +135,41 @@ const LightRays: React.FC<LightRaysProps> = ({
         observerRef.current = null;
       }
     };
+  }, []);
+
+  // Section Observer for auto-positioning
+  useEffect(() => {
+    // Only run if we are in the browser
+    if (typeof window === 'undefined') return;
+
+    const sections = [
+      { id: 'hero', origin: 'top-right' as RaysOrigin },
+      { id: 'story', origin: 'top-center' as RaysOrigin },
+      { id: 'projects', origin: 'top-center' as RaysOrigin }
+    ];
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const matched = sections.find(s => s.id === entry.target.id);
+          if (matched) {
+            setActiveOrigin(matched.origin);
+            activeOriginRef.current = matched.origin;
+          }
+        }
+      });
+    }, {
+      rootMargin: '-20% 0px -20% 0px', // Trigger when section is significantly in view
+      threshold: 0
+    });
+
+    // Wait a bit for DOM to be ready if needed, or just run
+    sections.forEach(section => {
+      const el = document.getElementById(section.id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -260,12 +304,22 @@ void main() {
   gl_FragColor  = color;
 }`;
 
+      const { clientWidth: wInitial, clientHeight: hInitial } = containerRef.current;
+      const initialDpr = renderer.dpr;
+      
+      // Initialize current and target refs
+      const { anchor: initAnchor, dir: initDir } = getAnchorAndDir(activeOriginRef.current, wInitial * initialDpr, hInitial * initialDpr);
+      currentAnchorRef.current = initAnchor;
+      currentDirRef.current = initDir;
+      targetAnchorRef.current = initAnchor;
+      targetDirRef.current = initDir;
+
       const uniforms: Uniforms = {
         iTime: { value: 0 },
-        iResolution: { value: [1, 1] },
+        iResolution: { value: [wInitial * initialDpr, hInitial * initialDpr] },
 
-        rayPos: { value: [0, 0] },
-        rayDir: { value: [0, 1] },
+        rayPos: { value: initAnchor },
+        rayDir: { value: initDir },
 
         raysColor: { value: hexToRgb(raysColor) },
         raysSpeed: { value: raysSpeed },
@@ -304,9 +358,10 @@ void main() {
 
         uniforms.iResolution.value = [w, h];
 
-        const { anchor, dir } = getAnchorAndDir(raysOrigin, w, h);
-        uniforms.rayPos.value = anchor;
-        uniforms.rayDir.value = dir;
+        // Update target based on activeOrigin and new size
+        const { anchor, dir } = getAnchorAndDir(activeOriginRef.current, w, h);
+        targetAnchorRef.current = anchor;
+        targetDirRef.current = dir;
       };
 
       const loop = (t: number) => {
@@ -324,6 +379,18 @@ void main() {
 
           uniforms.mousePos.value = [smoothMouseRef.current.x, smoothMouseRef.current.y];
         }
+
+        // Interpolate rayPos and rayDir
+        const lerpFactor = 0.05; // Adjust for speed of transition
+        
+        currentAnchorRef.current[0] += (targetAnchorRef.current[0] - currentAnchorRef.current[0]) * lerpFactor;
+        currentAnchorRef.current[1] += (targetAnchorRef.current[1] - currentAnchorRef.current[1]) * lerpFactor;
+        
+        currentDirRef.current[0] += (targetDirRef.current[0] - currentDirRef.current[0]) * lerpFactor;
+        currentDirRef.current[1] += (targetDirRef.current[1] - currentDirRef.current[1]) * lerpFactor;
+
+        uniforms.rayPos.value = [currentAnchorRef.current[0], currentAnchorRef.current[1]];
+        uniforms.rayDir.value = [currentDirRef.current[0], currentDirRef.current[1]];
 
         try {
           renderer.render({ scene: mesh });
@@ -411,14 +478,17 @@ void main() {
 
     const { clientWidth: wCSS, clientHeight: hCSS } = containerRef.current;
     const dpr = renderer.dpr;
-    const { anchor, dir } = getAnchorAndDir(raysOrigin, wCSS * dpr, hCSS * dpr);
-    u.rayPos.value = anchor;
-    u.rayDir.value = dir;
+    
+    // Update target instead of current position
+    const { anchor, dir } = getAnchorAndDir(activeOrigin, wCSS * dpr, hCSS * dpr);
+    targetAnchorRef.current = anchor;
+    targetDirRef.current = dir;
   }, [
     raysColor,
     raysSpeed,
     lightSpread,
-    raysOrigin,
+    raysOrigin, // Still here if props change, but activeOrigin takes precedence if logic updates it
+    activeOrigin,
     rayLength,
     pulsating,
     fadeDistance,

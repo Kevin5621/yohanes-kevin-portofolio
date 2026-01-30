@@ -30,7 +30,7 @@ export const Projects = () => {
   const currentImage = currentProject.image[activeImageIndex];
 
   return (
-    <section className="py-32 px-6 md:px-12 max-w-[1400px] mx-auto border-t border-[#d2d2d7]">
+    <section id="projects" className="py-32 px-6 md:px-12 max-w-[1400px] mx-auto border-t border-[#d2d2d7]">
       <h2 className="text-xs font-semibold tracking-widest uppercase text-[#86868b] mb-16">
         Selected Projects
       </h2>

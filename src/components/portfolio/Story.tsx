@@ -43,7 +43,7 @@ const WordReveal = ({ children }: { children: string }) => {
 
 export const Story = () => {
   return (
-    <section className="min-h-screen flex flex-col justify-center pt-32 px-6 md:px-12 max-w-[1400px] mx-auto">
+    <section id="story" className="min-h-screen flex flex-col justify-center pt-32 px-6 md:px-12 max-w-[1400px] mx-auto">
       <div className="space-y-64">
         <WordReveal>
           I started by building web projects for learning and personal use. Over time, those projects grew into real client work.
