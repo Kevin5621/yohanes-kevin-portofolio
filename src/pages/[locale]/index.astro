@@ -1,0 +1,17 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { PortfolioHome } from '../../components/portfolio/PortfolioHome';
+
+export function getStaticPaths() {
+  return [
+    {params: {locale: 'en'}},
+    {params: {locale: 'id'}},
+  ];
+}
+
+const { locale } = Astro.params;
+---
+
+<Layout title="Kevin - Portfolio" lang={locale}>
+  <PortfolioHome client:only="react" />
+</Layout>

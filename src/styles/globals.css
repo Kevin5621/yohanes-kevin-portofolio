@@ -1,104 +1,229 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
 
-/* Lenis smooth scroll styles */
-html.lenis {
-  height: auto;
+@theme {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-brand: hsl(var(--brand));
+  --color-brand-foreground: hsl(var(--brand-foreground));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-heading: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-fade-in: fade-in 0.5s ease-out forwards;
+  --animate-slide-up: slide-up 0.5s ease-out forwards;
+
+  @keyframes accordion-down {
+    from { height: 0 }
+    to { height: var(--radix-accordion-content-height) }
+  }
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height) }
+    to { height: 0 }
+  }
+  @keyframes fade-in {
+    from { opacity: 0 }
+    to { opacity: 1 }
+  }
+  @keyframes slide-up {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
 }
 
-.lenis.lenis-smooth {
-  scroll-behavior: auto;
+@layer base {
+  :root {
+    /* Bright Monochrome Palette */
+    --background: 0 0% 100%;       /* Pure White */
+    --foreground: 0 0% 10%;        /* Near Black */
+    
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    
+    --primary: 0 0% 10%;           /* Black */
+    --primary-foreground: 0 0% 100%; /* White */
+    
+    --secondary: 0 0% 96%;         /* Very Light Gray */
+    --secondary-foreground: 0 0% 10%;
+    
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;  /* Medium Gray */
+    
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 10%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 80%;            /* Light Gray Border */
+    --input: 0 0% 90%;
+    --ring: 0 0% 10%;
+    
+    --brand: 221 83% 53%;          /* Electric Blue #2563EB */
+    --brand-foreground: 0 0% 100%;
+    
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Dark mode - keeping it monochrome but inverted */
+    --background: 0 0% 10%;
+    --foreground: 0 0% 100%;
+    
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 100%;
+    
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 100%;
+    
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 10%;
+    
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 100%;
+    
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 0% 83.9%;
+
+    --brand: 221 83% 53%;
+    --brand-foreground: 0 0% 100%;
+  }
 }
 
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
+@layer base {
+  * {
+    @apply border-border;
+    /* Custom Scrollbar - Elegant, Thin, Blue Primary */
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--brand)) transparent;
+  }
+
+  /* Webkit browsers (Chrome, Safari, Edge) */
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--brand));
+    border-radius: 10px;
+    transition: background-color 0.2s ease;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(221 83% 48%);
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-weight: 200; /* Light 200 for better readability while maintaining minimalism */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  p {
+    font-weight: 200; /* Light 200 for better readability while maintaining minimalism */
+    letter-spacing: 0.01em; /* Slightly increase letter spacing for better contrast */
+    line-height: 1.6; /* Improve line height for readability */
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-tight;
+    font-weight: 400; /* Regular 400 for headers */
+  }
 }
 
-.lenis.lenis-stopped {
-  overflow: hidden;
+/* AI Gradient Text Animation */
+.ai-gradient-text {
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #a855f7, #c084fc, #8b5cf6, #6366f1);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 3s ease infinite;
 }
 
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
+/* AI Gradient Icon Animation */
+.ai-gradient-icon {
+  display: inline-block;
+  position: relative;
 }
 
+.ai-gradient-icon svg {
+  stroke: url(#ai-gradient);
+  filter: drop-shadow(0 0 3px rgba(139, 92, 246, 0.6));
+  animation: icon-glow 3s ease infinite;
+}
+
+@keyframes icon-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 3px rgba(139, 92, 246, 0.6)) drop-shadow(0 0 6px rgba(99, 102, 241, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 5px rgba(168, 85, 247, 0.8)) drop-shadow(0 0 10px rgba(139, 92, 246, 0.6));
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+}
+
+/* Custom z-index utilities for layered effects */
 @layer utilities {
-  .shadow-neumorph {
-    box-shadow: 8px 8px 16px #d1d1d1,
-               -8px -8px 16px #ffffff;
+  .z-15 {
+    z-index: 15;
   }
-
-  .shadow-neumorph-hover {
-    box-shadow: 12px 12px 24px #d1d1d1,
-               -12px -12px 24px #ffffff;
+  .z-16 {
+    z-index: 16;
   }
-
-  .shadow-neumorph-inset {
-    box-shadow: inset 6px 6px 12px #d1d1d1,
-                inset -6px -6px 12px #ffffff;
-  }
-
-  .shadow-neumorph-dark {
-    box-shadow: 8px 8px 16px #151515,
-               -8px -8px 16px #353535;
-  }
-
-  .shadow-neumorph-dark-hover {
-    box-shadow: 12px 12px 24px #151515,
-               -12px -12px 24px #353535;
-  }
-
-  .shadow-neumorph-dark-inset {
-    box-shadow: inset 6px 6px 12px #151515,
-                inset -6px -6px 12px #353535;
-  }
-}
-
-/* Base transitions */
-* {
-  transition: none;
-  user-select: none;
-  -webkit-user-drag: none;
-  -moz-user-select: none;
-}
-
-/* Interactive elements transitions */
-.interactive-element {
-  transition: transform 200ms ease-out,
-              box-shadow 200ms ease-out,
-              opacity 200ms ease-out !important;
-}
-
-/* Scroll-based animations */
-.scroll-animate {
-  transition: transform 400ms ease-out,
-              opacity 400ms ease-out !important;
-}
-
-/* Add back specific transitions only for hover effects */
-*:hover {
-  transition: transform 200ms ease-in-out !important;
-}
-
-/* Keep animation classes working */
-.animate-fadeIn {
-  animation: fadeIn 1s ease-out forwards !important;
-}
-
-/* Override for cards to allow smooth hover */
-.card {
-  transition: transform 200ms ease-in-out !important;
-}
-
-/* Card entrance animation */
-.card-entrance {
-  transition: opacity 1000ms cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 1000ms cubic-bezier(0.4, 0, 0.2, 1),
-              transform 1000ms cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-/* Card hover animation - will override entrance animation when needed */
-.card-hover {
-  transition: transform 200ms ease-in-out !important;
 }
