@@ -1,7 +1,6 @@
 ---
 import "../styles/globals.css";
 import LightRays from "../components/ui/LightRays";
-import MobileMenu from "../components/MobileMenu.astro";
 
 const { 
 	lang = Astro.currentLocale || 'en', 
@@ -138,7 +137,6 @@ const defaultUrl = enUrl;
       />
     </div>
 		<slot />
-		<MobileMenu lang={lang} />
 	</body>
 
 <script>
