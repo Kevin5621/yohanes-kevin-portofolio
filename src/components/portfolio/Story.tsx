@@ -32,7 +32,7 @@ const WordReveal = ({ children }: { children: string }) => {
 
   return (
     <p ref={containerRef} className="text-4xl md:text-6xl font-semibold leading-tight tracking-tight text-[#1d1d1f] flex flex-wrap gap-x-3 gap-y-1">
-      {children.split(" ").map((word, i) => (
+      {children.trim().split(/\s+/).map((word, i) => (
         <span key={i} className="word transition-colors duration-200">
           {word}
         </span>
@@ -44,7 +44,7 @@ const WordReveal = ({ children }: { children: string }) => {
 export const Story = () => {
   return (
     <section className="min-h-screen flex flex-col justify-center pt-32 px-6 md:px-12 max-w-[1400px] mx-auto">
-      <div className="space-y-32">
+      <div className="space-y-64">
         <WordReveal>
           I started by building web projects for learning and personal use. Over time, those projects grew into real client work.
         </WordReveal>
