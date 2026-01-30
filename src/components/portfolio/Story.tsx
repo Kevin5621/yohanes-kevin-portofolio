@@ -43,8 +43,8 @@ const WordReveal = ({ children }: { children: string }) => {
 
 export const Story = () => {
   return (
-    <section className="py-32 px-6 md:px-12 max-w-[1200px] mx-auto">
-      <div className="space-y-64">
+    <section className="py-24 px-6 md:px-12 max-w-[1200px] mx-auto">
+      <div className="space-y-32">
         <WordReveal>
           I started by building web projects for learning and personal use. Over time, those projects grew into real client work.
         </WordReveal>
