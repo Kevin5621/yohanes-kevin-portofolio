@@ -1,0 +1,18 @@
+---
+import { pricingData } from '../data/pricing';
+import UnifiedPricing from './ui/UnifiedPricing';
+
+const { lang } = Astro.props;
+const t = pricingData[lang];
+---
+
+<UnifiedPricing
+  client:load
+  lang={lang}
+  packages={t.packages}
+  revisionSystem={t.revisionSystem}
+  erpCrm={t.erpCrm}
+  aiAddons={t.aiAddons}
+  customSoftware={t.customSoftware}
+  recurringRevenue={t.recurringRevenue}
+/>

@@ -1,0 +1,62 @@
+---
+import { pricingData } from '../data/pricing';
+import { RefreshCw, AlertCircle } from 'lucide-react';
+
+const { lang } = Astro.props;
+const t = pricingData[lang].revisionSystem;
+---
+
+<section class="py-8 sm:py-12 md:py-16 lg:py-20 relative">
+  <div class="container mx-auto px-4">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 sm:mb-8 md:mb-12 leading-tight px-2">{t.title}</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+        <div class="bg-background/40 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-border/50 shadow-sm hover:border-brand/50 transition-colors duration-300">
+          <div class="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+            <div class="p-2 sm:p-3 bg-brand/10 rounded-xl">
+              <RefreshCw className="w-5 h-5 sm:w-6 sm:h-6 text-brand" />
+            </div>
+            <h3 class="text-lg sm:text-xl font-bold">{t.small.title}</h3>
+          </div>
+          <ul class="space-y-2 sm:space-y-3">
+            {t.small.items.map(item => (
+              <li class="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
+                <span class="w-1.5 h-1.5 rounded-full bg-brand mt-2 shrink-0"></span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="bg-background/40 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-border/50 shadow-sm hover:border-destructive/50 transition-colors duration-300">
+          <div class="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+            <div class="p-2 sm:p-3 bg-destructive/10 rounded-xl">
+              <AlertCircle className="w-5 h-5 sm:w-6 sm:h-6 text-destructive" />
+            </div>
+            <h3 class="text-lg sm:text-xl font-bold">{t.large.title}</h3>
+          </div>
+          <ul class="space-y-2 sm:space-y-3">
+            {t.large.items.map(item => (
+              <li class="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
+                <span class="w-1.5 h-1.5 rounded-full bg-destructive mt-2 shrink-0"></span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-6 sm:mt-8 p-4 sm:p-6 bg-background/40 backdrop-blur-sm rounded-2xl border border-border/50 text-center">
+        <p class="text-xs sm:text-sm font-medium text-muted-foreground mb-3 sm:mb-4">{lang === 'en' ? 'Additional Revisions:' : 'Revisi Tambahan:'}</p>
+        <div class="flex flex-wrap justify-center gap-2 sm:gap-4 md:gap-8">
+          {t.extra.map(item => (
+            <span class="inline-flex items-center px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-secondary/50 border border-border/50 text-xs font-medium">
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

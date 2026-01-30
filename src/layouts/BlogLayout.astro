@@ -1,0 +1,142 @@
+---
+import "../styles/globals.css";
+
+const { 
+	lang = Astro.currentLocale || 'en', 
+	title = 'Gilabs.id',
+	description = 'Premium Software Agency specializing in web development, mobile apps, and digital solutions. Transform your business with cutting-edge technology.',
+	canonical = Astro.url.href,
+	robots = 'index, follow',
+	noindex = false,
+	keywords = 'web development, mobile app development, software agency, digital solutions, UI/UX design, custom software, web design, app development Indonesia, ERP system, CRM system, software development company, web application development, mobile application development, e-commerce development, enterprise software, digital transformation, software consulting, Indonesia software company'
+} = Astro.props;
+
+const siteUrl = 'https://gilabs.id';
+const fullCanonical = canonical.startsWith('http') ? canonical : `${siteUrl}${canonical}`;
+const robotsContent = noindex ? 'noindex, nofollow' : robots;
+
+// Generate hreflang URLs for multi-language SEO
+// Extract the path after locale prefix to build alternate URLs
+const currentPath = Astro.url.pathname;
+const pathWithoutLocale = currentPath.replace(/^\/(en|id)/, '') || '/';
+
+// Build alternate URLs for each language
+const enUrl = `${siteUrl}/en${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
+const idUrl = `${siteUrl}/id${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
+
+// x-default should point to the English version as the default
+const defaultUrl = enUrl;
+---
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		
+		<!-- Favicons - Multiple formats for Google Search compatibility -->
+		<!-- Primary favicon for Google Search Console -->
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+		<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+		<link rel="icon" type="image/png" sizes="144x144" href="/favicon-144x144.png" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		
+		<meta name="generator" content={Astro.generator} />
+		
+		<!-- Primary Meta Tags -->
+		<title>{title}</title>
+		<meta name="title" content={title} />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="robots" content={robotsContent} />
+		<meta name="author" content="Gilabs.id" />
+		<meta name="publisher" content="Gilabs.id" />
+		
+		<!-- Canonical URL -->
+		<link rel="canonical" href={fullCanonical} />
+		
+		<!-- Hreflang Tags for Multi-language SEO -->
+		<link rel="alternate" hreflang="en" href={enUrl} />
+		<link rel="alternate" hreflang="id" href={idUrl} />
+		<link rel="alternate" hreflang="x-default" href={defaultUrl} />
+		
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="article" />
+		<meta property="og:url" content={fullCanonical} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:site_name" content="Gilabs.id" />
+		<meta property="og:locale" content={lang === 'id' ? 'id_ID' : 'en_US'} />
+		<meta property="og:locale:alternate" content={lang === 'id' ? 'en_US' : 'id_ID'} />
+		
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		
+		<!-- Additional SEO -->
+		<meta name="language" content={lang === 'id' ? 'Indonesian' : 'English'} />
+		<meta name="geo.region" content={lang === 'id' ? 'ID' : 'US'} />
+		
+		<!-- Structured Data (Schema.org) -->
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "Organization",
+			"name": "Gilabs.id",
+			"alternateName": "Gilabs Software Agency",
+			"url": "https://gilabs.id",
+			"logo": "https://gilabs.id/favicon-144x144.png",
+			"description": description,
+			"address": {
+				"@type": "PostalAddress",
+				"addressCountry": "ID"
+			},
+			"contactPoint": {
+				"@type": "ContactPoint",
+				"contactType": "Customer Service",
+				"availableLanguage": lang === 'id' ? "Indonesian" : "English"
+			},
+			"sameAs": [
+				"https://gilabs.id"
+			],
+			"areaServed": {
+				"@type": "Country",
+				"name": "Indonesia"
+			},
+			"knowsAbout": [
+				"Web Development",
+				"Mobile App Development",
+				"Software Development",
+				"Software House",
+				"UI/UX Design",
+				"Digital Solutions",
+				"ERP Systems",
+				"CRM Systems"
+			]
+		})} />
+		
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+	</head>
+	<body class="bg-background text-foreground font-sans antialiased relative selection:bg-brand selection:text-white">
+    <!-- Blog-specific background - minimal gradient -->
+    <div class="fixed inset-0 z-[-1] pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-b from-background via-background/98 to-background"></div>
+    </div>
+		<slot />
+	</body>
+</html>
+
+<style>
+	html,
+	body {
+		margin: 0;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+

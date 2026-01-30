@@ -1,0 +1,60 @@
+---
+import type { BlogPost } from '../../data/blog';
+
+interface Props {
+  post: BlogPost;
+  lang: string;
+}
+
+const { post, lang } = Astro.props;
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+};
+---
+
+<a 
+  href={`/${lang}/blog/${post.slug}`}
+  class="group block pb-6 md:pb-8 border-b border-border/30 hover:border-foreground/20 transition-colors duration-300"
+>
+  <div class="flex flex-col">
+    {/* Category */}
+    <div class="mb-2">
+      <span class="text-xs text-muted-foreground uppercase tracking-wider">
+        {post.category}
+      </span>
+    </div>
+
+    {/* Title */}
+    <h3 class="text-2xl md:text-3xl font-bold mb-3 group-hover:text-brand transition-colors line-clamp-2 leading-tight">
+      {post.title}
+    </h3>
+
+    {/* Excerpt */}
+    <p class="text-muted-foreground mb-4 line-clamp-2 leading-relaxed">
+      {post.excerpt}
+    </p>
+
+    {/* Meta Information - Minimalist */}
+    <div class="flex items-center gap-4 text-sm text-muted-foreground">
+      <span>{formatDate(post.date)}</span>
+      <span>·</span>
+      <span>{post.readTime}</span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
+

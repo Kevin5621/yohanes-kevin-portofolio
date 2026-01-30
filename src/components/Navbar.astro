@@ -1,0 +1,99 @@
+---
+import { Menu, X } from 'lucide-react';
+import { getWhatsAppLink } from '../lib/utils';
+
+const { lang } = Astro.props;
+
+const links = [
+  { href: `/${lang}/services`, label: lang === 'en' ? 'Services' : 'Layanan' },
+  { href: `/${lang}/work-results`, label: lang === 'en' ? 'Our Work' : 'Hasil Pekerjaan' },
+  { href: `/${lang}/blog`, label: lang === 'en' ? 'Blog' : 'Blog' },
+  { href: getWhatsAppLink('navbar', lang), label: lang === 'en' ? 'Contact' : 'Kontak', external: true },
+];
+
+const currentPath = Astro.url.pathname;
+const switchLangPath = currentPath.includes('/en') 
+  ? currentPath.replace('/en', '/id') 
+  : currentPath.replace('/id', '/en');
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out" id="navbar">
+  <div class="container mx-auto px-4 h-16 sm:h-20 flex items-center">
+    <a href={`/${lang}`} class="text-xl sm:text-2xl font-bold tracking-tighter relative z-50">
+      GILABS<span class="text-brand">.ID</span>
+    </a>
+
+    {/* Desktop Menu */}
+    <div class="hidden md:flex items-center gap-6 ml-auto mr-4">
+      {links.map(link => (
+        <a 
+          href={link.href} 
+          class="text-sm font-medium text-muted-foreground hover:text-brand transition-colors"
+          {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+
+    <div class="hidden md:flex items-center gap-4">
+      <a href={switchLangPath} class="text-xs font-medium border border-border px-3 py-1.5 rounded-full hover:bg-secondary transition-colors uppercase">
+        {lang === 'en' ? 'ID' : 'EN'}
+      </a>
+      <a href={getWhatsAppLink('navbar', lang)} target="_blank" rel="noopener noreferrer" class="text-sm font-bold bg-brand text-white px-5 py-2.5 rounded-full hover:bg-brand/90 transition-all hover:shadow-lg hover:shadow-brand/20">
+        {lang === 'en' ? 'Get Started' : 'Mulai Sekarang'}
+      </a>
+    </div>
+
+    {/* Mobile Toggle */}
+    <button id="menu-toggle" class="md:hidden ml-auto relative z-50 p-2 text-foreground" aria-label="Toggle Menu">
+      <div id="icon-menu" class="block">
+        <Menu className="w-6 h-6" />
+      </div>
+      <div id="icon-close" class="hidden">
+        <X className="w-6 h-6" />
+      </div>
+    </button>
+  </div>
+</nav>
+
+<script>
+  const navbar = document.getElementById('navbar');
+
+  // Hide/show navbar on scroll
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+
+  function updateNavbar() {
+    if (!navbar) return;
+    
+    const currentScrollY = window.scrollY;
+    
+    // Always show navbar at the top
+    if (currentScrollY <= 0) {
+      navbar.style.transform = 'translateY(0)';
+      lastScrollY = currentScrollY;
+      ticking = false;
+      return;
+    }
+    
+    // Hide on scroll down, show on scroll up
+    if (currentScrollY > lastScrollY && currentScrollY > 50) {
+      // Scrolling down - hide navbar
+      navbar.style.transform = 'translateY(-100%)';
+    } else {
+      // Scrolling up - show navbar
+      navbar.style.transform = 'translateY(0)';
+    }
+    
+    lastScrollY = currentScrollY;
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateNavbar);
+      ticking = true;
+    }
+  });
+</script>

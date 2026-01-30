@@ -1,0 +1,53 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import WorkResultDrawer from '../../components/ui/WorkResultDrawer';
+import WorkResultsHero from '../../components/work-results/WorkResultsHero.astro';
+import WorkResultsGrid from '../../components/work-results/WorkResultsGrid.astro';
+import WorkResultsCta from '../../components/work-results/WorkResultsCta.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: 'en' } },
+    { params: { locale: 'id' } },
+  ];
+}
+
+const { locale } = Astro.params;
+const lang = locale as 'en' | 'id';
+
+const siteUrl = 'https://gilabs.id';
+const canonical = locale === 'en' ? `${siteUrl}/en/work-results` : `${siteUrl}/${locale}/work-results`;
+const pageTitle = locale === 'en'
+	? `Our Work - Completed Projects & Case Studies | Gilabs.id`
+	: `Hasil Pekerjaan Kami - Proyek Selesai & Studi Kasus | Gilabs.id`;
+const pageDescription = locale === 'id'
+	? 'Jelajahi portfolio proyek-proyek yang telah kami selesaikan. Dari platform pendidikan hingga sistem monitoring enterprise, kami membangun solusi software yang profesional dan scalable.'
+	: 'Explore our portfolio of completed projects. From education platforms to enterprise monitoring systems, we build professional and scalable software solutions.';
+const keywords = locale === 'en'
+	? 'work results, completed projects, software development portfolio, corporate software solutions, professional development projects'
+	: 'hasil pekerjaan, proyek selesai, portfolio pengembangan software, solusi software korporat, proyek pengembangan profesional';
+---
+
+<Layout 
+	lang={lang} 
+	title={pageTitle}
+	description={pageDescription}
+	canonical={canonical}
+	keywords={keywords}
+>
+  <Navbar lang={lang} />
+  
+  <!-- Work Result Drawer Component -->
+  <WorkResultDrawer client:load lang={lang} />
+  
+  <main class="pt-20 bg-background">
+    <WorkResultsHero lang={lang} />
+    <WorkResultsGrid lang={lang} />
+    <WorkResultsCta lang={lang} />
+  </main>
+  
+  <Footer lang={lang} />
+</Layout>
+

@@ -1,0 +1,57 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Hero from '../../components/Hero.astro';
+import Features from '../../components/Features.astro';
+import About from '../../components/About.astro';
+import Services from '../../components/Services.astro';
+import PortfolioShowcase from '../../components/PortfolioShowcase.astro';
+import WorkResultDrawer from '../../components/ui/WorkResultDrawer';
+import Pricing from '../../components/Pricing.astro';
+import CtaSection from '../../components/CtaSection.astro';
+import Footer from '../../components/Footer.astro';
+
+export function getStaticPaths() {
+  return [
+    {params: {locale: 'en'}},
+    {params: {locale: 'id'}},
+  ];
+}
+
+const { locale } = Astro.params;
+const siteUrl = 'https://gilabs.id';
+const canonical = locale === 'en' ? `${siteUrl}/en` : `${siteUrl}/${locale}`;
+const description = locale === 'id' 
+	? 'Agen Software Premium yang mengkhususkan diri dalam pengembangan web, aplikasi mobile, dan solusi digital. Transformasikan bisnis Anda dengan teknologi terkini.'
+	: 'Premium Software Agency specializing in web development, mobile apps, and digital solutions. Transform your business with cutting-edge technology.';
+const title = locale === 'id'
+	? 'Gilabs.id - Agen Software Premium | Pengembangan Web & Mobile App'
+	: 'Gilabs.id - Premium Software Agency | Web & Mobile App Development';
+const keywords = locale === 'id'
+	? 'pengembangan web, pengembangan aplikasi mobile, agen software, solusi digital, desain UI/UX, software custom, web design, pengembangan aplikasi Indonesia, sistem ERP, sistem CRM, perusahaan pengembangan software, pengembangan aplikasi web, pengembangan aplikasi mobile, pengembangan e-commerce, software enterprise, transformasi digital, konsultasi software, perusahaan software Indonesia'
+	: 'web development, mobile app development, software agency, digital solutions, UI/UX design, custom software, web design, app development Indonesia, ERP system, CRM system, software development company, software house, web application development, mobile application development, e-commerce development, enterprise software, digital transformation, software consulting, Indonesia software company';
+---
+
+<Layout 
+	lang={locale} 
+	title={title}
+	description={description}
+	canonical={canonical}
+	keywords={keywords}
+>
+  <Navbar lang={locale} />
+  
+  <!-- Work Result Drawer Component -->
+  <WorkResultDrawer client:load lang={locale} />
+  
+  <main>
+    <Hero lang={locale} />
+    <Features lang={locale} />
+    <PortfolioShowcase lang={locale} />
+    <About lang={locale} />
+    <Services lang={locale} />
+    <Pricing lang={locale} />
+    <CtaSection lang={locale} />
+  </main>
+  <Footer lang={locale} />
+</Layout>

@@ -1,0 +1,180 @@
+---
+import { workResultsProjects } from '../data/workResults';
+import { ArrowRight, ExternalLink } from 'lucide-react';
+
+const { lang } = Astro.props;
+const projects = workResultsProjects[lang] || workResultsProjects['en'];
+
+// Get the 3 featured portfolios: SalesView, Fiber Monitoring, and Evalique
+// Titles are the same in both languages for these projects
+const featuredProjects = [
+  projects.find(p => p.title === 'SalesView'),
+  projects.find(p => p.title === 'Fiber Monitoring Project'),
+  projects.find(p => p.title === 'Evalique Assessment Platform'),
+].filter((p): p is NonNullable<typeof p> => p !== undefined);
+
+const labels = {
+  en: {
+    subtitle: 'Our Work',
+    title: 'Featured Projects',
+    description: 'Explore some of our recent work that showcases our expertise in building scalable, modern software solutions.',
+    viewMore: 'View All Projects',
+    viewProject: 'View Project',
+    technologies: 'Technologies',
+    moreTech: 'more',
+  },
+  id: {
+    subtitle: 'Hasil Pekerjaan Kami',
+    title: 'Proyek Unggulan',
+    description: 'Jelajahi beberapa pekerjaan terbaru kami yang menampilkan keahlian kami dalam membangun solusi software yang scalable dan modern.',
+    viewMore: 'Lihat Semua Proyek',
+    viewProject: 'Lihat Proyek',
+    technologies: 'Teknologi',
+    moreTech: 'lainnya',
+  },
+};
+
+const t = labels[lang as keyof typeof labels] || labels.en;
+const workResultsUrl = lang === 'en' ? '/en/work-results' : `/${lang}/work-results`;
+---
+
+<section id="portfolio-showcase" class="relative border-b border-border/50 py-24 md:py-32">
+  <div class="container mx-auto px-4">
+    {/* Header Section */}
+    <div class="max-w-3xl mx-auto text-center mb-12 md:mb-16 px-4">
+      <p class="text-[0.65rem] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground mb-3 md:mb-4">
+        {t.subtitle}
+      </p>
+      <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-foreground leading-tight mb-6">
+        {t.title}
+      </h2>
+      <p class="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
+        {t.description}
+      </p>
+    </div>
+
+    {/* Portfolio Grid */}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16">
+      {featuredProjects.map((project) => {
+        const bannerImage = project?.image.find(img => img.title.toLowerCase() === 'banner') || project?.image[0];
+        const techCount = project?.technologies.length || 0;
+        const displayTechs = project?.technologies.slice(0, 4) || [];
+        
+        return (
+          <article 
+            class="group relative bg-background/40 backdrop-blur-sm border border-border/50 rounded-2xl overflow-hidden hover:border-brand/50 transition-all duration-500 hover:shadow-xl hover:shadow-brand/5 hover:-translate-y-1"
+            data-project={project?.title}
+          >
+            {/* Image Container */}
+            <div class="relative aspect-video overflow-hidden bg-muted">
+              {bannerImage && (
+                <img
+                  src={bannerImage.image}
+                  alt={project?.title || 'Project'}
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
+                  width="400"
+                  height="225"
+                />
+              )}
+              <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              {/* Overlay Button */}
+              <button
+                type="button"
+                class="portfolio-showcase-btn absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer z-10"
+                data-project={JSON.stringify(project)}
+              >
+                <span class="inline-flex items-center gap-2 px-6 py-3 bg-brand text-white rounded-full font-medium text-sm shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                  {t.viewProject}
+                  <ExternalLink className="w-4 h-4" />
+                </span>
+              </button>
+            </div>
+            
+            {/* Content */}
+            <div class="p-6">
+              {/* Title */}
+              <h3 class="text-xl font-bold mb-2 group-hover:text-brand transition-colors line-clamp-1">
+                {project?.title}
+              </h3>
+              
+              {/* Description */}
+              <p class="text-muted-foreground text-sm mb-4 line-clamp-3 leading-relaxed">
+                {project?.description}
+              </p>
+              
+              {/* Technologies */}
+              <div>
+                <p class="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">
+                  {t.technologies}
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  {displayTechs.map((tech) => (
+                    <span class="px-2 py-1 text-xs font-medium bg-secondary/50 text-muted-foreground rounded">
+                      {tech}
+                    </span>
+                  ))}
+                  {techCount > 4 && (
+                    <span class="px-2 py-1 text-xs font-medium bg-secondary/50 text-muted-foreground rounded">
+                      +{techCount - 4} {t.moreTech}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ workResultsUrl }}>
+  function initPortfolioShowcase() {
+    const buttons = document.querySelectorAll('.portfolio-showcase-btn[data-project]');
+    
+    buttons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const projectData = this.getAttribute('data-project');
+        if (!projectData) return;
+        
+        try {
+          const project = JSON.parse(projectData);
+          // Dispatch event to open work result drawer
+          const event = new CustomEvent('open-work-result-drawer', { 
+            detail: project,
+            bubbles: true 
+          });
+          globalThis.dispatchEvent(event);
+        } catch (error) {
+          console.error('Error parsing project data:', error);
+          // Fallback to work-results page if parsing fails
+          window.location.href = workResultsUrl;
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPortfolioShowcase);
+  } else {
+    initPortfolioShowcase();
+  }
+
+  // Also try after a delay to ensure drawer component is loaded
+  setTimeout(initPortfolioShowcase, 100);
+  setTimeout(initPortfolioShowcase, 500);
+</script>
+
+<style>
+  /* Smooth scroll behavior for anchor links */
+  html {
+    scroll-behavior: smooth;
+  }
+</style>
+

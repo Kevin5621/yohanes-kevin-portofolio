@@ -1,0 +1,43 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import BlogOverview from '../../components/blog/BlogOverview.astro';
+import { blogData } from '../../data/blog';
+
+export function getStaticPaths() {
+  return [
+    {params: {locale: 'en'}},
+    {params: {locale: 'id'}},
+  ];
+}
+
+const { locale } = Astro.params;
+const blog = blogData[locale] || blogData['en'];
+const siteUrl = 'https://gilabs.id';
+const canonical = locale === 'en' ? `${siteUrl}/en/blog` : `${siteUrl}/${locale}/blog`;
+const pageTitle = locale === 'en' 
+  ? `Blog - Insights & Updates | Gilabs Software House`
+  : `Blog - Wawasan & Update | Gilabs Software House`;
+const pageDescription = locale === 'en'
+  ? 'Read our latest insights on web development, mobile apps, UI/UX design, SEO, and technology trends from Gilabs Software House.'
+  : 'Baca wawasan terbaru kami tentang pengembangan web, aplikasi mobile, desain UI/UX, SEO, dan tren teknologi dari Gilabs Software House.';
+const keywords = locale === 'en'
+	? 'web development blog, mobile app development, software development insights, Software House, UI/UX design tips, SEO best practices, technology trends'
+	: 'blog pengembangan web, pengembangan aplikasi mobile, wawasan pengembangan software, tips desain UI/UX, praktik terbaik SEO, tren teknologi';
+---
+
+<Layout 
+	lang={locale} 
+	title={pageTitle}
+	description={pageDescription}
+	canonical={canonical}
+	keywords={keywords}
+>
+  <Navbar lang={locale} />
+  <main class="pt-20 bg-background">
+    <BlogOverview lang={locale} />
+  </main>
+  <Footer lang={locale} />
+</Layout>
+

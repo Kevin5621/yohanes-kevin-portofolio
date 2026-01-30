@@ -1,0 +1,26 @@
+# robots.txt for gilabs.id
+# Generated for SEO compliance
+
+# Allow all search engines to crawl all content
+User-agent: *
+Allow: /
+
+# Explicitly allow favicon files for Google Search indexing
+Allow: /favicon.ico
+Allow: /favicon.svg
+Allow: /favicon-48x48.png
+Allow: /favicon-96x96.png
+Allow: /favicon-144x144.png
+Allow: /apple-touch-icon.png
+
+# Disallow specific paths
+Disallow: /404
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://gilabs.id/sitemap-index.xml
+
+# Crawl delay (optional, in seconds)
+# User-agent: *
+# Crawl-delay: 1
+

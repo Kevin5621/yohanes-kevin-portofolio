@@ -1,0 +1,93 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+// Deteksi locale dari URL atau default ke 'en'
+const pathname = Astro.url.pathname;
+const locale = pathname.startsWith('/id') ? 'id' : 'en';
+
+const pageTitle = locale === 'en' 
+  ? '404 - Page Not Found | Gilabs Software House'
+  : '404 - Halaman Tidak Ditemukan | Gilabs Software House';
+
+const title = locale === 'en' ? '404' : '404';
+const subtitle = locale === 'en' 
+  ? 'Page Not Found' 
+  : 'Halaman Tidak Ditemukan';
+const description = locale === 'en'
+  ? "Sorry, we couldn't find the page you're looking for."
+  : 'Maaf, kami tidak dapat menemukan halaman yang Anda cari.';
+const buttonText = locale === 'en' ? 'Back to Home' : 'Kembali ke Beranda';
+const siteUrl = 'https://gilabs.id';
+const canonical = `${siteUrl}/404`;
+---
+
+<Layout 
+	lang={locale} 
+	title={pageTitle}
+	description={description}
+	canonical={canonical}
+	noindex={true}
+>
+  <Navbar lang={locale} />
+  <main class="min-h-screen flex items-center justify-center pt-20 pb-20">
+    <div class="container mx-auto px-4 text-center">
+      <div class="max-w-2xl mx-auto">
+        <h1 class="text-9xl md:text-[12rem] font-bold text-brand mb-4 animate-fade-in">
+          {title}
+        </h1>
+        <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-6 animate-slide-up" style="animation-delay: 0.1s;">
+          {subtitle}
+        </h2>
+        <p class="text-lg md:text-xl text-muted-foreground mb-12 animate-slide-up" style="animation-delay: 0.2s;">
+          {description}
+        </p>
+        <div class="animate-slide-up" style="animation-delay: 0.3s;">
+          <a 
+            href={`/${locale}`}
+            class="group inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white transition-all duration-200 bg-brand rounded-full hover:bg-brand/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand shadow-lg hover:shadow-brand/50 hover:-translate-y-1"
+          >
+            {buttonText}
+            <svg class="w-5 h-5 ml-2 -mr-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer lang={locale} />
+</Layout>
+
+<style>
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.6s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.6s ease-out forwards;
+    opacity: 0;
+  }
+</style>
+

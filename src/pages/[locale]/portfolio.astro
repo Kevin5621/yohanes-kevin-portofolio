@@ -1,0 +1,482 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import ProjectDrawer from '../../components/ui/ProjectDrawer';
+import { ArrowUpRight, ExternalLink } from 'lucide-react';
+import { getWhatsAppLink } from '../../lib/utils';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: 'en' } },
+    { params: { locale: 'id' } },
+  ];
+}
+
+const { locale } = Astro.params;
+
+// Portfolio data with i18n support
+const portfolioData = {
+  en: {
+    title: 'Our Portfolio',
+    subtitle: 'Projects we\'ve built with passion and precision',
+    categories: ['All', 'Web', 'Mobile', 'UI/UX', 'System'],
+    viewProject: 'View Project',
+    viewCase: 'View Case Study',
+  },
+  id: {
+    title: 'Portfolio Kami',
+    subtitle: 'Proyek yang kami bangun dengan passion dan presisi',
+    categories: ['Semua', 'Web', 'Mobile', 'UI/UX', 'Sistem'],
+    viewProject: 'Lihat Proyek',
+    viewCase: 'Lihat Studi Kasus',
+  },
+};
+
+// Portfolio items with extended data for drawer
+const portfolioItems = [
+  {
+    id: 1,
+    title: 'E-Commerce Platform',
+    category: 'Web',
+    description: {
+      en: 'Full-stack e-commerce solution with real-time inventory management and payment integration.',
+      id: 'Solusi e-commerce full-stack dengan manajemen inventori real-time dan integrasi pembayaran.',
+    },
+    fullDescription: {
+      en: 'A comprehensive e-commerce platform built from the ground up, featuring real-time inventory synchronization, multi-payment gateway integration (Stripe, PayPal, local payments), advanced product filtering, customer reviews system, and an intuitive admin dashboard for managing orders and analytics.',
+      id: 'Platform e-commerce komprehensif yang dibangun dari awal, menampilkan sinkronisasi inventori real-time, integrasi multi-gateway pembayaran (Stripe, PayPal, pembayaran lokal), filter produk canggih, sistem ulasan pelanggan, dan dashboard admin intuitif untuk mengelola pesanan dan analitik.',
+    },
+    image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80',
+    tags: ['Next.js', 'Supabase', 'Stripe', 'Tailwind CSS', 'Vercel'],
+    link: '#',
+    features: {
+      en: ['Real-time inventory management', 'Multi-payment gateway', 'Advanced product search & filters', 'Customer reviews & ratings', 'Admin analytics dashboard'],
+      id: ['Manajemen inventori real-time', 'Multi-gateway pembayaran', 'Pencarian & filter produk canggih', 'Ulasan & rating pelanggan', 'Dashboard analitik admin'],
+    },
+    client: 'RetailCo',
+    duration: '3 months',
+    year: '2025',
+  },
+  {
+    id: 2,
+    title: 'Healthcare Mobile App',
+    category: 'Mobile',
+    description: {
+      en: 'Cross-platform health tracking app with appointment scheduling and telemedicine features.',
+      id: 'Aplikasi pelacakan kesehatan lintas platform dengan penjadwalan janji dan fitur telemedicine.',
+    },
+    fullDescription: {
+      en: 'A feature-rich healthcare application enabling patients to track their health metrics, schedule appointments with doctors, conduct video consultations, manage prescriptions, and receive medication reminders. Built with accessibility in mind for users of all ages.',
+      id: 'Aplikasi kesehatan kaya fitur yang memungkinkan pasien melacak metrik kesehatan mereka, menjadwalkan janji dengan dokter, melakukan konsultasi video, mengelola resep, dan menerima pengingat obat. Dibangun dengan aksesibilitas untuk pengguna semua usia.',
+    },
+    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
+    tags: ['Flutter', 'Firebase', 'WebRTC', 'Node.js', 'MongoDB'],
+    link: '#',
+    features: {
+      en: ['Health metrics tracking', 'Video consultations', 'Appointment scheduling', 'Prescription management', 'Push notifications'],
+      id: ['Pelacakan metrik kesehatan', 'Konsultasi video', 'Penjadwalan janji', 'Manajemen resep', 'Notifikasi push'],
+    },
+    client: 'HealthFirst',
+    duration: '4 months',
+    year: '2025',
+  },
+  {
+    id: 3,
+    title: 'SaaS Dashboard',
+    category: 'UI/UX',
+    description: {
+      en: 'Analytics dashboard with real-time data visualization and customizable widgets.',
+      id: 'Dashboard analitik dengan visualisasi data real-time dan widget yang dapat dikustomisasi.',
+    },
+    fullDescription: {
+      en: 'A modern analytics dashboard designed for SaaS companies to monitor key metrics, visualize data trends, and make data-driven decisions. Features include customizable widget layouts, real-time data updates, export functionality, and team collaboration tools.',
+      id: 'Dashboard analitik modern yang dirancang untuk perusahaan SaaS untuk memantau metrik utama, memvisualisasikan tren data, dan membuat keputusan berbasis data. Fitur termasuk layout widget yang dapat dikustomisasi, pembaruan data real-time, fungsi ekspor, dan alat kolaborasi tim.',
+    },
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+    tags: ['Figma', 'React', 'D3.js', 'TypeScript', 'Recharts'],
+    link: '#',
+    features: {
+      en: ['Customizable widgets', 'Real-time data sync', 'Interactive charts', 'Export to PDF/CSV', 'Team collaboration'],
+      id: ['Widget yang dapat dikustomisasi', 'Sinkronisasi data real-time', 'Grafik interaktif', 'Ekspor ke PDF/CSV', 'Kolaborasi tim'],
+    },
+    client: 'DataMetrics Inc.',
+    duration: '2 months',
+    year: '2025',
+  },
+  {
+    id: 4,
+    title: 'CRM System',
+    category: 'System',
+    description: {
+      en: 'Enterprise CRM with sales pipeline, customer management, and automated reporting.',
+      id: 'CRM enterprise dengan pipeline penjualan, manajemen pelanggan, dan pelaporan otomatis.',
+    },
+    fullDescription: {
+      en: 'A comprehensive CRM solution designed for enterprise sales teams. Features visual sales pipeline management, customer interaction tracking, automated follow-up reminders, detailed reporting with AI insights, and seamless integration with popular tools like Slack and email.',
+      id: 'Solusi CRM komprehensif yang dirancang untuk tim penjualan enterprise. Fitur termasuk manajemen pipeline penjualan visual, pelacakan interaksi pelanggan, pengingat follow-up otomatis, pelaporan detail dengan insight AI, dan integrasi seamless dengan alat populer seperti Slack dan email.',
+    },
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
+    tags: ['Next.js', 'PostgreSQL', 'Redis', 'Prisma', 'OpenAI'],
+    link: '#',
+    features: {
+      en: ['Visual sales pipeline', 'Customer interaction tracking', 'Automated reminders', 'AI-powered insights', 'Third-party integrations'],
+      id: ['Pipeline penjualan visual', 'Pelacakan interaksi pelanggan', 'Pengingat otomatis', 'Insight berbasis AI', 'Integrasi pihak ketiga'],
+    },
+    client: 'SalesForce Pro',
+    duration: '5 months',
+    year: '2023',
+  },
+  {
+    id: 5,
+    title: 'Restaurant Ordering App',
+    category: 'Mobile',
+    description: {
+      en: 'Digital menu and ordering system with kitchen display integration.',
+      id: 'Menu digital dan sistem pemesanan dengan integrasi tampilan dapur.',
+    },
+    fullDescription: {
+      en: 'A complete restaurant management solution featuring digital menus with beautiful imagery, table-side ordering via tablets, real-time kitchen display system, order tracking for customers, and integrated payment processing. Designed to reduce wait times and improve dining experience.',
+      id: 'Solusi manajemen restoran lengkap dengan menu digital dengan gambar indah, pemesanan di meja via tablet, sistem tampilan dapur real-time, pelacakan pesanan untuk pelanggan, dan pemrosesan pembayaran terintegrasi. Dirancang untuk mengurangi waktu tunggu dan meningkatkan pengalaman makan.',
+    },
+    image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80',
+    tags: ['Flutter', 'Node.js', 'Socket.io', 'PostgreSQL', 'Stripe'],
+    link: '#',
+    features: {
+      en: ['Digital menu with images', 'Real-time order tracking', 'Kitchen display system', 'Table management', 'Payment integration'],
+      id: ['Menu digital dengan gambar', 'Pelacakan pesanan real-time', 'Sistem tampilan dapur', 'Manajemen meja', 'Integrasi pembayaran'],
+    },
+    client: 'FoodChain Group',
+    duration: '3 months',
+    year: '2025',
+  },
+  {
+    id: 6,
+    title: 'Company Profile Website',
+    category: 'Web',
+    description: {
+      en: 'Modern company profile with stunning animations and optimal performance.',
+      id: 'Profil perusahaan modern dengan animasi memukau dan performa optimal.',
+    },
+    fullDescription: {
+      en: 'A visually stunning company profile website built with performance in mind. Features smooth scroll animations, parallax effects, interactive elements, dark/light mode, multi-language support, and a perfect Lighthouse score. Designed to make a lasting impression on visitors.',
+      id: 'Website profil perusahaan yang memukau secara visual yang dibangun dengan performa dalam pikiran. Fitur termasuk animasi scroll halus, efek parallax, elemen interaktif, mode gelap/terang, dukungan multi-bahasa, dan skor Lighthouse sempurna. Dirancang untuk membuat kesan mendalam pada pengunjung.',
+    },
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
+    tags: ['Astro', 'Framer Motion', 'Tailwind', 'TypeScript', 'Vercel'],
+    link: '#',
+    features: {
+      en: ['Smooth animations', 'Parallax effects', 'Multi-language (i18n)', 'Dark/Light mode', 'Perfect performance score'],
+      id: ['Animasi halus', 'Efek parallax', 'Multi-bahasa (i18n)', 'Mode gelap/terang', 'Skor performa sempurna'],
+    },
+    client: 'TechVision Corp',
+    duration: '6 weeks',
+    year: '2025',
+  },
+  {
+    id: 7,
+    title: 'Inventory Management',
+    category: 'System',
+    description: {
+      en: 'Real-time inventory tracking with barcode scanning and low-stock alerts.',
+      id: 'Pelacakan inventori real-time dengan pemindaian barcode dan peringatan stok rendah.',
+    },
+    fullDescription: {
+      en: 'An enterprise-grade inventory management system with mobile barcode scanning, real-time stock updates across multiple locations, automated low-stock alerts, supplier management, purchase order generation, and comprehensive reporting for inventory optimization.',
+      id: 'Sistem manajemen inventori tingkat enterprise dengan pemindaian barcode mobile, pembaruan stok real-time di beberapa lokasi, peringatan stok rendah otomatis, manajemen pemasok, pembuatan pesanan pembelian, dan pelaporan komprehensif untuk optimisasi inventori.',
+    },
+    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80',
+    tags: ['React', 'Express', 'MongoDB', 'React Native', 'AWS'],
+    link: '#',
+    features: {
+      en: ['Barcode scanning', 'Multi-location support', 'Low-stock alerts', 'Supplier management', 'Purchase order automation'],
+      id: ['Pemindaian barcode', 'Dukungan multi-lokasi', 'Peringatan stok rendah', 'Manajemen pemasok', 'Otomasi pesanan pembelian'],
+    },
+    client: 'LogiStock',
+    duration: '4 months',
+    year: '2023',
+  },
+  {
+    id: 8,
+    title: 'Banking App Redesign',
+    category: 'UI/UX',
+    description: {
+      en: 'Complete UX overhaul for a banking app focusing on accessibility and ease of use.',
+      id: 'Perombakan UX lengkap untuk aplikasi perbankan dengan fokus aksesibilitas dan kemudahan penggunaan.',
+    },
+    fullDescription: {
+      en: 'A complete redesign of a legacy banking application, focusing on accessibility compliance (WCAG 2.1), intuitive navigation, simplified transaction flows, biometric authentication, and modern visual design. User testing showed 40% improvement in task completion rates.',
+      id: 'Redesain lengkap aplikasi perbankan legacy, fokus pada kepatuhan aksesibilitas (WCAG 2.1), navigasi intuitif, alur transaksi yang disederhanakan, autentikasi biometrik, dan desain visual modern. Pengujian pengguna menunjukkan peningkatan 40% dalam tingkat penyelesaian tugas.',
+    },
+    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80',
+    tags: ['Figma', 'Prototyping', 'User Research', 'Usability Testing', 'Design System'],
+    link: '#',
+    features: {
+      en: ['WCAG 2.1 compliant', 'Biometric authentication', 'Simplified transactions', 'Design system creation', '40% UX improvement'],
+      id: ['Sesuai WCAG 2.1', 'Autentikasi biometrik', 'Transaksi yang disederhanakan', 'Pembuatan design system', 'Peningkatan UX 40%'],
+    },
+    client: 'SecureBank',
+    duration: '3 months',
+    year: '2025',
+  },
+];
+
+const content = portfolioData[locale as keyof typeof portfolioData];
+const siteUrl = 'https://gilabs.id';
+const canonical = locale === 'en' ? `${siteUrl}/en/portfolio` : `${siteUrl}/${locale}/portfolio`;
+const pageTitle = locale === 'en'
+	? `Our Portfolio - Projects & Case Studies | Gilabs.id`
+	: `Portfolio Kami - Proyek & Studi Kasus | Gilabs.id`;
+const pageDescription = locale === 'id'
+	? 'Lihat portfolio proyek-proyek yang telah kami bangun dengan passion dan presisi. Dari aplikasi web hingga mobile, UI/UX design hingga sistem enterprise.'
+	: 'View our portfolio of projects we\'ve built with passion and precision. From web applications to mobile apps, UI/UX design to enterprise systems.';
+const keywords = locale === 'en'
+	? 'portfolio, web development projects, mobile app projects, UI/UX design portfolio, software development case studies, software house'
+	: 'portfolio, proyek pengembangan web, proyek aplikasi mobile, portfolio desain UI/UX, studi kasus pengembangan software';
+---
+
+<Layout 
+	lang={locale} 
+	title={pageTitle}
+	description={pageDescription}
+	canonical={canonical}
+	keywords={keywords}
+>
+  <Navbar lang={locale} />
+  
+  <!-- Project Drawer Component -->
+  <ProjectDrawer client:load lang={locale} />
+  
+  <main class="min-h-screen bg-background">
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 overflow-hidden">
+      <!-- Background Elements -->
+      <div class="absolute inset-0 bg-linear-to-b from-brand/5 via-transparent to-transparent"></div>
+      <div class="absolute top-20 left-1/4 w-96 h-96 bg-brand/10 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-1/4 w-64 h-64 bg-brand/5 rounded-full blur-2xl"></div>
+      
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="text-center max-w-3xl mx-auto">
+          <h1 class="text-4xl md:text-6xl font-bold mb-6 bg-linear-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+            {content.title}
+          </h1>
+          <p class="text-lg md:text-xl text-muted-foreground">
+            {content.subtitle}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio Grid -->
+    <section class="pb-32">
+      <div class="container mx-auto px-4">
+        <!-- Category Filter -->
+        <div class="flex flex-wrap justify-center gap-3 mb-16">
+          {content.categories.map((category, index) => (
+            <button
+              class={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
+                index === 0 
+                  ? 'bg-brand text-white shadow-lg shadow-brand/30' 
+                  : 'bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground'
+              }`}
+              data-category={category}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        <!-- Portfolio Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {portfolioItems.map((item) => (
+            <article 
+              class="group relative bg-background/40 backdrop-blur-sm border border-border/50 rounded-2xl overflow-hidden hover:border-brand/50 transition-all duration-500 hover:shadow-xl hover:shadow-brand/5 hover:-translate-y-1"
+              data-project={JSON.stringify({
+                id: item.id,
+                title: item.title,
+                category: item.category,
+                description: item.description[locale as keyof typeof item.description],
+                fullDescription: item.fullDescription[locale as keyof typeof item.fullDescription],
+                image: item.image,
+                tags: item.tags,
+                link: item.link,
+                features: item.features[locale as keyof typeof item.features],
+                client: item.client,
+                duration: item.duration,
+                year: item.year,
+              })}
+            >
+              <!-- Image -->
+              <div class="relative aspect-video overflow-hidden">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
+                  width="605"
+                  height="312"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
+                <div class="absolute inset-0 bg-linear-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                <!-- Overlay Button -->
+                <button
+                  type="button"
+                  class="project-view-btn absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer"
+                >
+                  <span class="inline-flex items-center gap-2 px-6 py-3 bg-brand text-white rounded-full font-medium text-sm shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    {content.viewProject}
+                    <ArrowUpRight className="w-4 h-4" />
+                  </span>
+                </button>
+              </div>
+              
+              <!-- Content -->
+              <div class="p-6">
+                <!-- Category Badge -->
+                <span class="inline-block px-3 py-1 text-xs font-medium bg-brand/10 text-brand rounded-full mb-3">
+                  {item.category}
+                </span>
+                
+                <!-- Title -->
+                <h3 class="text-xl font-bold mb-2 group-hover:text-brand transition-colors">
+                  {item.title}
+                </h3>
+                
+                <!-- Description -->
+                <p class="text-muted-foreground text-sm mb-4 line-clamp-2">
+                  {item.description[locale as keyof typeof item.description]}
+                </p>
+                
+                <!-- Tags -->
+                <div class="flex flex-wrap gap-2">
+                  {item.tags.map((tag) => (
+                    <span class="px-2 py-1 text-xs font-medium bg-secondary/50 text-muted-foreground rounded">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <!-- CTA Section -->
+        <div class="mt-20 text-center">
+          <div class="inline-block p-8 md:p-12 bg-secondary/30 backdrop-blur-md rounded-3xl border border-white/10">
+            <h2 class="text-2xl md:text-3xl font-bold mb-4">
+              {locale === 'id' ? 'Punya proyek dalam pikiran?' : 'Have a project in mind?'}
+            </h2>
+            <p class="text-muted-foreground mb-6 max-w-md mx-auto">
+              {locale === 'id' 
+                ? 'Mari diskusikan bagaimana kami bisa membantu mewujudkan ide Anda.' 
+                : 'Let\'s discuss how we can help bring your ideas to life.'}
+            </p>
+            <a
+              href={getWhatsAppLink('footer', locale as 'en' | 'id')}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-bold text-white bg-brand rounded-full hover:bg-brand/90 hover:shadow-lg hover:shadow-brand/20 hover:scale-105 transition-all duration-200"
+            >
+              {locale === 'id' ? 'Mulai Proyek' : 'Start a Project'}
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <Footer lang={locale} />
+</Layout>
+
+<script>
+  // Category filter and project drawer handler
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('[data-category]');
+    const articles = document.querySelectorAll('article');
+    
+    // Category filter
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Update active button
+        buttons.forEach(btn => {
+          btn.classList.remove('bg-brand', 'text-white', 'shadow-lg', 'shadow-brand/30');
+          btn.classList.add('bg-secondary/50', 'text-muted-foreground');
+        });
+        button.classList.remove('bg-secondary/50', 'text-muted-foreground');
+        button.classList.add('bg-brand', 'text-white', 'shadow-lg', 'shadow-brand/30');
+        
+        // Filter articles
+        const category = button.getAttribute('data-category');
+        const isAll = category === 'All' || category === 'Semua';
+        
+        articles.forEach(article => {
+          const articleCategory = article.querySelector('span')?.textContent;
+          if (isAll || articleCategory === category) {
+            (article as HTMLElement).style.display = 'block';
+            (article as HTMLElement).style.animation = 'fadeIn 0.3s ease-out';
+          } else {
+            (article as HTMLElement).style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Project drawer handler
+    const viewButtons = document.querySelectorAll('.project-view-btn');
+    
+    viewButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const article = btn.closest('article');
+        if (!article) return;
+        
+        const projectData = article.getAttribute('data-project');
+        if (!projectData) return;
+        
+        try {
+          const project = JSON.parse(projectData);
+          window.dispatchEvent(new CustomEvent('open-project-drawer', { detail: project }));
+        } catch (error) {
+          console.error('Error parsing project data:', error);
+        }
+      });
+    });
+
+    // Also handle click on entire article card
+    articles.forEach(article => {
+      article.addEventListener('click', (e) => {
+        // Don't trigger if clicking on tags or other interactive elements
+        const target = e.target as HTMLElement;
+        if (target.closest('.project-view-btn')) return;
+        
+        const projectData = article.getAttribute('data-project');
+        if (!projectData) return;
+        
+        try {
+          const project = JSON.parse(projectData);
+          window.dispatchEvent(new CustomEvent('open-project-drawer', { detail: project }));
+        } catch (error) {
+          console.error('Error parsing project data:', error);
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

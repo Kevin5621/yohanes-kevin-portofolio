@@ -1,0 +1,268 @@
+---
+import "../styles/globals.css";
+import LightRays from "../components/ui/LightRays";
+import MobileMenu from "../components/MobileMenu.astro";
+
+const { 
+	lang = Astro.currentLocale || 'en', 
+	title = 'Gilabs.id',
+	description = 'Premium Software Agency specializing in web development, mobile apps, and digital solutions. Transform your business with cutting-edge technology.',
+	canonical = Astro.url.href,
+	robots = 'index, follow',
+	noindex = false,
+	keywords = 'web development, mobile app development, software agency, digital solutions, UI/UX design, custom software, web design, app development Indonesia, ERP system, CRM system, software development company, web application development, mobile application development, e-commerce development, enterprise software, digital transformation, software consulting, Indonesia software company'
+} = Astro.props;
+
+const siteUrl = 'https://gilabs.id';
+const fullCanonical = canonical.startsWith('http') ? canonical : `${siteUrl}${canonical}`;
+const robotsContent = noindex ? 'noindex, nofollow' : robots;
+
+// Generate hreflang URLs for multi-language SEO
+// Extract the path after locale prefix to build alternate URLs
+const currentPath = Astro.url.pathname;
+const pathWithoutLocale = currentPath.replace(/^\/(en|id)/, '') || '/';
+
+// Build alternate URLs for each language
+const enUrl = `${siteUrl}/en${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
+const idUrl = `${siteUrl}/id${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
+
+// x-default should point to the English version as the default
+const defaultUrl = enUrl;
+---
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		
+		<!-- Favicons - Multiple formats for Google Search compatibility -->
+		<!-- Primary favicon for Google Search Console -->
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+		<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+		<link rel="icon" type="image/png" sizes="144x144" href="/favicon-144x144.png" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		
+		<meta name="generator" content={Astro.generator} />
+		
+		<!-- Primary Meta Tags -->
+		<title>{title}</title>
+		<meta name="title" content={title} />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="robots" content={robotsContent} />
+		<meta name="author" content="Gilabs.id" />
+		<meta name="publisher" content="Gilabs.id" />
+		
+		<!-- Canonical URL -->
+		<link rel="canonical" href={fullCanonical} />
+		
+		<!-- Hreflang Tags for Multi-language SEO -->
+		<link rel="alternate" hreflang="en" href={enUrl} />
+		<link rel="alternate" hreflang="id" href={idUrl} />
+		<link rel="alternate" hreflang="x-default" href={defaultUrl} />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={fullCanonical} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:site_name" content="Gilabs.id" />
+		<meta property="og:locale" content={lang === 'id' ? 'id_ID' : 'en_US'} />
+		<meta property="og:locale:alternate" content={lang === 'id' ? 'en_US' : 'id_ID'} />
+		
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		
+		<!-- Additional SEO -->
+		<meta name="language" content={lang === 'id' ? 'Indonesian' : 'English'} />
+		<meta name="geo.region" content={lang === 'id' ? 'ID' : 'US'} />
+		
+		<!-- Structured Data (Schema.org) -->
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "Organization",
+			"name": "Gilabs.id",
+			"alternateName": "Gilabs Software Agency",
+			"url": "https://gilabs.id",
+			"logo": "https://gilabs.id/favicon-144x144.png",
+			"description": description,
+			"address": {
+				"@type": "PostalAddress",
+				"addressCountry": "ID"
+			},
+			"contactPoint": {
+				"@type": "ContactPoint",
+				"contactType": "Customer Service",
+				"availableLanguage": lang === 'id' ? "Indonesian" : "English"
+			},
+			"sameAs": [
+				"https://gilabs.id"
+			],
+			"areaServed": {
+				"@type": "Country",
+				"name": "Indonesia"
+			},
+			"knowsAbout": [
+				"Web Development",
+				"Mobile App Development",
+				"Software Development",
+				"Software House",
+				"UI/UX Design",
+				"Digital Solutions",
+				"ERP Systems",
+				"CRM Systems"
+			]
+		})} />
+		
+    <!-- Google Fonts - Optimized loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+	</head>
+	<body class="bg-background text-foreground font-sans antialiased relative selection:bg-brand selection:text-white">
+    <div class="fixed inset-0 z-[-1] pointer-events-none">
+      <LightRays 
+        client:only="react"
+        raysColor="#FBFBFB" 
+        raysSpeed={0.5} 
+        lightSpread={0.5}
+        rayLength={1.5}
+        raysOrigin="top-center"
+      />
+    </div>
+		<slot />
+		<MobileMenu lang={lang} />
+	</body>
+
+<script>
+  // Safety check to prevent scroll from getting stuck
+  // Optimized to avoid forced reflows using requestAnimationFrame
+  (function() {
+    let lastScrollTop = 0;
+    let scrollStuckCount = 0;
+    const MAX_STUCK_COUNT = 3;
+    let rafId: number | null = null;
+
+    function checkScrollHealth() {
+      // Use requestAnimationFrame to batch DOM reads and avoid forced reflow
+      rafId = requestAnimationFrame(() => {
+        const currentScrollTop = window.scrollY || window.pageYOffset || 0;
+        
+        // If scroll position hasn't changed but user is trying to scroll, reset overflow
+        if (currentScrollTop === lastScrollTop && document.body.style.overflow === 'hidden') {
+          scrollStuckCount++;
+          
+          if (scrollStuckCount >= MAX_STUCK_COUNT) {
+            // Force reset body styles if scroll appears stuck
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
+            scrollStuckCount = 0;
+          }
+        } else {
+          scrollStuckCount = 0;
+        }
+        
+        lastScrollTop = currentScrollTop;
+      });
+    }
+
+    // Check scroll health periodically using requestAnimationFrame
+    function scheduleCheck() {
+      checkScrollHealth();
+      setTimeout(scheduleCheck, 100);
+    }
+    
+    scheduleCheck();
+
+    // Also check on visibility change (when console is opened/closed)
+    document.addEventListener('visibilitychange', () => {
+      // Use requestAnimationFrame to avoid forced reflow
+      requestAnimationFrame(() => {
+        if (!document.hidden) {
+          const hasOverflowHidden = document.body.style.overflow === 'hidden';
+          const hasPositionFixed = document.body.style.position === 'fixed';
+          
+          // Only reset if no modal/drawer is actually open
+          // Check if mobile menu is closed
+          const mobileMenu = document.getElementById('mobile-menu');
+          const isMobileMenuOpen = mobileMenu && !mobileMenu.classList.contains('opacity-0');
+          
+          // Check if project drawer is open (check for backdrop)
+          const hasBackdrop = document.querySelector('.fixed.inset-0.bg-black\\/60');
+          
+          if (!isMobileMenuOpen && !hasBackdrop && (hasOverflowHidden || hasPositionFixed)) {
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
+          }
+        }
+      });
+    });
+
+    // Ensure scroll is enabled on page load and cleanup any stuck ScrollTriggers
+    window.addEventListener('load', () => {
+      requestAnimationFrame(async () => {
+        // Reset body styles
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
+        document.body.style.height = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        
+        // Try to cleanup any ScrollTrigger instances that might be stuck
+        try {
+          const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+          // Kill all scroll triggers on page load to prevent conflicts
+          ScrollTrigger.getAll().forEach(st => {
+            try {
+              st.kill();
+            } catch (e) {
+              // Ignore errors
+            }
+          });
+          ScrollTrigger.refresh();
+        } catch (e) {
+          // ScrollTrigger not loaded yet, that's okay
+        }
+      });
+    });
+    
+    // Also cleanup on DOMContentLoaded for faster response
+    document.addEventListener('DOMContentLoaded', () => {
+      requestAnimationFrame(() => {
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
+        document.body.style.height = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+      });
+    });
+    
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+    });
+  })();
+</script>
+</html>
+
+<style>
+	html,
+	body {
+		margin: 0;
+		width: 100%;
+		height: 100%;
+	}
+</style>

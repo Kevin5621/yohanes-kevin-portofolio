@@ -1,0 +1,106 @@
+---
+import { pricingData } from '../../data/pricing';
+import { getWhatsAppLink } from '../../lib/utils';
+
+const { lang } = Astro.props;
+const cta = pricingData[lang].ctaSection;
+
+const content = {
+  id: {
+    eyebrow: "Mari Berbicara",
+    title: "Siap Memulai Proyek Anda?",
+    subtitle: "Kami tidak hanya membangun software — kami membangun partnership jangka panjang. Hubungi kami untuk diskusi tanpa komitmen.",
+    contact: {
+      whatsapp: "Chat via WhatsApp",
+      response: "Respon dalam 24 jam"
+    }
+  },
+  en: {
+    eyebrow: "Let's Talk",
+    title: "Ready to Start Your Project?",
+    subtitle: "We don't just build software — we build long-term partnerships. Contact us for a no-commitment discussion.",
+    contact: {
+      whatsapp: "Chat via WhatsApp",
+      response: "Response within 24 hours"
+    }
+  }
+};
+
+const t = content[lang as keyof typeof content] as typeof content.en;
+---
+
+<section class="py-24 md:py-32 lg:py-40 relative overflow-hidden">
+  <!-- Section divider with glow -->
+  <div class="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-border to-transparent"></div>
+  <div class="absolute top-0 left-0 right-0 h-0.5 bg-linear-to-r from-transparent via-brand/30 to-transparent blur-sm"></div>
+  
+  <!-- Background elements with more depth -->
+  <div class="absolute inset-0">
+    <div class="absolute inset-0 bg-linear-to-br from-brand/10 via-transparent to-brand/10"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand/10 rounded-full blur-3xl animate-pulse"></div>
+    <!-- Additional glow orbs -->
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand/5 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand/5 rounded-full blur-3xl"></div>
+  </div>
+  
+  <!-- Grid pattern -->
+  <div class="absolute inset-0 opacity-[0.02]" style="background-image: linear-gradient(to right, hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--foreground)) 1px, transparent 1px); background-size: 60px 60px;"></div>
+  
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="max-w-4xl mx-auto text-center">
+      <!-- Eyebrow -->
+      <span class="inline-block text-brand text-sm font-medium uppercase tracking-[0.2em] mb-6">
+        {t.eyebrow}
+      </span>
+      
+      <!-- Title -->
+      <h2 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground mb-8 leading-[1.1]">
+        {t.title}
+      </h2>
+      
+      <!-- Subtitle -->
+      <p class="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-12">
+        {t.subtitle}
+      </p>
+      
+      <!-- CTA Button -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+        <a 
+          href={getWhatsAppLink('footer', lang)}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group inline-flex items-center gap-3 px-8 py-5 text-lg font-bold text-white bg-brand rounded-full shadow-xl shadow-brand/30 hover:bg-brand/90 hover:shadow-2xl hover:shadow-brand/50 hover:-translate-y-2 hover:scale-105 transition-all duration-300 border-2 border-brand/20"
+        >
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          <span>{cta.button}</span>
+          <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+      
+      <!-- Response time indicator -->
+      <p class="text-sm text-muted-foreground flex items-center justify-center gap-2">
+        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+        {t.contact.response}
+      </p>
+    </div>
+  </div>
+  
+  <!-- Decorative corner elements -->
+  <div class="absolute bottom-8 left-8 hidden lg:block">
+    <div class="flex flex-col gap-2 text-xs text-muted-foreground/50">
+      <span class="uppercase tracking-widest">Gilabs Studio</span>
+      <span>Software Development</span>
+    </div>
+  </div>
+  
+  <div class="absolute bottom-8 right-8 hidden lg:block">
+    <div class="flex flex-col items-end gap-2 text-xs text-muted-foreground/50">
+      <span class="uppercase tracking-widest">Indonesia</span>
+      <span>© 2025</span>
+    </div>
+  </div>
+</section>
