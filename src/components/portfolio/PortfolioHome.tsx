@@ -14,31 +14,35 @@ export const PortfolioHome = () => {
   const lenisRef = useRef<Lenis | null>(null);
 
   useLayoutEffect(() => {
-    // Initialize Lenis
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
+    const ctx = gsap.context(() => {
+      // Initialize Lenis
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+      });
+
+      lenisRef.current = lenis;
+
+      // Synchronize Lenis and ScrollTrigger
+      lenis.on('scroll', ScrollTrigger.update);
+
+      const update = (time: number) => {
+        lenis.raf(time * 1000);
+      };
+
+      gsap.ticker.add(update);
+      gsap.ticker.lagSmoothing(0);
+
+      return () => {
+        gsap.ticker.remove(update);
+        lenis.destroy();
+      };
     });
 
-    lenisRef.current = lenis;
-
-    // Synchronize Lenis and ScrollTrigger
-    lenis.on('scroll', ScrollTrigger.update);
-
-    const update = (time: number) => {
-      lenis.raf(time * 1000);
-    };
-
-    gsap.ticker.add(update);
-    gsap.ticker.lagSmoothing(0);
-
-    return () => {
-      gsap.ticker.remove(update);
-      lenis.destroy();
-    };
+    return () => ctx.revert();
   }, []);
 
   return (

@@ -25,6 +25,9 @@ const WordReveal = ({ children }: { children: string }) => {
           }
         }
       );
+
+      // Force refresh to ensure positions are correct after layout changes
+      ScrollTrigger.refresh();
     }, containerRef);
 
     return () => ctx.revert();

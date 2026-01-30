@@ -163,13 +163,38 @@ const LightRays: React.FC<LightRaysProps> = ({
       threshold: 0
     });
 
-    // Wait a bit for DOM to be ready if needed, or just run
-    sections.forEach(section => {
-      const el = document.getElementById(section.id);
-      if (el) observer.observe(el);
-    });
+    let retryCount = 0;
+    const maxRetries = 50; // 5 seconds max (100ms * 50)
+    let timeoutId: number;
 
-    return () => observer.disconnect();
+    const observeSections = () => {
+      let allFound = true;
+      const observedIds = new Set();
+
+      sections.forEach(section => {
+        const el = document.getElementById(section.id);
+        if (el) {
+          if (!observedIds.has(section.id)) {
+             observer.observe(el);
+             observedIds.add(section.id);
+          }
+        } else {
+          allFound = false;
+        }
+      });
+
+      if (!allFound && retryCount < maxRetries) {
+        retryCount++;
+        timeoutId = window.setTimeout(observeSections, 100);
+      }
+    };
+
+    observeSections();
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   useEffect(() => {

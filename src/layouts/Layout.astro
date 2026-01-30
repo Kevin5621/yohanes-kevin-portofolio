@@ -189,37 +189,10 @@ const robotsContent = noindex ? 'noindex, nofollow' : robots;
       });
     });
 
-    // Ensure scroll is enabled on page load and cleanup any stuck ScrollTriggers
-    window.addEventListener('load', () => {
-      requestAnimationFrame(async () => {
-        // Reset body styles
-        document.body.style.overflow = '';
-        document.body.style.position = '';
-        document.body.style.width = '';
-        document.body.style.height = '';
-        document.body.style.top = '';
-        document.body.style.left = '';
-        
-        // Try to cleanup any ScrollTrigger instances that might be stuck
-        try {
-          const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-          // Kill all scroll triggers on page load to prevent conflicts
-          ScrollTrigger.getAll().forEach(st => {
-            try {
-              st.kill();
-            } catch (e) {
-              // Ignore errors
-            }
-          });
-          ScrollTrigger.refresh();
-        } catch (e) {
-          // ScrollTrigger not loaded yet, that's okay
-        }
-      });
-    });
+
     
-    // Also cleanup on DOMContentLoaded for faster response
-    document.addEventListener('DOMContentLoaded', () => {
+    // Reset styles on load without killing ScrollTriggers
+    const resetStyles = () => {
       requestAnimationFrame(() => {
         document.body.style.overflow = '';
         document.body.style.position = '';
@@ -228,7 +201,10 @@ const robotsContent = noindex ? 'noindex, nofollow' : robots;
         document.body.style.top = '';
         document.body.style.left = '';
       });
-    });
+    };
+
+    window.addEventListener('load', resetStyles);
+    document.addEventListener('DOMContentLoaded', resetStyles);
     
     // Cleanup on page unload
     window.addEventListener('beforeunload', () => {
