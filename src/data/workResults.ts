@@ -22,8 +22,7 @@ export interface WorkResultProject {
   image: ProjectImage[];
 }
 
-export const workResultsProjects: Record<string, WorkResultProject[]> = {
-  en: [
+export const workResultsProjects: WorkResultProject[] = [
     {
       title: 'Internal ERP',
       description: 'Streamlined ERP system handling auth, complex data flows, and role-based access for operations.',
@@ -510,5 +509,4 @@ export const workResultsProjects: Record<string, WorkResultProject[]> = {
         }
       ]
     },
-  ],
-};
+];

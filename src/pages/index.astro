@@ -1,3 +1,8 @@
 ---
-return Astro.redirect('/en');
+import Layout from '../layouts/Layout.astro';
+import { PortfolioHome } from '../components/portfolio/PortfolioHome';
 ---
+
+<Layout title="Kevin - Portfolio">
+  <PortfolioHome client:only="react" />
+</Layout>

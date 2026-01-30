@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { workResultsProjects } from '../../data/workResults';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const PROJECTS = workResultsProjects['en'];
+const PROJECTS = workResultsProjects;
 
 export const Projects = () => {
   const [activeProject, setActiveProject] = useState(0);

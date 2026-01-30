@@ -3,7 +3,7 @@ import "../styles/globals.css";
 import LightRays from "../components/ui/LightRays";
 
 const { 
-	lang = Astro.currentLocale || 'en', 
+	lang = 'en', 
 	title = 'Gilabs.id',
 	description = 'Premium Software Agency specializing in web development, mobile apps, and digital solutions. Transform your business with cutting-edge technology.',
 	canonical = Astro.url.href,
@@ -16,17 +16,6 @@ const siteUrl = 'https://gilabs.id';
 const fullCanonical = canonical.startsWith('http') ? canonical : `${siteUrl}${canonical}`;
 const robotsContent = noindex ? 'noindex, nofollow' : robots;
 
-// Generate hreflang URLs for multi-language SEO
-// Extract the path after locale prefix to build alternate URLs
-const currentPath = Astro.url.pathname;
-const pathWithoutLocale = currentPath.replace(/^\/(en|id)/, '') || '/';
-
-// Build alternate URLs for each language
-const enUrl = `${siteUrl}/en${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
-const idUrl = `${siteUrl}/id${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
-
-// x-default should point to the English version as the default
-const defaultUrl = enUrl;
 ---
 <!doctype html>
 <html lang={lang} class="scroll-smooth">
@@ -59,10 +48,6 @@ const defaultUrl = enUrl;
 		<!-- Canonical URL -->
 		<link rel="canonical" href={fullCanonical} />
 		
-		<!-- Hreflang Tags for Multi-language SEO -->
-		<link rel="alternate" hreflang="en" href={enUrl} />
-		<link rel="alternate" hreflang="id" href={idUrl} />
-		<link rel="alternate" hreflang="x-default" href={defaultUrl} />
 
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
@@ -70,8 +55,7 @@ const defaultUrl = enUrl;
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:site_name" content="Gilabs.id" />
-		<meta property="og:locale" content={lang === 'id' ? 'id_ID' : 'en_US'} />
-		<meta property="og:locale:alternate" content={lang === 'id' ? 'en_US' : 'id_ID'} />
+		<meta property="og:locale" content="en_US" />
 		
 		<!-- Twitter -->
 		<meta name="twitter:card" content="summary_large_image" />
@@ -79,8 +63,8 @@ const defaultUrl = enUrl;
 		<meta name="twitter:description" content={description} />
 		
 		<!-- Additional SEO -->
-		<meta name="language" content={lang === 'id' ? 'Indonesian' : 'English'} />
-		<meta name="geo.region" content={lang === 'id' ? 'ID' : 'US'} />
+		<meta name="language" content="English" />
+		<meta name="geo.region" content="US" />
 		
 		<!-- Structured Data (Schema.org) -->
 		<script type="application/ld+json" set:html={JSON.stringify({
@@ -98,7 +82,7 @@ const defaultUrl = enUrl;
 			"contactPoint": {
 				"@type": "ContactPoint",
 				"contactType": "Customer Service",
-				"availableLanguage": lang === 'id' ? "Indonesian" : "English"
+				"availableLanguage": "English"
 			},
 			"sameAs": [
 				"https://gilabs.id"
