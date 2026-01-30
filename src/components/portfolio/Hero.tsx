@@ -11,13 +11,10 @@ export const Hero = () => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
       
       tl.from(titleRef.current, {
-        y: 100,
         opacity: 0,
         duration: 1.5,
-        skewY: 2,
       })
       .from(textRef.current, {
-        y: 50,
         opacity: 0,
         duration: 1.5,
       }, "-=1.2");
@@ -29,7 +26,7 @@ export const Hero = () => {
   return (
     <section 
       ref={containerRef} 
-      className="min-h-screen flex flex-col justify-center px-6 md:px-12 max-w-[1400px] mx-auto"
+      className="min-h-screen flex flex-col justify-center pt-32 px-6 md:px-12 max-w-[1400px] mx-auto"
     >
       <div className="max-w-4xl">
         <h1 ref={titleRef} className="text-[4rem] md:text-[6rem] font-semibold tracking-tighter leading-[0.95] mb-4 text-[#1d1d1f]">
