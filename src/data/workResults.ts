@@ -509,4 +509,53 @@ export const workResultsProjects: WorkResultProject[] = [
         }
       ]
     },
+    {
+      title: 'OriginStamp',
+      description: 'A revolutionary Proof of Human Process protocol built on the Internet Computer (ICP), addressing the fundamental crisis of trust in the digital creative economy.',
+      technologies: ['Next.js', 'Rust', 'ICP', 'SCSS', 'ITCSS', 'React', 'TypeScript'],
+      githubUrl: 'https://lnkd.in/gupBH--j',
+      type: 'real',
+      features: {
+        sections: [
+          {
+            title: 'Architecture & Core Features',
+            items: [
+              'Monolithic Architecture (Rust backend + React TypeScript frontend)',
+              'Internet Identity authentication (secure, hardware-based identity linking)',
+              'Creative Session Management (Physical vs Digital Art options)',
+              'Process Logging to S3 with immutable blockchain records',
+              'NFT Certificate Generation with comprehensive verification'
+            ]
+          },
+          {
+            title: 'UI/UX Engineering (SCSS & ITCSS)',
+            items: [
+              'Layer-based CSS architecture (Settings → Tools → Generic → Elements → Objects → Components → Utilities)',
+              'Proper specificity management with ITCSS',
+              'Scalable and maintainable CSS structure',
+              'CSS custom properties for dynamic theming',
+              'Nested selectors with BEM methodology'
+            ]
+          },
+          {
+            title: 'Key Innovation',
+            items: [
+              'Immutable on-chain certificate of origin for any digital or physical work',
+              'Cryptographic timestamping of every creative action',
+              'Unparalleled confidence in authenticity',
+              'Proof of Human Process protocol'
+            ]
+          }
+        ]
+      },
+      image: [
+        {
+          title: 'banner',
+          image: '/work/originstamp/banner.png'
+        },
+        { title: 'Dashboard Overview', image: '/work/originstamp/Screenshot from 2026-01-31 09-47-34.webp' },
+        { title: 'Route Optimization', image: '/work/originstamp/Screenshot from 2026-01-31 09-47-54.webp' },
+        { title: 'Lead Management', image: '/work/originstamp/Screenshot from 2026-01-31 09-48-31.webp' },
+      ]
+    },
 ];
