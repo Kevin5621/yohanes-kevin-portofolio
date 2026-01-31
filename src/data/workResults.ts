@@ -205,4 +205,22 @@ export const workResultsProjects: WorkResultProject[] = [
         { title: 'Lead Management', image: '/work/originstamp/Screenshot from 2026-01-31 09-48-31.webp' },
       ]
     },
+    {
+      title: 'CleanLink',
+      description: 'SAAS product for laundry management and POS integrated with IoT for automatic machine control and Midtrans payment gateway.',
+      technologies: ['Next.js', 'TypeScript', 'IoT Integration', 'Midtrans', 'SaaS'],
+      image: [
+        {
+          title: 'banner',
+          image: '/work/cleanlink/banner.png'
+        },
+        { title: 'Landing Page', image: '/work/cleanlink/Screenshot 2026-01-31 at 09-26-39 CleanLink - Laundry Service Management System.webp' },
+        { title: 'Admin Dashboard', image: '/work/cleanlink/Screenshot 2026-01-31 at 09-32-16 Admin Dashboard Laundry Management.webp' },
+        { title: 'Owner Dashboard', image: '/work/cleanlink/Screenshot 2026-01-31 at 09-32-39 Dashboard Owner.webp' },
+        { title: 'Branch Management', image: '/work/cleanlink/Screenshot 2026-01-31 at 09-34-02 Branch Management Owner.webp' },
+        { title: 'Order Management', image: '/work/cleanlink/Screenshot 2026-01-31 at 09-34-39 Order Management Owner Dashboard.webp' },
+        { title: 'Device Management', image: '/work/cleanlink/Screenshot 2026-01-31 at 09-37-40 Device Management Owner.webp' },
+        { title: 'Landing Page 2', image: '/work/cleanlink/Screenshot 2026-01-31 at 09-38-37 CleanLink - Laundry Service Management System.webp' }
+      ]
+    },
 ];
