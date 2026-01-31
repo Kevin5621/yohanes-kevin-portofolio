@@ -14,6 +14,34 @@ export const Projects = () => {
     setActiveImageIndex(0);
   }, [activeProject]);
 
+  // Preload images for the active project to ensure instant carousel switching
+  useEffect(() => {
+    const currentImages = PROJECTS[activeProject].image;
+    
+    // Priority 1: Preload all images in the current project
+    currentImages.forEach((img) => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = img.image;
+      document.head.appendChild(link);
+      
+      // Also construct an Image object to force browser cache
+      const imageObj = new Image();
+      imageObj.src = img.image;
+    });
+
+    // Priority 2: Preload next project's banner (first image) for smooth project transition
+    const nextProjectIndex = (activeProject + 1) % PROJECTS.length;
+    const nextProjectBanner = PROJECTS[nextProjectIndex].image[0].image;
+    const nextImageObj = new Image();
+    nextImageObj.src = nextProjectBanner;
+
+    return () => {
+       // Cleanup if needed, though mostly let the browser handle caching
+    };
+  }, [activeProject]);
+
   const handleNextImage = (e: React.MouseEvent) => {
     e.stopPropagation();
     const images = PROJECTS[activeProject].image;
